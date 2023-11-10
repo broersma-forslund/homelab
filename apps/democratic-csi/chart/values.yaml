@@ -1,10 +1,10 @@
 democratic-csi:
   controller:
     driver:
-      image: ghcr.io/democratic-csi/democratic-csi:v1.8.3 # chart default is latest
+      image: ghcr.io/democratic-csi/democratic-csi:v1.8.4 # chart default is latest
   node:
     driver:
-      image: ghcr.io/democratic-csi/democratic-csi:v1.8.3 # chart default is latest
+      image: ghcr.io/democratic-csi/democratic-csi:v1.8.4 # chart default is latest
 
 # driverConfigFileSealed: 
 #   value: 
