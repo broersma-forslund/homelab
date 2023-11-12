@@ -18,7 +18,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: buildarr
-          image: '{{ .Values.images.buildarr.repository }}:{{ .Values.images.buildarr.tag }}'
+          image: '{{ .Values.buildarr.image.repository }}:{{ .Values.buildarr.image.tag }}'
           env:
             - name: TZ
               value: TZ=Europe/Amsterdam
