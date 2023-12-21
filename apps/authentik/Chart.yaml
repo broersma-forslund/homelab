@@ -4,5 +4,5 @@ version: 1.0.0
 
 dependencies:
   - name: authentik
-    version: 2023.10.4
+    version: 2023.10.5
     repository: https://charts.goauthentik.io/
