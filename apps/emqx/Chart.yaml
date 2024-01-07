@@ -4,5 +4,5 @@ version: 1.0.0
 
 dependencies:
   - name: emqx-operator
-    version: 2.2.6
+    version: 2.2.7
     repository: https://repos.emqx.io/charts
