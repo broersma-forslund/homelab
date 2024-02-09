@@ -1,0 +1,99 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "homeAssistant.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ template "homeAssistant.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/component: "home-assistant"
+    {{- include "labels" . | nindent 4 }}
+spec:
+  revisionHistoryLimit: 0
+  replicas: {{ .Values.replicas }}
+  strategy: {{ toYaml .Values.deploymentStrategy | nindent 4 }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ template "homeAssistant.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/component: "home-assistant"
+      {{- include "labels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ template "homeAssistant.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/component: "home-assistant"
+        {{- include "labels" . | nindent 8 }}
+        config-hash: {{ print .Values.config.configurationYaml | sha1sum  }}
+    spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      securityContext: {{ toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: copy-config
+          image: "{{ .Values.config.image.registry }}/{{ .Values.config.image.repository }}:{{ .Values.config.image.tag }}"
+          imagePullPolicy: IfNotPresent
+          command:
+            - "sh"
+            - "-c"
+            - |
+              if [ -f /config/configuration.yaml ]; then
+                echo "Copy current config to /config/configuration.yaml.old"
+                cp /config/configuration.yaml /config/configuration.yaml.old
+                echo "Old config:"
+                cat /config/configuration.yaml.old
+              fi
+              cp /tmp/configuration.yaml /config/configuration.yaml
+              if [ -f /config/secrets.yaml ]; then
+                echo "Copy current secrets to /config/secrets.yaml.old"
+                cp /config/secrets.yaml /config/secrets.yaml.old
+              fi
+              cp /tmp/secrets.yaml /config/secrets.yaml
+              cd /config
+              touch $files
+          env:
+            - name: files
+              value: "{{ join " " .Values.config.createFiles }}"
+          volumeMounts:
+            - name: default-config
+              mountPath: /tmp/configuration.yaml
+              subPath: configuration.yaml
+            - name: secret-config
+              mountPath: /tmp/secrets.yaml
+              subPath: secrets.yaml
+            - name: config
+              mountPath: /config
+      containers:
+        - name: home-assistant
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: TZ
+              value: "Europe/Amsterdam"
+          ports:
+            - name: http
+              containerPort: 8123
+              protocol: TCP
+          resources: {{ toYaml .Values.resources | nindent 12 }}
+          securityContext: {{ toYaml .Values.securityContext | nindent 12 }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          volumeMounts:
+            - mountPath: /config
+              name: config
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: {{ template "homeAssistant.fullname" . }}
+        - name: default-config
+          configMap:
+            name: {{ template "homeAssistant.fullname" . }}-config
+        - name: secret-config
+          secret:
+            secretName: {{ .Values.config.secret.name }}

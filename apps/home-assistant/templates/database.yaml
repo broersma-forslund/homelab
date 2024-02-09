@@ -1,0 +1,9 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: home-assistant-data
+spec:
+  instances: 1
+
+  storage:
+    size: 5Gi

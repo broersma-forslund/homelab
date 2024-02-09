@@ -1,0 +1,14 @@
+---
+# The http component serves all files and data required for the
+# Home Assistant frontend.
+#
+# https://www.home-assistant.io/integrations/http/
+#
+http:
+  # Enable parsing of the X-Forwarded-For header, passing on the client’s
+  # correct IP address, since I'm using a proxied setup.
+  use_x_forwarded_for: true
+
+  # List of trusted proxies, consisting of IP addresses or networks,
+  # that are allowed to set the X-Forwarded-For header.
+  trusted_proxies: !secret http_trusted_proxies

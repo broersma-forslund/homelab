@@ -1,0 +1,88 @@
+replicas: 1
+
+image:
+  registry: ghcr.io
+  repository: home-assistant/home-assistant
+  tag: 2024.2.1
+
+resources: {}
+
+deploymentStrategy:
+  type: Recreate
+
+podSecurityContext:
+
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop: [ "ALL" ]
+    add: ["NET_RAW", "NET_BIND_SERVICE"]
+
+persistence:
+  accessMode: ReadWriteOnce
+  size: 500Mi
+
+ingress:
+  enabled: true
+  domain: home.mobrockers.com
+  tls:
+    enabled: true
+
+config:
+  secret:
+    name: home-assistant-secret
+    sealedValues:
+      secretsYaml: 
+
+  extraConfigMaps:
+    name: 
+    mountPath: 
+
+  image:
+    registry: docker.io
+    repository: busybox
+    tag: 1.36.1
+
+  configurationYaml: |
+    homeassistant:
+      packages: !include_dir_named packages
+    # Loads default set of integrations. Do not remove.
+    default_config:
+    homeassistant:
+      name: Home
+      unit_system: metric
+      temperature_unit: C
+      currency: EUR
+      external_url: https://home.cloud.feddema.dev
+      customize: !include customize.yaml
+      language: en
+      country: NL
+      packages: !include_dir_named packages
+
+    http:
+      use_x_forwarded_for: true
+      trusted_proxies:
+        - 10.0.0.0/8
+    
+    afvalbeheer:
+      wastecollector: MijnAfvalwijzer
+      resources:
+        - restafval
+        - gft
+        - papier
+      postcode: 5628AN
+      streetnumber: 50
+    
+    recorder:
+      db_url: !secret recorder_db_url
+  
+    tts:
+      - platform: google_translate
+
+    mqtt: !include mqtt_sensors.yaml
+    binary_sensor: !include binary_sensors.yaml
+    automation: !include automations.yaml
+    script: !include scripts.yaml
+    scene: !include scenes.yaml
+    sensor: !include sensors.yaml
+    group: !include groups.yaml

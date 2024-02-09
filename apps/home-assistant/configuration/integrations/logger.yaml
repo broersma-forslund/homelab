@@ -1,0 +1,31 @@
+---
+# The logger integration lets you define the level of logging activities
+# in Home Assistant.
+#
+# I use this to reduce error messages for specific things,
+# so I can focus on log messages that matter to me.
+#
+logger:
+  default: warning
+
+  filters:
+    homeassistant:
+      # This can happen during restart having Ingress tabs open.
+      # I really don't care about it.
+      - "Error doing job: Task exception was never retrieved"
+
+    homeassistant.loader:
+      # Really? Cool... I know... I installed them...
+      - "We found a custom integration"
+
+    homeassistant.util.yaml.loader:
+      # I use YAML anchors and aliasses, causing duplicate keys in YAML.
+      # For this use-case, that is on purpose, as an alias is used, but
+      # with some overrides.
+      # While a good warning, I'm going to disable it.
+      - "contains duplicate key"
+
+    pychromecast.socket_client:
+      # Surpress to chatty Cast integration
+      - "Failed to connect to service ServiceInfo"
+      - "Error communicating with socket, resetting connection"
