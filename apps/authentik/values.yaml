@@ -21,23 +21,21 @@ authentik:
         secretKeyRef:
           key: password
           name: authentik-data-app
-  
+
   authentik:
     error_reporting:
       enabled: false
 
-  replicas: 2
+  server:
+    replicas: 2
 
-  ingress:
-    enabled: true
-    hosts:
-      - host: authentik.mobrockers.com
-        paths:
-          - path: "/"
-            pathType: Prefix
-    tls:
-      - hosts:
-          - authentik.mobrockers.com
+    ingress:
+      enabled: true
+      hosts:
+        - authentik.mobrockers.com
+      tls:
+        - hosts:
+            - authentik.mobrockers.com
 
   redis:
     enabled: true
