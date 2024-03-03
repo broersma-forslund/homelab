@@ -2,6 +2,21 @@ authentik:
   global:
     revisionHistoryLimit: 0
 
+  authentik:
+    error_reporting:
+      enabled: false
+
+  server:
+    replicas: 2
+
+    ingress:
+      enabled: true
+      hosts:
+        - authentik.mobrockers.com
+      tls:
+        - hosts:
+            - authentik.mobrockers.com
+
     env:
       AUTHENTIK_POSTGRESQL__HOST: env://AUTHENTIK_DATA_RW_SERVICE_HOST
     envValueFrom:
@@ -21,21 +36,6 @@ authentik:
         secretKeyRef:
           key: password
           name: authentik-data-app
-
-  authentik:
-    error_reporting:
-      enabled: false
-
-  server:
-    replicas: 2
-
-    ingress:
-      enabled: true
-      hosts:
-        - authentik.mobrockers.com
-      tls:
-        - hosts:
-            - authentik.mobrockers.com
 
   redis:
     enabled: true
