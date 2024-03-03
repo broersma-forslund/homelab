@@ -5,9 +5,18 @@ authentik:
   authentik:
     error_reporting:
       enabled: false
+    postgresql:
+      host: env://AUTHENTIK_DATA_RW_SERVICE_HOST
+      name: file:///postgres-credentials/dbname
+      user: file:///postgres-credentials/username
+      password: file:///postgres-credentials/password
 
   server:
     replicas: 2
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
 
     ingress:
       enabled: true
@@ -17,25 +26,29 @@ authentik:
         - hosts:
           - authentik.mobrockers.com
 
-    env:
-      AUTHENTIK_POSTGRESQL__HOST: env://AUTHENTIK_DATA_RW_SERVICE_HOST
+    volumes:
+      - name: postgres-credentials
+        secret:
+          secretName: authentik-data-app
+    volumeMounts:
+      - name: postgres-credentials
+        mountPath: /postgres-credentials
+        readOnly: true
     envValueFrom:
       AUTHENTIK_SECRET_KEY:
         secretKeyRef:
           key: secretKey
           name: authentik-secret
-      AUTHENTIK_POSTGRESQL__NAME: # DB Name
-        secretKeyRef:
-          key: dbname
-          name: authentik-data-app
-      AUTHENTIK_POSTGRESQL__USER:
-        secretKeyRef:
-          key: username
-          name: authentik-data-app
-      AUTHENTIK_POSTGRESQL__PASSWORD:
-        secretKeyRef:
-          key: password
-          name: authentik-data-app
+
+  worker:
+    volumes:
+      - name: postgres-credentials
+        secret:
+          secretName: authentik-data-app
+    volumeMounts:
+      - name: postgres-credentials
+        mountPath: /postgres-credentials
+        readOnly: true
 
   redis:
     enabled: true
