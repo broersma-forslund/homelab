@@ -15,7 +15,7 @@ authentik:
         - authentik.mobrockers.com
       tls:
         - hosts:
-            - authentik.mobrockers.com
+          - authentik.mobrockers.com
 
     env:
       AUTHENTIK_POSTGRESQL__HOST: env://AUTHENTIK_DATA_RW_SERVICE_HOST
