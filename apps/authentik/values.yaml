@@ -1,4 +1,27 @@
 authentik:
+  global:
+    revisionHistoryLimit: 0
+
+    env:
+      AUTHENTIK_POSTGRESQL__HOST: env://AUTHENTIK_DATA_RW_SERVICE_HOST
+    envValueFrom:
+      AUTHENTIK_SECRET_KEY:
+        secretKeyRef:
+          key: secretKey
+          name: authentik-secret
+      AUTHENTIK_POSTGRESQL__NAME: # DB Name
+        secretKeyRef:
+          key: dbname
+          name: authentik-data-app
+      AUTHENTIK_POSTGRESQL__USER:
+        secretKeyRef:
+          key: username
+          name: authentik-data-app
+      AUTHENTIK_POSTGRESQL__PASSWORD:
+        secretKeyRef:
+          key: password
+          name: authentik-data-app
+  
   authentik:
     error_reporting:
       enabled: false
@@ -15,26 +38,6 @@ authentik:
     tls:
       - hosts:
           - authentik.mobrockers.com
-
-  env:
-    AUTHENTIK_POSTGRESQL__HOST: env://AUTHENTIK_DATA_RW_SERVICE_HOST
-  envValueFrom:
-    AUTHENTIK_SECRET_KEY:
-      secretKeyRef:
-        key: secretKey
-        name: authentik-secret
-    AUTHENTIK_POSTGRESQL__NAME: # DB Name
-      secretKeyRef:
-        key: dbname
-        name: authentik-data-app
-    AUTHENTIK_POSTGRESQL__USER:
-      secretKeyRef:
-        key: username
-        name: authentik-data-app
-    AUTHENTIK_POSTGRESQL__PASSWORD:
-      secretKeyRef:
-        key: password
-        name: authentik-data-app
 
   redis:
     enabled: true
