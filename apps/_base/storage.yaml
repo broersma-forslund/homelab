@@ -13,3 +13,4 @@ apps:
       - ../node-manual.yaml
   cloudnative-postgres:
     deploy: true
+    serverSideApply: true
