@@ -5,4 +5,4 @@ emqx-operator:
 cluster:
   image:
     repository: emqx/emqx
-    tag: 5.5.1
+    tag: 5.6.0
