@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: maintainerr
+spec:
+  revisionHistoryLimit: 0
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: maintainerr
+      app.kubernetes.io/name: maintainerr
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: maintainerr
+        app.kubernetes.io/name: maintainerr 
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        fsGroup: 1000
+      containers:
+        - name: maintainerr
+          image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
+          env:
+            - name: TZ
+              value: Europe/Amsterdam
+          ports:
+            - containerPort: 6246
+              name: http
+              protocol: TCP
+          volumeMounts:
+            - name: data
+              mountPath: /opt/data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: maintainerr-data

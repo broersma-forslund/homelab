@@ -1,4 +1,4 @@
 plex:
   image:
     repository: ghcr.io/linuxserver/plex
-    tag: 1.32.8
+    tag: 1.40.2

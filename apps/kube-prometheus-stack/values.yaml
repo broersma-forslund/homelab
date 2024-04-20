@@ -5,7 +5,7 @@ prometheus-operator-crds:
 kube-prometheus-stack:
   crds:
     enabled: false
-  prometheus-operator:
+  prometheusOperator:
     revisionHistoryLimit: 0
   prometheus:
     prometheusSpec:
@@ -15,7 +15,7 @@ kube-prometheus-stack:
       podMonitorSelectorNilUsesHelmValues: false
       serviceMonitorSelectorNilUsesHelmValues: false
   grafana:
-    assertNoLeakedSecrets: false
+    revisionHistoryLimit: 0
     replicas: 1
     initChownData: false
     defaultDashboardsTimezone: Europe/Amsterdam
@@ -26,3 +26,51 @@ kube-prometheus-stack:
       tls:
         - hosts:
           - grafana.mobrockers.com
+    env:
+      GF_SECURITY_DISABLE_INITIAL_ADMIN_CREATION: true
+    grafana.ini:
+      auth.basic:
+        enabled: false
+      auth:
+        signout_redirect_url: https://authentik.mobrockers.com/application/o/grafana/end-session/
+        oauth_auto_login: true
+      auth.generic_oauth:
+        enabled: true
+        name: Authentik
+        scopes: "openid email profile"
+        auth_url: "https://authentik.mobrockers.com/application/o/authorize/"
+        token_url: "https://authentik.mobrockers.com/application/o/token/"
+        api_url: "https://authentik.mobrockers.com/application/o/userinfo/"
+        client_id: $__file{/etc/secrets/auth_generic_oauth/client_id}
+        client_secret: $__file{/etc/secrets/auth_generic_oauth/client_secret}
+        allow_assign_grafana_admin: true
+        role_attribute_path: contains(groups[*], 'Admins') && 'Admin' || contains(groups[*], 'Contributor') && 'Editor' || 'Viewer'
+      server:
+        domain: "https://grafana.mobrockers.com"
+        root_url: "https://grafana.mobrockers.com"
+    extraSecretMounts:
+      - name: auth-generic-oauth-secret-mount
+        secretName: grafana-authentik-oauth-credentials
+        defaultMode: 0440
+        mountPath: /etc/secrets/auth_generic_oauth
+        readOnly: true
+    sidecar:
+      alerts:
+        enabled: true
+        searchNamespace: ALL
+      dashboards:
+        enabled: true
+        searchNamespace: ALL
+      datasources:
+        enabled: true
+        searchNamespace: ALL
+      plugins:
+        enabled: false
+        searchNamespace: ALL
+      notifiers:
+        enabled: false
+        searchNamespace: ALL
+  kube-state-metrics:
+    revisionHistoryLimit: 0
+  prometheus-node-exporter:
+    revisionHistoryLimit: 0

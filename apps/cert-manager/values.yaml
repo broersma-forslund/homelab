@@ -9,3 +9,8 @@ cert-manager:
   dns01RecursiveNameservers: 1.1.1.1:53,8.8.8.8:53
   extraArgs:
   - --feature-gates=ExperimentalGatewayAPISupport=true  
+
+  prometheus:
+    enabled: true
+    servicemonitor:
+      enabled: true

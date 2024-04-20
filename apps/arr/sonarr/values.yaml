@@ -1,4 +1,4 @@
 sonarr:
   image:
     repository: ghcr.io/linuxserver/sonarr
-    tag: 4.0.1
+    tag: 4.0.4

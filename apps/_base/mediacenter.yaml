@@ -16,6 +16,9 @@ apps:
   overseerr:
     deploy: true
     path: apps/arr/overseerr
+  maintainerr:
+    deploy: true
+    path: apps/arr/maintainerr
   bazarr:
     deploy: true
     path: apps/arr/bazarr

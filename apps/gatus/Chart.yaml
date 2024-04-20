@@ -4,5 +4,5 @@ version: 1.0.0
 
 dependencies:
   - name: gatus
-    version: 3.4.1
+    version: 3.4.3
     repository: https://minicloudlabs.github.io/helm-charts

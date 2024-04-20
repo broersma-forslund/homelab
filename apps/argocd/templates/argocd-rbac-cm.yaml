@@ -8,4 +8,9 @@ metadata:
 data:
   policy.csv: |
     g, Admins, role:admin
+
+    # Infro svc
+    p, role:readonly, applications, get, *, allow
+    p, role:readonly, projects, get, *, allow
+    g, infro, role:readonly
   policy.default: role:readonly

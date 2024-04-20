@@ -28,16 +28,15 @@ spec:
   {{- end }}
   syncPolicy:
     syncOptions:
-     - FailOnSharedResource=true
+      - FailOnSharedResource=true
     {{- if $app.serverSideApply }}
       - ServerSideApply=true
     {{- end }}
-    {{- if and (hasKey $app "autoSync") (not $app.autoSync) }}
-    automated: null
-    {{- else }}
+    {{- if or (not (hasKey $app "autoSync")) $app.autoSync }}
     automated:
       prune: true
       selfHeal: true
+    {{- else }}
     {{- end }}
 ---
 {{- end }}

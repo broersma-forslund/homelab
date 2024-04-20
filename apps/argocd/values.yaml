@@ -1,6 +1,7 @@
 argo-cd:
   global:
     revisionHistoryLimit: 0
+    domain: argocd.mobrockers.com
 
   dex:
     enabled: false
@@ -19,15 +20,24 @@ argo-cd:
       create: false
     params:
       server.insecure: 'true'
+      controller.diff.server.side: 'true'
 
   controller:
     replicas: 1
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
 
   redis:
     enabled: true
 
   server:
     replicas: 1
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
 
     ingress:
       enabled: true
@@ -41,3 +51,7 @@ argo-cd:
 
   repoServer:
     replicas: 1
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true

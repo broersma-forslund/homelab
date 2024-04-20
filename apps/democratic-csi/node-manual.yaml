@@ -1,14 +1,14 @@
 democratic-csi:
   csiDriver:
     name: org.democratic-csi.node-manual
-    attachRequired: false
+    attachRequired: true
   controller:
     externalAttacher:
-      enabled: false
+      enabled: true
     externalProvisioner:
       enabled: false
     externalResizer:
-        enabled: false
+      enabled: false
     externalSnapshotter:
       enabled: false
 

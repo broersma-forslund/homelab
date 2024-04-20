@@ -19,6 +19,7 @@ spec:
     spec:
       automountServiceAccountToken: false
       securityContext:
+        fsGroup: 5000
       containers:
         - name: prowlarr
           image: '{{ .Values.prowlarr.image.repository }}:{{ .Values.prowlarr.image.tag }}'

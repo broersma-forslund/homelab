@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: maintainerr
+spec:
+  rules:
+    - host: maintainerr.mobrockers.com
+      http:
+        paths:
+          - path: /
+            backend:
+              service:
+                name: maintainerr
+                port:
+                  name: http
+            pathType: Prefix
+  tls:
+    - hosts:
+        - maintainerr.mobrockers.com

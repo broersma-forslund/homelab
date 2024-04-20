@@ -3,6 +3,11 @@ ingress-nginx:
 
   controller:
     kind: DaemonSet
+
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
     
     service:
       enabled: true
@@ -21,3 +26,6 @@ ingress-nginx:
     extraArgs:
       default-ssl-certificate: ingress-nginx/default-wildcard-certificate
       update-status-on-shutdown: 'false'
+    config:
+      enable-ocsp: 'true'
+      strict-validate-path-type: 'false'
