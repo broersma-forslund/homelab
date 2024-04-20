@@ -30,37 +30,22 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       securityContext: {{ toYaml .Values.podSecurityContext | nindent 8 }}
       initContainers:
-        - name: copy-config
+        - name: config-loader
           image: "{{ .Values.config.image.registry }}/{{ .Values.config.image.repository }}:{{ .Values.config.image.tag }}"
           imagePullPolicy: IfNotPresent
-          command:
-            - "sh"
-            - "-c"
-            - |
-              if [ -f /config/configuration.yaml ]; then
-                echo "Copy current config to /config/configuration.yaml.old"
-                cp /config/configuration.yaml /config/configuration.yaml.old
-                echo "Old config:"
-                cat /config/configuration.yaml.old
-              fi
-              cp /tmp/configuration.yaml /config/configuration.yaml
-              if [ -f /config/secrets.yaml ]; then
-                echo "Copy current secrets to /config/secrets.yaml.old"
-                cp /config/secrets.yaml /config/secrets.yaml.old
-              fi
-              cp /tmp/secrets.yaml /config/secrets.yaml
-              cd /config
-              touch $files
+          restartPolicy: Always
           env:
-            - name: files
-              value: "{{ join " " .Values.config.createFiles }}"
+          - name: IGNORE_ALREADY_PROCESSED
+            value: "true"
+          - name: LABEL
+            value: "home-assistant-config"
+          - name: FOLDER_ANNOTATION
+            value: "io.home-assistant/config-folder"
+          - name: FOLDER
+            value: /config
+          - name: RESOURCE
+            value: "configmap"
           volumeMounts:
-            - name: default-config
-              mountPath: /tmp/configuration.yaml
-              subPath: configuration.yaml
-            - name: secret-config
-              mountPath: /tmp/secrets.yaml
-              subPath: secrets.yaml
             - name: config
               mountPath: /config
       containers:
@@ -91,9 +76,6 @@ spec:
         - name: config
           persistentVolumeClaim:
             claimName: {{ template "homeAssistant.fullname" . }}
-        - name: default-config
-          configMap:
-            name: {{ template "homeAssistant.fullname" . }}-config
         - name: secret-config
           secret:
             secretName: {{ .Values.config.secret.name }}

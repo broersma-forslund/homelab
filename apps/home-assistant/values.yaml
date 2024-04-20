@@ -3,7 +3,7 @@ replicas: 1
 image:
   registry: ghcr.io
   repository: home-assistant/home-assistant
-  tag: 2024.2.1
+  tag: 2024.4.3
 
 resources: {}
 
@@ -39,50 +39,11 @@ config:
     mountPath: 
 
   image:
-    registry: docker.io
-    repository: busybox
-    tag: 1.36.1
+    registry: ghcr.io
+    repository: kiwigrid/k8s-sidecar
+    tag: 1.26.1
 
-  configurationYaml: |
+  baseConfiguration: |
     homeassistant:
-      packages: !include_dir_named packages
-    # Loads default set of integrations. Do not remove.
-    default_config:
-    homeassistant:
-      name: Home
-      unit_system: metric
-      temperature_unit: C
-      currency: EUR
-      external_url: https://home.cloud.feddema.dev
-      customize: !include customize.yaml
-      language: en
-      country: NL
-      packages: !include_dir_named packages
-
-    http:
-      use_x_forwarded_for: true
-      trusted_proxies:
-        - 10.0.0.0/8
-    
-    afvalbeheer:
-      wastecollector: MijnAfvalwijzer
-      resources:
-        - restafval
-        - gft
-        - papier
-      postcode: 5628AN
-      streetnumber: 50
-    
-    recorder:
-      db_url: !secret recorder_db_url
-  
-    tts:
-      - platform: google_translate
-
-    mqtt: !include mqtt_sensors.yaml
-    binary_sensor: !include binary_sensors.yaml
-    automation: !include automations.yaml
-    script: !include scripts.yaml
-    scene: !include scenes.yaml
-    sensor: !include sensors.yaml
-    group: !include groups.yaml
+      # Load packages
+      packages: !include_dir_named integrations

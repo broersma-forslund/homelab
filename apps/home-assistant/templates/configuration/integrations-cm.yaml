@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "homeAssistant.fullname" . }}-integrations
+  labels:
+    home-assistant-config: "1"
+  annotations:
+    io.home-assistant/config-folder: "/config/integrations"
+data:
+{{ (.Files.Glob "configuration/integrations/**.yaml").AsConfig | indent 2 }}

@@ -11,4 +11,5 @@ http:
 
   # List of trusted proxies, consisting of IP addresses or networks,
   # that are allowed to set the X-Forwarded-For header.
-  trusted_proxies: !secret http_trusted_proxies
+  trusted_proxies:
+    - 10.0.0.0/8

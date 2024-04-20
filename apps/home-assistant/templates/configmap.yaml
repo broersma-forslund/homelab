@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: {{ template "homeAssistant.fullname" . }}-config
-data:
-{{ (.Files.Glob "configuration/**").AsConfig | indent 2 }}
