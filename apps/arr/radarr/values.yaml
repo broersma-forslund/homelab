@@ -1,4 +1,4 @@
 radarr:
   image:
     repository: ghcr.io/linuxserver/radarr
-    tag: 5.0.3
+    tag: 5.4.6
