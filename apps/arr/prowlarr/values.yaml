@@ -1,4 +1,4 @@
 prowlarr:
   image:
     repository: ghcr.io/linuxserver/prowlarr
-    tag: 1.9.4
+    tag: 1.16.2
