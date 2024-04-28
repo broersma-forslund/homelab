@@ -5,4 +5,4 @@ image:
 monitoring:
   image:
     repository: ghcr.io/onedr0p/exportarr
-    tag: v1.5.3
+    tag: v2.0.1
