@@ -7,6 +7,9 @@ kube-prometheus-stack:
     enabled: false
   prometheusOperator:
     revisionHistoryLimit: 0
+    admissionWebhooks:
+      patch:
+        ttlSecondsAfterFinished: 5
   cleanPrometheusOperatorObjectNames: true
   prometheus:
     prometheusSpec:
