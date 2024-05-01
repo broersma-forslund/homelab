@@ -2,3 +2,6 @@ kind: Namespace
 apiVersion: v1
 metadata:
   name: {{ .Release.Namespace }}
+  labels:
+    pod-security.kubernetes.io/enforce: privileged
+    pod-security.kubernetes.io/enforce-version: latest
