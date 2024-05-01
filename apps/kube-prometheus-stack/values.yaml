@@ -7,6 +7,9 @@ kube-prometheus-stack:
     enabled: false
   prometheusOperator:
     revisionHistoryLimit: 0
+    admissionWebhooks:
+      patch:
+        ttlSecondsAfterFinished: 5
   cleanPrometheusOperatorObjectNames: true
   prometheus:
     prometheusSpec:
@@ -75,5 +78,6 @@ kube-prometheus-stack:
     revisionHistoryLimit: 0
   prometheus-node-exporter:
     revisionHistoryLimit: 0
+    namespaceOverride: 'prometheus-node-exporter'
   kubeProxy:
     enabled: false # Cilium replacement
