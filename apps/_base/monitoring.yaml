@@ -4,3 +4,5 @@ apps:
   kube-prometheus-stack:
     deploy: true
     namespace: prometheus
+  node-problem-detector:
+    deploy: true
