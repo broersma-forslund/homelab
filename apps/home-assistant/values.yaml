@@ -39,4 +39,4 @@ config:
   image:
     registry: ghcr.io
     repository: kiwigrid/k8s-sidecar
-    tag: 1.26.1
+    tag: 1.26.2
