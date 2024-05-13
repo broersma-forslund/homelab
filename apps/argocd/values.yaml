@@ -6,7 +6,10 @@ argo-cd:
   dex:
     enabled: false
   applicationSet:
-    enabled: false
+    replicas: 0
+    serviceAccount:
+      create: false
+      allowAnyNamespace: false
   notifications:
     enabled: false
 
