@@ -5,9 +5,7 @@ descheduler:
     requests:
       cpu: 50m
       memory: 128Mi
-  deschedulerPolicyAPIVersion: descheduler/v1alpha2
   deschedulerPolicy:
-    strategies: null
     profiles:
     - name: DefaultEvictor
       nodeFit: true
@@ -18,14 +16,11 @@ descheduler:
         maxPodLifeTimeSeconds: 120
         states:
         - Unknown
-        - Failed
-        - Succeeded
+        - Pending
+        - NodeAffinity
         - NodeLost
         - Shutdown
         - UnexpectedAdmissionError
-        - CreateContainerError
-        - CreateContainerConfigError
-        - CrashLoopBackOff
     - name: RemovePodsHavingTooManyRestarts
       args:
         podRestartThreshold: 10
