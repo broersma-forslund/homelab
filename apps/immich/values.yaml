@@ -1,0 +1,60 @@
+persistence:
+  size: 200Gi
+  storageClass: ''
+  accessMode: ReadWriteMany
+
+ingress:
+  enabled: true
+  domain: photos.broersma.com
+  annotations:
+    # proxy-body-size is set to 0 to remove the body limit on file uploads
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    cert-manager.io/cluster-issuer: letsencrypt-dns
+  tls:
+    enabled: true
+    secretName: photos-tls
+
+database:
+  image:
+    registry: ghcr.io
+    repository: tensorchord/cloudnative-pgvecto.rs
+    tag: 16.3
+
+  clusterName: photos-postgresql
+  replicas: 2
+  monitoring:
+    enabled: false
+  size: 32Gi
+  backups:
+    enabled: false
+
+machineLearning:
+  replicas: 1
+  image:
+    registry: ghcr.io
+    repository: immich-app/immich-machine-learning
+    tag: v1.105.1
+    pullPolicy: IfNotPresent
+
+server:
+  replicas: 1
+  image:
+    registry: ghcr.io
+    repository: immich-app/immich-server
+    tag: v1.105.1
+    pullPolicy: IfNotPresent
+
+microservices:
+  replicas: 1
+  image:
+    registry: ghcr.io
+    repository: immich-app/immich-server
+    tag: v1.105.1
+    pullPolicy: IfNotPresent
+
+
+redis:
+  enabled: true
+  architecture: standalone
+  auth:
+    enabled: false
