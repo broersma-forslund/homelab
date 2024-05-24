@@ -12,7 +12,6 @@ ingress:
     cert-manager.io/cluster-issuer: letsencrypt-dns
   tls:
     enabled: true
-    secretName: photos-tls
 
 database:
   image:
