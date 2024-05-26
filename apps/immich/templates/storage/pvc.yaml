@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ template "immich.fullname" . }}-library
+  labels:
+    app.kubernetes.io/name: {{ template "immich.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/component: "immich"
+    {{- include "labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  mountOptions:
+    - nfsvers=3
+    - nolock
+    - noatime
+  capacity:
+    storage: 2Ti
+  csi:
+    driver: org.democratic-csi.node-manual
+    readOnly: false
+    fsType: nfs
+    volumeHandle: 62c123a8-b303-4470-a092-2fb098798c5f
+    volumeAttributes:
+      server: truenas.mobrockers.com
+      share: /mnt/slow/photos
+      node_attach_driver: nfs
+      provisioner_driver: node-manual
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ template "immich.fullname" . }}-library
+  labels:
+    app.kubernetes.io/name: {{ template "immich.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/component: "immich"
+    {{- include "labels" . | nindent 4 }}
+spec:
+  storageClassName: ""
+  name: {{ template "immich.fullname" . }}-library
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 2Ti

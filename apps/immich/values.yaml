@@ -9,7 +9,6 @@ ingress:
   annotations:
     # proxy-body-size is set to 0 to remove the body limit on file uploads
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
-    cert-manager.io/cluster-issuer: letsencrypt-dns
   tls:
     enabled: true
 
@@ -20,12 +19,10 @@ database:
     tag: 16.3
 
   clusterName: photos-postgresql
-  replicas: 2
+  replicas: 3
   monitoring:
     enabled: false
   size: 32Gi
-  backups:
-    enabled: false
 
 machineLearning:
   replicas: 1

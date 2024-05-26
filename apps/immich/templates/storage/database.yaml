@@ -1,7 +1,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: {{ .Values.database.clusterName }}
+  name: {{ template "immich.fullname" . }}-data
   labels:
     app.kubernetes.io/name: {{ template "immich.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
@@ -14,7 +14,6 @@ spec:
   postgresql:
     shared_preload_libraries:
       - "vectors.so"
-
 
   logLevel: warning
 

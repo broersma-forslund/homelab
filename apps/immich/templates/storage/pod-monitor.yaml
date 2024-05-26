@@ -1,0 +1,15 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: {{ template "immich.fullname" . }}-data-monitor
+  labels:
+    app.kubernetes.io/name: {{ template "immich.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/component: "immich"
+    {{- include "labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      "cnpg.io/cluster": {{ template "immich.fullname" . }}-data
+  podMetricsEndpoints:
+  - port: metrics

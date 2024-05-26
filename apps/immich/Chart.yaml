@@ -1,6 +1,6 @@
 apiVersion: v2
 name: immich
-version: 1.0.5
+version: 1.0.0
 
 dependencies:
   - name: redis
