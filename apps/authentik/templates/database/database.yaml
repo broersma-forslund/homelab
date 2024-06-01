@@ -7,3 +7,14 @@ spec:
 
   storage:
     size: 2Gi
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: authentik-data-monitor
+spec:
+  selector:
+    matchLabels:
+      "cnpg.io/cluster": authentik-data
+  podMetricsEndpoints:
+  - port: metrics

@@ -3,3 +3,5 @@ machine:
     hostname: talos-worker-pi-0
   install:
     disk: /dev/mmcblk0
+  nodeTaints:
+    essential: PreferNoSchedule

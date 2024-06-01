@@ -76,6 +76,9 @@ spec:
       extraVolumeMounts:
         - name: emqx-tls
           mountPath: /mounted/cert
+      tolerations:
+      - key: essential
+        operator: Exists
 
   listenersServiceTemplate:
     metadata:

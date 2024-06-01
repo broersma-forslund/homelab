@@ -75,3 +75,6 @@ spec:
         - name: config
           persistentVolumeClaim:
             claimName: {{ template "homeAssistant.fullname" . }}
+      tolerations:
+      - key: essential
+        operator: Exists

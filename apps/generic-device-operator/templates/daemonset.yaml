@@ -61,5 +61,7 @@ spec:
       - name: config
         configMap:
           name: devices
+      tolerations:
+      - operator: Exists
   updateStrategy:
     type: RollingUpdate

@@ -1,7 +1,12 @@
 node-feature-discovery:
   master:
-    tolerations: []
-    affinity: {}
-
+    tolerations:
+    - operator: Exists
+  worker:
+    tolerations:
+    - operator: Exists
+  gc:
+    tolerations:
+    - operator: Exists
   prometheus:
     enable: true

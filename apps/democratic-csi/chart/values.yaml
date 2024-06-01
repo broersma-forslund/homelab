@@ -2,9 +2,15 @@ democratic-csi:
   controller:
     driver:
       image: ghcr.io/democratic-csi/democratic-csi:v1.9.2 # chart default is latest
+    tolerations:
+    - key: essential
+      operator: Exists
   node:
     driver:
       image: ghcr.io/democratic-csi/democratic-csi:v1.9.2 # chart default is latest
+    tolerations:
+    - key: essential
+      operator: Exists
 
 # driverConfigFileSealed: 
 #   value: 

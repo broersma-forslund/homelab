@@ -4,6 +4,20 @@ cilium:
   kubeProxyReplacement: strict
   rollOutCiliumPods: true
 
+  envoy:
+    prometheus:
+      enabled: true
+
+  operator:
+    rollOutPods: true
+    tolerations:
+    - operator: Exists
+    prometheus:
+      serviceMonitor:
+        enabled: true
+    dashboards:
+      enabled: true
+
   ipam:
     mode: kubernetes
 
@@ -23,7 +37,7 @@ cilium:
         method: cronJob
     relay:
       enabled: true
-      rollOutPods: true                      
+      rollOutPods: true
     ui:
       enabled: true
       rollOutPods: true
@@ -55,3 +69,11 @@ cilium:
 
   certgen:
     ttlSecondsAfterFinished: null
+    tolerations:
+    - operator: Exists
+
+  prometheus:
+    serviceMonitor:
+      enabled: true
+  dashboards:
+    enabled: true

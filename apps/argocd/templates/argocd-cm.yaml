@@ -21,3 +21,8 @@ data:
     clientSecret: $authentik-credentials:client_secret
     requestedScopes: ['openid', 'profile', 'email', 'groups', 'offline_access']
   accounts.infro: apiKey
+
+  resource.customizations.ignoreDifferences.argoproj.io_Application: |
+    jqPathExpressions:
+      - .metadata.finalizers[]? | select(. == "post-delete-finalizer.argocd.argoproj.io" or . == "post-delete-finalizer.argocd.argoproj.io/cleanup")
+      - if (.metadata.finalizers | length) == 0 then .metadata.finalizers else empty end

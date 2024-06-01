@@ -16,19 +16,12 @@ global:
           name: authentik-secret
           key: secretKey
     - name: AUTHENTIK_POSTGRESQL__USE_PGBOUNCER
-      value: "true"
-    - name: AUTHENTIK_POSTGRESQL__READ_REPLICAS__0__HOST
-      value: env://AUTHENTIK_DATA_R_SERVICE_HOST
-    - name: AUTHENTIK_POSTGRESQL__READ_REPLICAS__0__NAME
-      value: file:///postgres-credentials/dbname
-    - name: AUTHENTIK_POSTGRESQL__READ_REPLICAS__0__USER
-      value: file:///postgres-credentials/username
-    - name: AUTHENTIK_POSTGRESQL__READ_REPLICAS__0__PASSWORD
-      value: file:///postgres-credentials/password
+      value: "false"
 
 authentik:
   authentik:
     postgresql:
+      # host: env://AUTHENTIK_DATA_POOLER_RW_SERVICE_HOST
       host: env://AUTHENTIK_DATA_RW_SERVICE_HOST
       name: file:///postgres-credentials/dbname
       user: file:///postgres-credentials/username

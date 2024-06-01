@@ -1,0 +1,22 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Pooler
+metadata:
+  name: authentik-data-pooler-rw
+spec:
+  cluster:
+    name: authentik-data
+  instances: 2
+  type: rw
+  pgbouncer:
+    poolMode: session
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: authentik-data-pooler-rw-monitor
+spec:
+  selector:
+    matchLabels:
+      "cnpg.io/poolerName": authentik-data-pooler-rw
+  podMetricsEndpoints:
+  - port: metrics
