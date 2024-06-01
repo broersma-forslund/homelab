@@ -1,5 +1,5 @@
 persistence:
-  size: 200Gi
+  size: 1Ti
   storageClass: ''
   accessMode: ReadWriteMany
 
@@ -20,8 +20,6 @@ database:
 
   clusterName: photos-postgresql
   replicas: 3
-  monitoring:
-    enabled: false
   size: 32Gi
 
 machineLearning:
