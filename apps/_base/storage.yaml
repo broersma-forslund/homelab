@@ -30,3 +30,6 @@ apps:
       - /webhooks/3/clientConfig/caBundle
   truecommand:
     deploy: true
+  immich:
+    deploy: true
+    autoSync: false
