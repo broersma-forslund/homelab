@@ -3,7 +3,7 @@ replicas: 1
 image:
   registry: ghcr.io
   repository: home-assistant/home-assistant
-  tag: 2024.5.5
+  tag: 2024.6.0
 
 resources: {}
 
