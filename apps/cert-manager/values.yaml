@@ -1,14 +1,17 @@
 cert-manager:
-  installCRDs: true
+  crds:
+    enabled: true
+    keep: false
 
   global:
+    revisionHistoryLimit: 0
     leaderElection:
       namespace: cert-manager
 
   enableCertificateOwnerRef: true
   dns01RecursiveNameservers: 1.1.1.1:53,8.8.8.8:53
   extraArgs:
-  - --feature-gates=ExperimentalGatewayAPISupport=true  
+  - --enable-gateway-api
 
   prometheus:
     enabled: true
