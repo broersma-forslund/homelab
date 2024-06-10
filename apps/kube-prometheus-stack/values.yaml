@@ -45,7 +45,6 @@ kube-prometheus-stack:
     namespaceOverride: 'prometheus-node-exporter'
 
   kubeScheduler:
-    enabled: true
     service:
       selector:
         k8s-app: kube-scheduler
@@ -60,7 +59,6 @@ kube-prometheus-stack:
             insecureSkipVerify: true
 
   kubeControllerManager:
-    enabled: true
     service:
       selector:
         k8s-app: kube-controller-manager
