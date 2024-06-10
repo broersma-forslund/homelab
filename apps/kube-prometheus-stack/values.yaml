@@ -5,12 +5,18 @@ prometheus-operator-crds:
 kube-prometheus-stack:
   crds:
     enabled: false
+
+  defaultRules:
+    rules:
+      kubeProxy: false
+
+  cleanPrometheusOperatorObjectNames: true
   prometheusOperator:
     revisionHistoryLimit: 0
     admissionWebhooks:
       patch:
         ttlSecondsAfterFinished: 5
-  cleanPrometheusOperatorObjectNames: true
+
   prometheus:
     prometheusSpec:
       probeSelectorNilUsesHelmValues: false
@@ -18,6 +24,56 @@ kube-prometheus-stack:
       ruleSelectorNilUsesHelmValues: false
       podMonitorSelectorNilUsesHelmValues: false
       serviceMonitorSelectorNilUsesHelmValues: false
+
+      replicas: 2
+      retention: 365d
+
+      storageSpec:
+        volumeClaimTemplate:
+          spec:
+            resources:
+              requests:
+                storage: 100Gi
+
+  kube-state-metrics:
+    revisionHistoryLimit: 0
+    metricLabelsAllowlist: 
+    - nodes=[topology.kubernetes.io/zone]
+
+  prometheus-node-exporter:
+    revisionHistoryLimit: 0
+    namespaceOverride: 'prometheus-node-exporter'
+
+  kubeScheduler:
+    enabled: true
+    service:
+      selector:
+        k8s-app: kube-scheduler
+        tier: control-plane
+    spec:
+      endpoints:
+        - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+          port: http-metrics
+          scheme: https
+          tlsConfig:
+            caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+            insecureSkipVerify: true
+
+  kubeControllerManager:
+    enabled: true
+    service:
+      selector:
+        k8s-app: kube-controller-manager
+        tier: control-plane
+    spec:
+      endpoints:
+        - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+          port: http-metrics
+          scheme: https
+          tlsConfig:
+            caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+            insecureSkipVerify: true
+
   grafana:
     revisionHistoryLimit: 0
     replicas: 1
@@ -74,12 +130,6 @@ kube-prometheus-stack:
       notifiers:
         enabled: false
         searchNamespace: ALL
-  kube-state-metrics:
-    revisionHistoryLimit: 0
-    metricLabelsAllowlist: 
-    - nodes=[topology.kubernetes.io/zone]
-  prometheus-node-exporter:
-    revisionHistoryLimit: 0
-    namespaceOverride: 'prometheus-node-exporter'
+
   kubeProxy:
     enabled: false # Cilium replacement
