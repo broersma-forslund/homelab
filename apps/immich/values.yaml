@@ -39,15 +39,6 @@ server:
     tag: v1.106.2
     pullPolicy: IfNotPresent
 
-microservices:
-  replicas: 1
-  image:
-    registry: ghcr.io
-    repository: immich-app/immich-server
-    tag: v1.106.2
-    pullPolicy: IfNotPresent
-
-
 redis:
   enabled: true
   architecture: standalone
