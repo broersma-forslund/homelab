@@ -4,5 +4,5 @@ version: 1.0.0
 
 dependencies:
   - name: redis
-    version: 19.5.5
+    version: 19.6.1
     repository: https://charts.bitnami.com/bitnami
