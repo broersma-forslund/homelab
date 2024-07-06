@@ -1,7 +1,7 @@
 image:
   registry: docker.io
   repository: adguard/adguardhome
-  tag: v0.107.51
+  tag: v0.107.52
 
 primary:
   resources: {}
