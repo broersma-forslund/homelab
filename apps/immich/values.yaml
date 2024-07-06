@@ -44,3 +44,5 @@ redis:
   architecture: standalone
   auth:
     enabled: false
+  master:
+    revisionHistoryLimit: 0
