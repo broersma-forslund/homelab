@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/name: {{ template "common.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/component: "immich"
-    {{- include "labels" . | nindent 4 }}
+    {{- include "common.labels" . | nindent 4 }}
 spec:
   claimRef:
     name: {{ template "common.fullname" . }}-library
