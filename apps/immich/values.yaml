@@ -36,7 +36,7 @@ server:
   image:
     registry: ghcr.io
     repository: immich-app/immich-server
-    tag: v1.108.0
+    tag: v1.109.1
     pullPolicy: IfNotPresent
 
 redis:
