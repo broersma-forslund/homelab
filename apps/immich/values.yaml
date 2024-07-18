@@ -12,7 +12,6 @@ immich:
       nginx.ingress.kubernetes.io/proxy-body-size: "0"
     tls:
       enabled: true
-      secretName:
 
   database:
     clusterName: immich-data

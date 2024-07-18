@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: {{ template "immich.fullname" . }}-library
+  name: {{ template "common.fullname" . }}-library
   labels:
-    app.kubernetes.io/name: {{ template "immich.name" . }}
+    app.kubernetes.io/name: {{ template "common.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/component: "immich"
     {{- include "labels" . | nindent 4 }}
