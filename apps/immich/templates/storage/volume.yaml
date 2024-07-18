@@ -8,15 +8,18 @@ metadata:
     app.kubernetes.io/component: "immich"
     {{- include "labels" . | nindent 4 }}
 spec:
+  claimRef:
+    name: {{ template "common.fullname" . }}-library
+    namespace: {{ .Release.Namespace }}
   accessModes:
-    - ReadWriteMany
+    - {{ .Values.immich.persistence.accessMode }}
   persistentVolumeReclaimPolicy: Retain
   mountOptions:
     - nfsvers=3
     - nolock
     - noatime
   capacity:
-    storage: 2Ti
+    storage: {{ .Values.immich.persistence.size }}
   csi:
     driver: org.democratic-csi.node-manual
     readOnly: false
@@ -27,20 +30,4 @@ spec:
       share: /mnt/slow/photos
       node_attach_driver: nfs
       provisioner_driver: node-manual
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: {{ template "immich.fullname" . }}-library
-  labels:
-    app.kubernetes.io/name: {{ template "immich.name" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/component: "immich"
-    {{- include "labels" . | nindent 4 }}
-spec:
-  storageClassName: ""
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 2Ti
+
