@@ -1,13 +1,8 @@
-image:
-  repository: squat/generic-device-plugin
-  tag: latest # :cry:
-
-
-devices:
-- name: zigbee
-  groups:
-  - paths:
-  #   - path: /dev/ttyACM0
-    - path: /dev/serial/by-id/usb-ITead_Sonoff_Zigbee_3.0_USB_Dongle_Plus_182bb9b55186ec119ba7e93719c2d21c-if00-port0
-      mountPath: /dev/ttyACM0
+generic-device-plugin:
+  devices:
+  - name: zigbee
+    groups:
+    - paths:
+      - path: /dev/serial/by-id/usb-ITead_Sonoff_Zigbee_3.0_USB_Dongle_Plus_182bb9b55186ec119ba7e93719c2d21c-if00-port0
+        mountPath: /dev/ttyACM0
  
