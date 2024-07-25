@@ -53,4 +53,4 @@ sync:
   image:
     registry: ghcr.io
     repository: bakito/adguardhome-sync
-    tag: v0.6.11
+    tag: v0.6.12
