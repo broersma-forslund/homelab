@@ -1,3 +1,7 @@
 talos/rendered
 secrets.yaml
 talosconfig
+
+# Helm
+**/charts/*.tgz
+**/Chart.lock
