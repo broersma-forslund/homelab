@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "homeAssistant.fullname" . }}-automations
+  name: automations
   labels:
     home-assistant-config: "1"
   annotations:
