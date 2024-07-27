@@ -1,6 +1,6 @@
 image:
   repository: ghcr.io/linuxserver/prowlarr
-  tag: 1.20.1
+  tag: 1.21.2
 
 metrics:
   image:
