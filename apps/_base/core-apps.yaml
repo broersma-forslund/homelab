@@ -7,7 +7,7 @@ apps:
     - group: apps
       kind: DaemonSet
       jqPathExpressions:
-      - .spec.template.spec.containers[] | select(.volumeMounts[] | select(.readOnly == false))
+      - .spec.template.spec.containers[].volumeMounts[].readOnly? | select(. == false)
   metrics-server:
     deploy: true
   argocd:
