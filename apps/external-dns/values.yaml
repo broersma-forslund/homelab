@@ -16,7 +16,7 @@ external-dns:
 
   sidecars:
   - name: adguard-webhook
-    image: ghcr.io/muhlba91/external-dns-provider-adguard:v5.1.0
+    image: ghcr.io/muhlba91/external-dns-provider-adguard:v6.0.0
     ports:
     - containerPort: 8888
       name: http
@@ -36,11 +36,14 @@ external-dns:
     - name: LOG_LEVEL
       value: debug
     - name: ADGUARD_URL
-      value: http://adguard-primary.adguard:3000
+      value: http://adguard-web.adguard:3000
     - name: ADGUARD_USER
       value: "admin"
     - name: ADGUARD_PASSWORD
-      value: nyDRXHM@$rc#wqAojVWn8qW6!o#4aq!d9d6BPLjL42fSoY3j@q3#sezQcAy3XtLB
+      valueFrom:
+        secretKeyRef:
+          name: adguard-credentials
+          key: password
     - name: SERVER_HOST
       value: "0.0.0.0" 
     - name: DRY_RUN

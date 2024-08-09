@@ -1,6 +1,10 @@
 adguard:
   secretInit:
-    primary: true
+    primary: 
+      create: true
+      annotations:
+        replicator.v1.mittwald.de/replication-allowed: "true"
+        replicator.v1.mittwald.de/replication-allowed-namespaces: "external-dns"
 
   primary:
     persistence:

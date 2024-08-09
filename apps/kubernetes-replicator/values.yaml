@@ -1,0 +1,21 @@
+kubernetes-replicator:
+  args:
+    - --resync-period=1m
+
+  podSecurityContext:
+    fsGroup: 2000
+
+  securityContext:
+    capabilities:
+      drop:
+        - ALL
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 1000
+
+  replicationEnabled:
+    secrets: true
+    configMaps: false
+    roles: false
+    roleBindings: false
+    serviceAccounts: false
