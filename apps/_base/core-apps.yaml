@@ -21,3 +21,5 @@ apps:
     deploy: true
   infro:
     deploy: true
+  cyberchef:
+    deploy: true

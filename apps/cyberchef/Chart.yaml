@@ -1,0 +1,8 @@
+apiVersion: v2
+name: cyberchef
+version: 0.0.0
+
+dependencies:
+- name: cyberchef
+  version: 1.0.1
+  repository: oci://ghcr.io/k8s-at-our-homes/helm-charts
