@@ -1,7 +1,7 @@
 cyberchef:
   ingress:
     enabled: true
-    domain: cyberchef.mobrockers.com
+    domain: tools.mobrockers.com
     class: nginx
     tls:
       enabled: true
