@@ -1,6 +1,6 @@
 image:
   repository: ghcr.io/linuxserver/sabnzbd
-  tag: 4.3.2
+  tag: 4.3.3
 
 metrics:
   image:
