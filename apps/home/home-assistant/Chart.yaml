@@ -4,5 +4,5 @@ version: 0.0.0
 
 dependencies:
 - name: home-assistant
-  version: 1.4.0
+  version: 1.4.1
   repository: oci://ghcr.io/k8s-at-our-homes/helm-charts
