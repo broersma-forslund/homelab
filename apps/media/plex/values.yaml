@@ -1,6 +1,6 @@
 image:
   repository: ghcr.io/linuxserver/plex
-  tag: 1.40.5
+  tag: 1.41.0
 
 tautulli:
   image:
