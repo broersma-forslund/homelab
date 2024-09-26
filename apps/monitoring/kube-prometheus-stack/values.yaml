@@ -23,8 +23,8 @@ kube-prometheus-stack:
       scrapeConfigSelectorNilUsesHelmValues: false
       ruleSelectorNilUsesHelmValues: false
       podMonitorSelectorNilUsesHelmValues: false
-      serviceMonitorSelectorNilUsesHelmValues: false
-
+      serviceMonitorSelector:
+        matchLabels: null
       replicas: 2
       retention: 365d
 
