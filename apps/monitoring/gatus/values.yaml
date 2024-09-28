@@ -3,6 +3,7 @@ gatus:
     GATUS_CONFIG_PATH: /configfiles
   extraVolumeMounts:
   - name: config
+    mountPath: /configfiles
 
   extraInitContainers:
   - name: config-loader
@@ -29,6 +30,7 @@ gatus:
     - hosts:
       - status.mobrockers.com
   
+  config: null
 #   config:
 #     endpoints:
 # # internal
