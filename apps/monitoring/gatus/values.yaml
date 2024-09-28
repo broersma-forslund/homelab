@@ -1,4 +1,26 @@
 gatus:
+  env:
+    GATUS_CONFIG_PATH: /configfiles
+  extraVolumeMounts:
+  - name: config
+
+  extraInitContainers:
+  - name: config-loader
+    image: ghcr.io/kiwigrid/k8s-sidecar:1.28.0
+    restartPolicy: Always
+    env:
+    - name: IGNORE_ALREADY_PROCESSED
+      value: "true"
+    - name: LABEL
+      value: "gatus-configfile"
+    - name: FOLDER
+      value: /configfiles
+    - name: RESOURCE
+      value: "both"
+    volumeMounts:
+      - name: config
+        mountPath: /configfiles
+
   ingress:
     enabled: true
     hosts:
@@ -7,58 +29,58 @@ gatus:
     - hosts:
       - status.mobrockers.com
   
-  config:
-    endpoints:
-# internal
-    - name: homeassistant
-      url: https://home.mobrockers.com
-      group: internal
-      conditions:
-      - '[STATUS] == 200'
-    - name: argocd
-      url: https://argocd.mobrockers.com
-      group: internal
-      conditions:
-      - '[STATUS] == 200'
-    - name: tls-ldaps
-      url: 'tls://ldap.mobrockers.com:636'
-      group: internal
-      conditions:
-        - '[CONNECTED] == true'
-        - '[CERTIFICATE_EXPIRATION] > 48h'
-      client:
-        insecure: true
-    - name: plex
-      url: https://plex.mobrockers.com
-      group: internal
-      conditions:
-      - '[STATUS] == any(200, 401)'
-# external
-    - name: argocd
-      url: https://argocd.mobrockers.com
-      group: external
-      conditions:
-      - '[STATUS] == 404'
-      client:
-        dns-resolver: 'udp://1.1.1.1:53'
-    - name: plex
-      url: https://plex.mobrockers.com
-      group: external
-      conditions:
-      - '[STATUS] == any(200, 401)'
-      client:
-        dns-resolver: 'udp://1.1.1.1:53'
-    - name: overseerr
-      url: https://overseerr.mobrockers.com
-      group: external
-      conditions:
-      - '[STATUS] == 200'
-      client:
-        dns-resolver: 'udp://1.1.1.1:53'
-    - name: homeassistant
-      url: https://home.mobrockers.com
-      group: external
-      conditions:
-      - '[STATUS] == 200'
-      client:
-        dns-resolver: 'udp://1.1.1.1:53'
+#   config:
+#     endpoints:
+# # internal
+#     - name: homeassistant
+#       url: https://home.mobrockers.com
+#       group: internal
+#       conditions:
+#       - '[STATUS] == 200'
+#     - name: argocd
+#       url: https://argocd.mobrockers.com
+#       group: internal
+#       conditions:
+#       - '[STATUS] == 200'
+#     - name: tls-ldaps
+#       url: 'tls://ldap.mobrockers.com:636'
+#       group: internal
+#       conditions:
+#         - '[CONNECTED] == true'
+#         - '[CERTIFICATE_EXPIRATION] > 48h'
+#       client:
+#         insecure: true
+#     - name: plex
+#       url: https://plex.mobrockers.com
+#       group: internal
+#       conditions:
+#       - '[STATUS] == any(200, 401)'
+# # external
+#     - name: argocd  
+#       url: https://argocd.mobrockers.com
+#       group: external
+#       conditions:
+#       - '[STATUS] == 200'
+#       client:
+#         dns-resolver: 'udp://1.1.1.1:53'
+#     - name: plex
+#       url: https://plex.mobrockers.com
+#       group: external
+#       conditions:
+#       - '[STATUS] == any(200, 401)'
+#       client:
+#         dns-resolver: 'udp://1.1.1.1:53'
+#     - name: overseerr
+#       url: https://overseerr.mobrockers.com
+#       group: external
+#       conditions:
+#       - '[STATUS] == 200'
+#       client:
+#         dns-resolver: 'udp://1.1.1.1:53'
+#     - name: homeassistant
+#       url: https://home.mobrockers.com
+#       group: external
+#       conditions:
+#       - '[STATUS] == 200'
+#       client:
+#         dns-resolver: 'udp://1.1.1.1:53'
