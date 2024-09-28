@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-gatus-cm
+  labels:
+    gatus-configfile: "1"
+data:
+  argocd.yaml: |
+    endpoints:
+    - name: argocd
+      url: https://argocd.mobrockers.com
+      group: internal
+      conditions:
+      - '[STATUS] == 200'
+    - name: argocd  
+      url: https://argocd.mobrockers.com
+      group: external
+      conditions:
+      - '[STATUS] == 200'
+      client:
+        dns-resolver: 'udp://1.1.1.1:53'
