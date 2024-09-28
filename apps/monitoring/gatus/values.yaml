@@ -1,4 +1,6 @@
 gatus:
+  deployment:
+    annotateConfigChecksum: false
   env:
     GATUS_CONFIG_PATH: /configfiles
   extraVolumeMounts:
