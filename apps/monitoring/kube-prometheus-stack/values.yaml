@@ -19,16 +19,10 @@ kube-prometheus-stack:
 
   prometheus:
     prometheusSpec:
-      probeSelector:
-        matchLabels: null
-      scrapeConfigSelector:
-        matchLabels: null
-      ruleSelector:
-        matchLabels: null
-      podMonitorSelector:
-        matchLabels: null
-      serviceMonitorSelector:
-        matchLabels: null
+      probeSelectorNilUsesHelmValues: true
+      ruleSelectorNilUsesHelmValues: true
+      podMonitorSelectorNilUsesHelmValues: true
+      serviceMonitorSelectorNilUsesHelmValues: true
       replicas: 2
       retention: 365d
 
