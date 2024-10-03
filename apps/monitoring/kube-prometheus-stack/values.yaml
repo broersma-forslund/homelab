@@ -19,10 +19,10 @@ kube-prometheus-stack:
 
   prometheus:
     prometheusSpec:
-      probeSelectorNilUsesHelmValues: true
-      ruleSelectorNilUsesHelmValues: true
-      podMonitorSelectorNilUsesHelmValues: true
-      serviceMonitorSelectorNilUsesHelmValues: true
+      probeSelectorNilUsesHelmValues: false
+      ruleSelectorNilUsesHelmValues: false
+      podMonitorSelectorNilUsesHelmValues: false
+      serviceMonitorSelectorNilUsesHelmValues: false
       replicas: 2
       retention: 365d
 
