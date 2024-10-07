@@ -45,8 +45,6 @@ external-dns:
         secretKeyRef:
           name: adguard-credentials
           key: password
-    - name: SERVER_HOST
-      value: "0.0.0.0" 
     - name: DRY_RUN
       value: "false"
 
