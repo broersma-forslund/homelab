@@ -19,18 +19,18 @@ external-dns:
   - name: adguard-webhook
     image: ghcr.io/muhlba91/external-dns-provider-adguard:v8.0.0
     ports:
-    - containerPort: 8888
-      name: http
+    - containerPort: 8080
+      name: metrics
     livenessProbe:
       httpGet:
         path: /healthz
-        port: http
+        port: metrics
       initialDelaySeconds: 10
       timeoutSeconds: 5
     readinessProbe:
       httpGet:
         path: /healthz
-        port: http
+        port: metrics
       initialDelaySeconds: 10
       timeoutSeconds: 5
     env:
