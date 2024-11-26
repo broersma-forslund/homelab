@@ -6,7 +6,7 @@ providers:
   ipam:
     image:
       repository: registry.k8s.io/capi-ipam-ic/cluster-api-ipam-in-cluster-controller
-      tag: v0.1.0
+      tag: v1.0.0
   infrastructure:
     proxmox:
       image:
