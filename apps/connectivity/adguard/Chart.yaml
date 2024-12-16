@@ -4,6 +4,6 @@ version: 0.0.0
 
 dependencies:
 - name: adguard
-  version: 3.3.4
+  version: 3.3.5
   repository: oci://ghcr.io/k8s-at-our-homes/helm-charts
  
