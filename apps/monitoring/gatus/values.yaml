@@ -9,7 +9,7 @@ gatus:
 
   extraInitContainers:
   - name: config-loader
-    image: ghcr.io/kiwigrid/k8s-sidecar:1.28.3
+    image: ghcr.io/kiwigrid/k8s-sidecar:1.28.4
     restartPolicy: Always
     env:
     - name: NAMESPACE
