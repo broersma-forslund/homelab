@@ -4,25 +4,19 @@ metadata:
   name: zigbee2mqtt-config
 data:
   configuration.yaml: |
-    permit_join: false
     devices: devices.yaml
     groups: groups.yaml
-    availability: true
+    availability: 
+      enabled: true
     homeassistant:
-      discovery_topic: 'homeassistant'
-      status_topic: 'hass/status' 
-      legacy_triggers: false
-      legacy_entity_attributes: false
-    device_options:
-      legacy: false
+      enabled: true
+      experimental_event_entities: true
     frontend: {{ .Values.frontend | toYaml | nindent 6 }}
     mqtt: {{ .Values.mqtt | toYaml | nindent 6 }}
     serial: 
       port: {{ .Values.zigbee.adapter }}
+      adapter: zstack
     advanced:
-      homeassistant_legacy_entity_attributes: false
-      legacy_api: false
-      legacy_availability_payload: false
       pan_id: {{ .Values.zigbee.pan_id }}
       ext_pan_id: {{ .Values.zigbee.ext_pan_id }}
       network_key: '!secret.yaml network_key'
