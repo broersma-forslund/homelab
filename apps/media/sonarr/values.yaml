@@ -1,6 +1,6 @@
 image:
   repository: ghcr.io/linuxserver/sonarr
-  tag: 4.0.11
+  tag: 4.0.12
 
 metrics:
   image:
