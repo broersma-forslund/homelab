@@ -5,4 +5,4 @@ image:
 tautulli:
   image:
     repository: ghcr.io/linuxserver/tautulli
-    tag: 2.15.0
+    tag: 2.15.1
