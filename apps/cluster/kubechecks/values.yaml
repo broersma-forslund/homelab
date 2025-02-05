@@ -1,0 +1,67 @@
+kubechecks:
+  configMap:
+    create: true
+    env:
+      KUBECHECKS_ARGOCD_API_INSECURE: "true"
+      KUBECHECKS_ARGOCD_API_PLAINTEXT: "true"
+      KUBECHECKS_ARGOCD_API_PATH_PREFIX: /
+      KUBECHECKS_ARGOCD_API_SERVER_ADDR: argo-cd-argocd-server.argocd
+      KUBECHECKS_ARGOCD_API_NAMESPACE: argocd
+      KUBECHECKS_ARGOCD_WEBHOOK_URL: http://argo-cd-argocd-server.argocd/api/webhook
+      KUBECHECKS_ARGOCD_REPOSITORY_ENDPOINT: argo-cd-argocd-repo-server.argocd:8081
+      KUBECHECKS_ARGOCD_REPOSITORY_INSECURE: "true"
+
+      KUBECHECKS_ENABLE_CONFTEST: "false"
+      KUBECHECKS_ENABLE_HOOKS_RENDERER: "true"
+      KUBECHECKS_ENABLE_KUBECONFORM: "false"
+      KUBECHECKS_ENABLE_PREUPGRADE: "true"
+      KUBECHECKS_ENSURE_WEBHOOKS: "true"
+      KUBECHECKS_LOG_LEVEL: warn
+      KUBECHECKS_MAX_CONCURRENCT_CHECKS: "10"
+      KUBECHECKS_TIDY_OUTDATED_COMMENTS_MODE: "delete"
+
+      KUBECHECKS_NAMESPACE: kubechecks
+      KUBECHECKS_WEBHOOK_URL_BASE: https://kubechecks.mobrockers.com
+      KUBECHECKS_VCS_TYPE: "github"
+
+  deployment:
+    resources:
+      limits:
+        memory: 512Mi
+      requests:
+        memory: 128Mi
+        cpu: 150m
+
+    replicaCount: 1
+
+    image:
+      name: "ghcr.io/zapier/kubechecks"
+      tag: "v2.1.0"
+
+    podSecurityContext:
+#       runAsNonRoot: true
+#       runAsUser: 32123
+#       fsGroup: 32123
+
+    securityContext:
+#       allowPrivilegeEscalation: false
+#       privileged: false
+#       capabilities:
+#         drop:
+#           - ALL
+#       readOnlyRootFilesystem: false
+
+    envFrom:
+      - secretRef:
+          name: kubechecks-config
+
+  ingress:
+    create: true
+    hosts:
+      kubechecks.mobrockers.com:
+        paths:
+        - path: "/hooks"
+          pathType: Prefix
+    tls:
+    - hosts:
+      - kubechecks.mobrockers.com
