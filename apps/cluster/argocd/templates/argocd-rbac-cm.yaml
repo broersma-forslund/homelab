@@ -9,9 +9,9 @@ data:
   policy.csv: |
     g, Admins, role:admin
 
-    # Infro svc
+    # kubechecks svc
     p, role:readonly, applications, get, *, allow
     p, role:readonly, projects, get, *, allow
-    g, infro, role:readonly
+    g, kubechecks, role:readonly
   policy.default: ''
   

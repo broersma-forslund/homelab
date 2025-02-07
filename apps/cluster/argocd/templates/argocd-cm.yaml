@@ -20,7 +20,7 @@ data:
     clientID: $authentik-credentials:client_id
     clientSecret: $authentik-credentials:client_secret
     requestedScopes: ['openid', 'profile', 'email', 'groups', 'offline_access']
-  accounts.infro: apiKey
+  accounts.kubechecks: apiKey
 
   resource.customizations.ignoreDifferences.argoproj.io_Application: |
     jqPathExpressions:

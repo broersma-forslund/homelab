@@ -6,6 +6,7 @@ apps:
       deploy: true
     cilium:
       deploy: true
+      serverSideApply: true
       autoSync: false
       ignoreDifferences:
       - group: apps
@@ -24,4 +25,3 @@ apps:
       deploy: true
     zigbee2mqtt:
       deploy: true
-      autoSync: false
