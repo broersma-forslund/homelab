@@ -1,0 +1,19 @@
+apiVersion: cilium.io/v2alpha1
+kind: CiliumBGPClusterConfig
+metadata:
+  name: cilium-bgp-cluster-config
+spec:
+  nodeSelector:
+    matchExpressions:
+    - key: somekey
+      operator: NotIn
+      values: [ 'never-used-value' ]
+  bgpInstances:
+  - name: cluster
+    localASN: 64701
+    peers:
+    - name: heimdall
+      peerASN: 64601
+      peerAddress: '192.168.0.1'
+      peerConfigRef:
+        name: cilium-bgp-peer-config
