@@ -72,7 +72,7 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /config
-              readonly: true
+              readOnly: true
       volumes:
         - name: data
           persistentVolumeClaim:
