@@ -1,7 +1,7 @@
 image:
   regisrty: ghcr.io
   repository: linuxserver/netbootxyz
-  tag: 0.7.4
+  tag: 2.0.53
 
 tolerations:
 
