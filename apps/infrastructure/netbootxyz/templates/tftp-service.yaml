@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "common.fullname" . }}-tftp
+  labels: {{- include "common.labels" . | nindent 4 }}
+  annotations: {{- .Values.tftp.annotations | toYaml | nindent 4 }}
+spec:
+  type: LoadBalancer
+  ports:
+    - name: web
+      targetPort: 6969
+      port: 69
+      protocol: UDP
+  selector:
+    {{- include "common.selectorLabels" . | nindent 4 }}

@@ -1,0 +1,46 @@
+image:
+  regisrty: ghcr.io
+  repository: linuxserver/netbootxyz
+  tag: 0.7.4
+
+tolerations:
+
+resources: {}
+
+podSecurityContext:
+  fsGroup: 5000
+
+securityContext:
+  runAsGroup: 5000
+  capabilities: {}
+
+persistence:
+  config:
+    size: 50Mi
+    labels: {}
+  assets:
+    size: 5Gi
+    labels: {}
+
+route:
+  enabled: false
+  apiVersion: gateway.networking.k8s.io/v1
+  kind: HTTPRoute
+  annotations: {}
+  hostnames:
+    - netboot.example.com
+  parentRefs: []
+  filters: []
+  matches: []
+
+ingress:
+  enabled: true
+  domain: netboot.mobrockers.com
+  class:
+  annotations: {}
+  tls:
+    enabled: true
+    secretName:
+
+tftp:
+  annotations: {}

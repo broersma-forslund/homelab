@@ -1,7 +1,10 @@
 apps:
   infrastructure:
     cluster-api-operator:
-      deploy: true
+      deploy: false
     embla-cluster:
+      deploy: false
+      autoSync: false
+    netbootxyz:
       deploy: true
       autoSync: false

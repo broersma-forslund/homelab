@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ template "common.fullname" . }}
+  labels: {{- include "common.labels" . | nindent 4 }}
+spec:
+  revisionHistoryLimit: 0
+  replicas: 1
+  selector:
+    matchLabels: {{- include "common.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels: {{- include "common.selectorLabels" . | nindent 8 }}
+    spec:
+      automountServiceAccountToken: false
+      tolerations: {{ toYaml .Values.tolerations | nindent 8 }}
+      securityContext: {{ toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: netboootxyz
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          env:
+          - name: TZ
+            value: Europe/Amsterdam
+          - name: PUID
+            value: '1000'
+          - name: PGID
+            value: '5000'
+          - name: PORT_RANGE # Port used by tftp for file transfer
+            value: '69-69'
+          - name: NGINX_PORT # Port used to server assets (ISOs)
+            value: '8080'
+          ports:
+          - name: web
+            containerPort: 3000
+          - name: assets
+            containerPort: 8080
+          - name: tftp
+            containerPort: 6969
+            protocol: UDP
+          resources: {{ toYaml .Values.resources | nindent 12 }}
+          securityContext: {{ toYaml .Values.securityContext | nindent 12 }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: web
+          readinessProbe:
+            httpGet:
+              path: /
+              port: web
+          volumeMounts:
+          - mountPath: /config
+            name: config
+          - mountPath: /assets
+            name: assets
+  volumeClaimTemplates:
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: config
+      labels:
+        {{- include "common.selectorLabels" . | nindent 10 }}
+        {{ if .Values.persistence.config.labels }}
+        {{ toYaml .Values.persistence.config.labels | nindent 10 }}
+        {{ end }}
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: {{ .Values.persistence.config.size }}
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: assets
+      labels:
+        {{- include "common.selectorLabels" . | nindent 10 }}
+        {{ if .Values.persistence.assets.labels }}
+        {{ toYaml .Values.persistence.assets.labels | nindent 10 }}
+        {{ end }}
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: {{ .Values.persistence.assets.size }}
