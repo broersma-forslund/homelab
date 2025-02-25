@@ -1,6 +1,6 @@
 image:
   repository: ghcr.io/linuxserver/radarr
-  tag: 5.18.4
+  tag: 5.19.3
 
 metrics:
   image:
