@@ -23,6 +23,9 @@ trust-manager:
     enabled: true
     keep: false
 
+  defaultPackageImage:
+    repository: quay.io/jetstack/trust-pkg-debian-bookworm
+    tag: "20230311.0"
   app:
     metrics:
       service:
