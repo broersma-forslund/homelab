@@ -1,35 +1,37 @@
 gatus:
-  ingress:
-    enabled: true
-    hosts:
-    - status.mobrockers.com
-    tls:
-    - hosts:
-      - status.mobrockers.com
 
   grafana:
     dashboard:
       enabled: true
 
-  config:
-    debug: true
-    endpoints:
-    - name: gatus
-      url: 'https://status.mobrockers.com'
-      group: internal
-      conditions:
-      - '[STATUS] == 200'
-    - name: gatus
-      url: 'https://status.mobrockers.com'
-      group: external
-      conditions:
-      - '[STATUS] == 200'
-      client:
-        dns-resolver: 'udp://1.1.1.1:53'
-    - name: google
-      url: 'https://google.com'
-      group: external
-      conditions:
-      - '[STATUS] == 200'
-      client:
-        dns-resolver: 'udp://1.1.1.1:53'
+  gatus:
+    ingress:
+      enabled: true
+      hosts:
+      - status.mobrockers.com
+      tls:
+      - hosts:
+        - status.mobrockers.com
+        
+    config:
+      debug: true
+      endpoints:
+      - name: gatus
+        url: 'https://status.mobrockers.com'
+        group: internal
+        conditions:
+        - '[STATUS] == 200'
+      - name: gatus
+        url: 'https://status.mobrockers.com'
+        group: external
+        conditions:
+        - '[STATUS] == 200'
+        client:
+          dns-resolver: 'udp://1.1.1.1:53'
+      - name: google
+        url: 'https://google.com'
+        group: external
+        conditions:
+        - '[STATUS] == 200'
+        client:
+          dns-resolver: 'udp://1.1.1.1:53'
