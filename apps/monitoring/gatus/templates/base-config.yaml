@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: base-config-cm
-  labels:
-    gatus-configfile: "1"   
-data:
-  base-config.yaml: |- 
-    {{ .Values.gatus.config | toYaml | nindent 4 }}
