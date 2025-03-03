@@ -7,6 +7,10 @@ gatus:
     - hosts:
       - status.mobrockers.com
 
+  grafana:
+    dashboard:
+      enabled: true
+
   config:
     debug: true
     endpoints:
