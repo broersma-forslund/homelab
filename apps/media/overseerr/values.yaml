@@ -1,4 +1,4 @@
 overseerr:
   image:
     repository: sctx/overseerr
-    tag: 1.33.2
+    tag: 1.34.0
