@@ -89,13 +89,18 @@ rook-ceph-cluster:
       replicated:
         size: 3
       storageClass:
+        enabled: true
         isDefault: false
+        reclaimPolicy: Delete
+        allowVolumeExpansion: true
+        volumeBindingMode: Immediate
 
     cephFileSystems:
     - name: ceph-filesystem
       spec:
         dataPools:
-        - failureDomain: zone
+        - name: data0
+          failureDomain: zone
           replicated:
             size: 3
 
@@ -108,13 +113,18 @@ rook-ceph-cluster:
             size: 3
         dataPool:
           failureDomain: zone
-          ingress:
-            enabled: false
-            host:
-              name: s3.mobrockers.com
-            tls:
-            - hosts:
-              - s3.mobrockers.com
+          erasureCoded:
+            dataChunks: 2
+            codingChunks: 1
+          parameters:
+            bulk: "true"
+        ingress:
+          enabled: false
+          host:
+            name: s3.mobrockers.com
+          tls:
+          - hosts:
+            - s3.mobrockers.com
   monitoring:
     enabled: true
     createPrometheusRules: true
