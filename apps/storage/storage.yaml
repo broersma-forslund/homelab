@@ -4,7 +4,7 @@ apps:
       deploy: true
       valueFiles:
       - values-operator.yaml
-      - values-cluster-yaml
+      - values-cluster.yaml
       - values-block-pools.yaml
       - values-file-systems.yaml
       - values-object-stores.yaml
