@@ -88,12 +88,9 @@ rook-ceph-cluster:
       failureDomain: zone
       replicated:
         size: 3
-      storageClass:
-        enabled: true
-        isDefault: false
-        reclaimPolicy: Delete
-        allowVolumeExpansion: true
-        volumeBindingMode: Immediate
+    storageClass:
+      enabled: true
+      isDefault: false
 
     cephFileSystems:
     - name: ceph-filesystem
