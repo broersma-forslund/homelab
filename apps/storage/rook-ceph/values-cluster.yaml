@@ -4,7 +4,7 @@ rook-ceph-cluster:
 
   monitoring:
     enabled: true
-    createPrometheusRules: true
+    createPrometheusRules: false
   # ingress:
   #   dashboard:
   #     annotations:
