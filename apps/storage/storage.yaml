@@ -2,19 +2,26 @@ apps:
   storage:
     rook-ceph:
       deploy: true
+      valueFiles:
+      - values-operator.yaml
+      - values-cluster-yaml
+      - values-block-pools.yaml
+      - values-file-systems.yaml
+      - values-object-stores.yaml
       autoSync: false
+      
     democratic-csi-iscsi-hdd:
       deploy: true
       autoSync: false
       path: apps/storage/democratic-csi/chart
       valueFiles:
-        - ../iscsi-hdd-values.yaml
+      - ../iscsi-hdd-values.yaml
     democratic-csi-node-manual:
       deploy: true
       autoSync: false
       path: apps/storage/democratic-csi/chart
       valueFiles:
-        - ../node-manual.yaml
+      - ../node-manual.yaml
     cloudnative-postgres:
       deploy: true
       serverSideApply: true

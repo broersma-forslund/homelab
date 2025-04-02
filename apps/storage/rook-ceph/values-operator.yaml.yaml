@@ -1,0 +1,12 @@
+rook-ceph:
+  revisionHistoryLimit: 0
+  csi:
+    enableMetadata: true
+    topology:
+      enabled: true
+      domainLabels: kubernetes.io/hostname,topology.kubernetes.io/zone
+    serviceMonitor:
+      enabled: true
+    enableLiveness: true
+  monitoring:
+    enabled: true

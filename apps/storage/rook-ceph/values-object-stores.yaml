@@ -1,0 +1,62 @@
+rook-ceph-cluster:
+
+  # -- A list of CephObjectStore configurations to deploy
+  # @default -- See [below](#ceph-object-stores)
+  cephObjectStores:
+    # see https://github.com/rook/rook/blob/master/Documentation/CRDs/Object-Storage/ceph-object-store-crd.md#object-store-settings for available configuration
+  - name: ceph-objectstore
+    spec:
+      metadataPool:
+        failureDomain: zone
+        replicated:
+          size: 3
+      dataPool:
+        failureDomain: zone
+        erasureCoded:
+          dataChunks: 2
+          codingChunks: 1
+        parameters:
+          bulk: "true"
+      allowUsersInNamespaces: ['*']
+      gateway:
+        port: 80
+        resources:
+          limits:
+            memory: "2Gi"
+          requests:
+            cpu: "1000m"
+            memory: "1Gi"
+        # securePort: 443
+        # sslCertificateRef:
+        instances: 1
+        priorityClassName: system-cluster-critical
+        # opsLogSidecar:
+        #   resources:
+        #     limits:
+        #       memory: "100Mi"
+        #     requests:
+        #       cpu: "100m"
+        #       memory: "40Mi"
+    storageClass:
+      enabled: true
+      name: ceph-bucket
+      reclaimPolicy: Delete
+      volumeBindingMode: Immediate
+      annotations: {}
+      labels: {}
+      # see https://github.com/rook/rook/blob/master/Documentation/Storage-Configuration/Object-Storage-RGW/ceph-object-bucket-claim.md#storageclass for available configuration
+      parameters: {}
+        # note: objectStoreNamespace and objectStoreName are configured by the chart
+    ingress:
+      # Enable an ingress for the ceph-objectstore
+      enabled: false
+      # annotations: {}
+      host:
+        name: s3.mobrockers.com
+      #   path: /
+      #   pathType: Prefix
+      tls:
+      - hosts:
+        - s3.mobrockers.com
+      #   secretName: ceph-objectstore-tls
+      # ingressClassName: nginx
