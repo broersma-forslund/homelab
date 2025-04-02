@@ -12,6 +12,7 @@ rook-ceph-cluster:
       # enableRBDStats: true
     storageClass:
       enabled: true
+      name: ceph-block
       isDefault: false
       annotations: {}
       labels: {}
