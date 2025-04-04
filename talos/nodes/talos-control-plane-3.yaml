@@ -1,3 +1,5 @@
 machine:
   network:
     hostname: talos-control-plane-3
+  nodeLabels:
+    topology.kubernetes.io/zone: '3'
