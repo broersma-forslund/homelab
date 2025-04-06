@@ -40,8 +40,8 @@ rook-ceph-cluster:
       compression:
         enabled: false
       addressRanges:
-        public: ['']
-        cluster: ['']
+        public: ['10.0.102.0/24']
+        cluster: ['10.0.104.0/24']
 
     storage:
       useAllNodes: false
