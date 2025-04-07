@@ -26,15 +26,25 @@ adguard:
   secondary:
     replicas: 3
 
+    persistence:
+      storageClass: rook-ceph-block
+
     service:
       annotations:
         'io.cilium/lb-ipam-ips': 10.0.103.10,10.0.103.11
 
     topologySpreadConstraints:
-      - maxSkew: 1
-        topologyKey: kubernetes.io/hostname
-        whenUnsatisfiable: ScheduleAnyway
-        labelSelector:
-          matchLabels:
-            app.kubernetes.io/instance: adguard
-            app.kubernetes.io/name: adguard
+    - maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/instance: adguard
+          app.kubernetes.io/name: adguard
+    - maxSkew: 1
+      topologyKey: topology.kubernetes.io/zone
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/instance: adguard
+          app.kubernetes.io/name: adguard
