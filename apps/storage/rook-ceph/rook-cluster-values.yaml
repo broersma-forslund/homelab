@@ -14,7 +14,7 @@ rook-ceph-cluster:
 
   cephClusterSpec:
     cephVersion:
-      image: quay.io/ceph/ceph:v19.2.1
+      image: quay.io/ceph/ceph:v19.2.2
 
     csi:
       readAffinity:
