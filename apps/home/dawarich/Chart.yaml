@@ -4,5 +4,5 @@ version: 0.0.0
 
 dependencies:
 - name: dawarich
-  version: 0.0.1-add-dawarich.00ab240
+  version: 0.0.1
   repository: oci://ghcr.io/k8s-at-our-homes/helm-charts
