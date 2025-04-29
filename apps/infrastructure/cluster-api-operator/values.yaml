@@ -3,7 +3,7 @@ providers:
   core:
     image:
       repository: registry.k8s.io/cluster-api/cluster-api-controller
-      tag: v1.10.0
+      tag: v1.10.1
   ipam:
     image:
       repository: registry.k8s.io/capi-ipam-ic/cluster-api-ipam-in-cluster-controller
