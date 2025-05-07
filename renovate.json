@@ -8,6 +8,8 @@
   "prConcurrentLimit": 0,
   "prHourlyLimit": 0,
   "helm-values": {
-    "fileMatch": ["(^|/).*?-?values\\.ya?ml$"]
+    "managerFilePatterns": [
+      "/(^|/).*?-?values\\.ya?ml$/"
+    ]
   }
 }
