@@ -1,0 +1,85 @@
+nextcloud:
+  replicaCount: 1
+
+  image:
+    flavor: fpm
+
+  phpClientHttpsFix:
+    enabled: true
+    protocol: https
+
+  ingress:
+    enabled: true
+    tls:
+    - host: nextcloud.mobrockers.com
+
+  nginx:
+    enabled: true
+
+  nextcloud:
+    host: nextcloud.mobrockers.com
+
+    existingSecret:
+      enabled: true
+      secretName: nextcloud-credentials
+      usernameKey: username
+      passwordKey: password
+
+    mail:
+      enabled: false
+
+    # resources:
+    #   limits:
+    #     memory: 256Mi
+    #   requests:
+    #     cpu: 100m
+    #     memory: 128Mi
+
+  internalDatabase:
+    enabled: false
+  externalDatabase:
+    enabled: true
+    type: postgresql
+
+    existingSecret:
+      enabled: true
+      secretName: nextcloud-db-app
+      hostKey: host
+      databaseKey: dbname
+      usernameKey: username
+      passwordKey: password
+
+  cronjob:
+    enabled: true
+
+  persistence:
+    enabled: true
+    storageClass: ceph-filesystem
+    accessMode: ReadWriteMany
+    size: 8Gi
+
+  objectStore:
+    s3:
+      enabled: true
+      host: rook-ceph-rgw-ceph-objectstore.rook-ceph.svc
+      port: 80
+      bucket:
+      usePathStyle: true
+      existingSecret: nextcloud-bucket
+      secretKeys:
+        accessKey: AWS_ACCESS_KEY_ID
+        secretKey: AWS_SECRET_ACCESS_KEY
+
+  resources:
+    limits:
+      memory: 512Mi
+    requests:
+      cpu: 90m
+      memory: 128Mi
+
+  metrics:
+    enabled: true
+    info:
+      apps: true
+    serviceMonitor:
+      enabled: true
