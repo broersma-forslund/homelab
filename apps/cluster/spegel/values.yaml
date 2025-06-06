@@ -5,7 +5,7 @@ spegel:
     capabilities:
       drop:
       - ALL
-    # readOnlyRootFilesystem: true
+    readOnlyRootFilesystem: true
 
   spegel:
     logLevel: "WARN"
