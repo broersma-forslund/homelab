@@ -1,9 +1,5 @@
 rook-ceph-cluster:
-
-  # -- A list of CephObjectStore configurations to deploy
-  # @default -- See [below](#ceph-object-stores)
   cephObjectStores:
-    # see https://github.com/rook/rook/blob/master/Documentation/CRDs/Object-Storage/ceph-object-store-crd.md#object-store-settings for available configuration
   - name: ceph-objectstore
     spec:
       metadataPool:
@@ -39,11 +35,6 @@ rook-ceph-cluster:
       name: ceph-bucket
       reclaimPolicy: Delete
       volumeBindingMode: Immediate
-      annotations: {}
-      labels: {}
-      # see https://github.com/rook/rook/blob/master/Documentation/Storage-Configuration/Object-Storage-RGW/ceph-object-bucket-claim.md#storageclass for available configuration
-      parameters: {}
-        # note: objectStoreNamespace and objectStoreName are configured by the chart
     ingress:
       # Enable an ingress for the ceph-objectstore
       enabled: false

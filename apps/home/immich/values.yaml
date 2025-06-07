@@ -8,6 +8,15 @@ immich:
     clusterName: immich-data
     replicas: 2
     size: 32Gi
+    backups:
+      enabled: true
+      secret:
+        name: 'immich-db-backup'
+        accessKeyId: 'AWS_ACCESS_KEY_ID'
+        secretAccessKey: 'AWS_SECRET_ACCESS_KEY'
+      retention: '7d'
+      path: 's3://immich-db-backup-487a37ba-f223-4406-839e-9a7be04a7d87'
+      endpoint: 'rook-ceph-rgw-ceph-objectstore.rook-ceph.svc:80'
 
   ingress:
     enabled: true
