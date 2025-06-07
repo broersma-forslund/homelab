@@ -10,7 +10,7 @@ dawarich:
 
   photon:
     persistence:
-      size: 300Gi
+      size: 500Gi
 
   redis:
     master:
