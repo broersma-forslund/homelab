@@ -4,5 +4,5 @@ version: 0.0.0
 
 dependencies:
 - name: dawarich
-  version: 2.4.3
+  version: 2.5.0-renovate-docker-io-freikin-dawarich-0-x.2fc3be2
   repository: oci://ghcr.io/k8s-at-our-homes/helm-charts
