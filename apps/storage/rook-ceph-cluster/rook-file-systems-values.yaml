@@ -37,8 +37,6 @@ rook-ceph-cluster:
       reclaimPolicy: Delete
       allowVolumeExpansion: true
       volumeBindingMode: Immediate
-      mountOptions:
-      - discard
       parameters:
         csi.storage.k8s.io/provisioner-secret-name: rook-csi-cephfs-provisioner
         csi.storage.k8s.io/provisioner-secret-namespace: "{{ .Release.Namespace }}"
