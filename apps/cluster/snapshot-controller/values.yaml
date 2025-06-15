@@ -1,0 +1,3 @@
+snapshot-controller:
+  controller:
+    revisionHistoryLimit: 0
