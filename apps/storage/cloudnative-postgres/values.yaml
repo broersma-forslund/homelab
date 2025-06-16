@@ -6,3 +6,11 @@ dashboard:
   grafanaDashboard:
     labels:
       grafana_dashboard: "1"
+
+# plugin-barman-cloud:
+#   resources:
+#     requests:
+#       cpu: 100m
+#       memory: 128Mi
+#     limits:
+#       memory: 512Mi
