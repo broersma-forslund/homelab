@@ -11,5 +11,5 @@ dependencies:
     version: 0.0.4
     repository: oci://ghcr.io/cloudnative-pg/grafana-dashboards
   - name: plugin-barman-cloud
-    version: 0.1.0
+    version: 0.1.1
     repository: oci://ghcr.io/k8s-at-our-homes/helm-charts
