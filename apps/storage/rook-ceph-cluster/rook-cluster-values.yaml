@@ -20,11 +20,12 @@ rook-ceph-cluster:
       image: quay.io/ceph/ceph:v19.2.2
 
     network:
+      connections:
+        encryption:
+          enabled: false
+        compression:
+          enabled: false
       provider: host
-      encryption:
-        enabled: false
-      compression:
-        enabled: false
       addressRanges:
         public: ['10.0.102.0/24']
         cluster: ['10.0.104.0/24']
