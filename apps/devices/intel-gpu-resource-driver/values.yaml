@@ -1,4 +1,4 @@
-intel-gpu-resource-driver:
+intel-gpu-resource-driver-chart:
 
   tolerations: []
   cdi:
