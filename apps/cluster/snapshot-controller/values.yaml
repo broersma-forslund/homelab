@@ -2,7 +2,7 @@ snapshot-controller:
   controller:
     revisionHistoryLimit: 0
     args:
-      # automaxprocs: true # not yet released
+      automaxprocs: true
       feature-gates: CSIVolumeGroupSnapshot=true
     resources:
       requests:
