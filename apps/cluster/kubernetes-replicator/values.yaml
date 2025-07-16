@@ -1,4 +1,5 @@
 kubernetes-replicator:
+  revisionHistoryLimit: 0
   args:
     - --resync-period=1m
 
