@@ -2,11 +2,13 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: nextcloud-db
-  annotations:
-    cnpg.io/reconciliationLoop: "disabled"
 spec:
-  instances: 2
-
+  instances: 1
+  plugins:
+  - name: barman-cloud.cloudnative-pg.io
+    isWALArchiver: true
+    parameters:
+      barmanObjectName: nextcloud-backup-provider
   storage:
     size: 5Gi
 ---

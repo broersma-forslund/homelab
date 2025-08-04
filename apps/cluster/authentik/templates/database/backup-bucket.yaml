@@ -1,0 +1,7 @@
+apiVersion: objectbucket.io/v1alpha1
+kind: ObjectBucketClaim
+metadata:
+  name: authentik-db-backup-bucket
+spec:
+  bucketName : authentik-db-backups
+  storageClassName: ceph-bucket

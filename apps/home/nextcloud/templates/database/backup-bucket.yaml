@@ -1,0 +1,7 @@
+apiVersion: objectbucket.io/v1alpha1
+kind: ObjectBucketClaim
+metadata:
+  name: nextcloud-db-backup-bucket
+spec:
+  bucketName : nextcloud-db-backups
+  storageClassName: ceph-bucket

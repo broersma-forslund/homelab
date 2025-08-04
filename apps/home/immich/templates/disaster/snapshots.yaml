@@ -13,3 +13,12 @@ metadata:
 spec:
   source:
     persistentVolumeClaimName: immich-data-12
+---
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshot
+metadata:
+  name: test-cephfs-snapshot
+spec:
+  volumeSnapshotClassName: ceph-filesystem
+  source:
+    persistentVolumeClaimName: immich-library

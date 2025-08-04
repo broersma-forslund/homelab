@@ -6,3 +6,14 @@ spec:
   cluster:
     name: dawarich
   method: plugin
+  pluginConfiguration:
+    name: barman-cloud.cloudnative-pg.io
+# ---
+# apiVersion: postgresql.cnpg.io/v1
+# kind: Backup
+# metadata:
+#   name: snapshot-backup
+# spec:
+#   cluster:
+#     name: dawarich
+#   method: volumeSnapshot

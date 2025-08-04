@@ -1,0 +1,15 @@
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: authentik-backup-provider
+spec:
+  configuration:
+    destinationPath: s3://authentik-db-backups/
+    endpointURL: http://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc:80
+    s3Credentials:
+      accessKeyId:
+        name: authentik-db-backup-bucket
+        key: AWS_ACCESS_KEY_ID
+      secretAccessKey:
+        name: authentik-db-backup-bucket
+        key: AWS_SECRET_ACCESS_KEY
