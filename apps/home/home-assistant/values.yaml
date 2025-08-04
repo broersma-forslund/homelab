@@ -21,6 +21,28 @@ home-assistant:
     securityContext:
       runAsGroup: 5000
 
+  additionalInitContainers:
+  - name: mqtt-tls-proxy
+    image: cgr.dev/chainguard/stunnel:latest@sha256:c4b8a64e052fd248c21e34c4d3d2f4b0d7a8c06c9bb169b5bd47434bfcbc9ca4
+    restartPolicy: Always
+    volumeMounts:
+    - name: stunnel-config
+      mountPath: /etc/conf/
+    - name: trust-bundle
+      mountPath: /ca
+      readOnly: true
+    # resources:
+    #   requests:
+    #     cpu: 10m
+    #     memory: 16Mi
+    #   limits:
+    #     memory: 64Mi
+    livenessProbe:
+      tcpSocket:
+        port: 1883
+      initialDelaySeconds: 5
+      periodSeconds: 30
+
 matterHub:
   image:
     repository: ghcr.io/t0bst4r/home-assistant-matter-hub
