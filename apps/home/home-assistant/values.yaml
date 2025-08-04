@@ -40,8 +40,6 @@ home-assistant:
     livenessProbe:
       tcpSocket:
         port: 1883
-      initialDelaySeconds: 5
-      periodSeconds: 30
 
 matterHub:
   image:
