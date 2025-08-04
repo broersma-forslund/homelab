@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mqtts-proxy-config
+data:
+  stunnel.conf: |
+    foreground = yes
+    pid = /tmp/stunnel.pid
+    debug = info
+
+    [mqtts]
+    client = yes
+    accept = 127.0.0.1:1883
+    connect = emqx-listeners.emqx.svc.cluster.local:8884
+    CAfile = /ca/trust-bundle.pem
+    verify = 2
+    socket = l:TCP_NODELAY=1
+    socket = r:TCP_NODELAY=1
+    TIMEOUTidle = 60
+    TIMEOUTconnect = 10
