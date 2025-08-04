@@ -31,7 +31,7 @@ kubechecks:
 
     image:
       name: ghcr.io/zapier/kubechecks
-      tag: v2.1.0
+      tag: v2.5.3
 
     podSecurityContext:
 #       runAsNonRoot: true
@@ -60,3 +60,4 @@ kubechecks:
     tls:
     - hosts:
       - kubechecks.mobrockers.com
+

@@ -64,7 +64,7 @@ spec:
           mountPath: /config 
         - name: pms-config
           mountPath: /logs
-          subpath: 'Library/Application Support/Plex Media Server'
+          subPath: 'Library/Application Support/Plex Media Server'
           readOnly: true
       volumes:
       - name: pms-transcode
