@@ -1,4 +1,7 @@
 external-dns:
+  global:
+    security:
+      allowInsecureImages: true
   crd:
     create: true
   revisionHistoryLimit: 0
