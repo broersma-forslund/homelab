@@ -2,6 +2,10 @@ external-dns:
   crd:
     create: true
   revisionHistoryLimit: 0
+  image:
+    registry: registry.k8s.io
+    repository: external-dns/external-dns
+    tag: v0.18.0
 
   policy: sync
   sources:
