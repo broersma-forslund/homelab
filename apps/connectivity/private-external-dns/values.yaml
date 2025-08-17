@@ -24,7 +24,7 @@ external-dns:
 
   sidecars:
   - name: adguard-webhook
-    image: ghcr.io/muhlba91/external-dns-provider-adguard:v9.0.1
+    image: ghcr.io/muhlba91/external-dns-provider-adguard:v9.1.0
     ports:
     - containerPort: 8080
       name: metrics
