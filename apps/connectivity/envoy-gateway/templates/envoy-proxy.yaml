@@ -17,5 +17,5 @@ spec:
               memory: 1Gi
       envoyService:
         annotations:
-          'io.cilium/lb-ipam-ips': {{ .Values.privateIp }}
+          'io.cilium/lb-ipam-ips': '{{ .Values.privateIp }}'
         externalTrafficPolicy: Local
