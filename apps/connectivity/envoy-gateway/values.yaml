@@ -1,0 +1,31 @@
+publicIp: 87.212.115.7
+privateIp: 10.0.103.21
+
+gateway-helm:
+  deployment:
+    envoyGateway:
+      resources:
+        limits:
+          memory: 256Mi
+        requests:
+          cpu: 50m
+          memory: 128Mi
+    replicas: 2
+
+  config:
+    envoyGateway:
+      logging:
+        level:
+          default: warn # debug/info/error/warn
+
+gateway-addons-helm:
+  grafana:
+    enabled: false
+  prometheus:
+    enabled: false
+  fluent-bit:
+    enabled: false
+  loki:
+    enabled: false
+  tempo:
+    enabled: false

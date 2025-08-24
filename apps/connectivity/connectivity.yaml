@@ -13,6 +13,10 @@ apps:
         kind: DaemonSet
         jqPathExpressions:
         - .spec.template.spec.containers[].volumeMounts[].readOnly? | select(. == false)
+    envoy-gateway:
+      deploy: true
+      serverSideApply: true
+      autoSync: false
     emqx:
       deploy: true
     private-external-dns:
