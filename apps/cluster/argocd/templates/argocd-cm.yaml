@@ -155,10 +155,21 @@ data:
 
   resource.customizations.actions.postgresql.cnpg.io_Cluster: |
     discovery.lua: |
-      actions = {}
+      local actions = {}
       actions["restart"] = {}
-      actions["reload"] = {}
-      actions["failover"] = {}
+      actions["reload"] = {
+          ["iconClass"] = "fa fa-fw fa-rotate-right",
+      }
+      actions["promote"] = {
+          ["iconClass"] = "fa fa-fw fa-angles-up",
+          ["disabled"] = (not obj.status.instancesStatus or not obj.status.instancesStatus.healthy or #obj.status.instancesStatus.healthy < 2),
+          ["params"] = {
+              {
+                  ["name"] = "instance",
+                  ["default"] = "any"
+              }
+          }   
+      }
       return actions
 
     definitions:
@@ -166,39 +177,72 @@ data:
         action.lua: |
           local os = require("os")
           if obj.metadata == nil then
-            obj.metadata = {}
+              obj.metadata = {}
           end
           if obj.metadata.annotations == nil then
-            obj.metadata.annotations = {}
+              obj.metadata.annotations = {}
           end
-          obj.metadata.annotations["kubectl.kubernetes.io/restartedAt"] = os.date("!%Y-%m-%dT%XZ")
+              obj.metadata.annotations["kubectl.kubernetes.io/restartedAt"] = os.date("!%Y-%m-%dT%XZ")
           return obj
       - name: reload
         action.lua: |
           local os = require("os")
           if obj.metadata == nil then
-            obj.metadata = {}
+              obj.metadata = {}
           end
           if obj.metadata.annotations == nil then
-            obj.metadata.annotations = {}
+              obj.metadata.annotations = {}
           end
-          obj.metadata.annotations["cnpg.io/reloadedAt"] = os.date("!%Y-%m-%dT%XZ")
+              obj.metadata.annotations["cnpg.io/reloadedAt"] = os.date("!%Y-%m-%dT%XZ")
           return obj
-      - name: failover
+      - name: promote
         action.lua: |
           local os = require("os")
-          local nextIndex = 0
-          for index, node in pairs(obj.status.instancesStatus.healthy) do
-            if node == obj.status.currentPrimary then
-              nextIndex = index + 1
-              if nextIndex > #obj.status.instancesStatus.healthy then
-                nextIndex = 1
+          local instance = actionParams["instance"]
+          local healthy = obj.status.instancesStatus.healthy
+          local selected = nil
+
+          if instance == "any" then
+            -- Select next healthy instance after currentPrimary
+            local nextIndex = 0
+            for index, node in ipairs(healthy) do
+                if node == obj.status.currentPrimary then
+                    nextIndex = index + 1
+                    if nextIndex > #healthy then
+                        nextIndex = 1
+                    end
+                    break
+                end
+            end
+            if nextIndex > 0 then
+                selected = healthy[nextIndex]
+            end
+          elseif type(instance) == "string" and tonumber(instance) then
+            -- Select by instance number
+          local wanted = (obj.metadata and obj.metadata.name or "") .. "-" .. instance
+          for _, node in ipairs(healthy or {}) do
+              if node == wanted then
+                  selected = node
+                  break
               end
-              break
+          end
+          elseif type(instance) == "string" then
+            -- Select by full name
+            for _, node in ipairs(healthy) do
+                if node == instance then
+                    selected = node
+                    break
+                end
             end
           end
-          if nextIndex > 0 then
-            obj.status.targetPrimary = obj.status.instancesStatus.healthy[nextIndex]
+
+          if selected then
+            obj.status.targetPrimary = selected
             obj.status.targetPrimaryTimestamp = os.date("!%Y-%m-%dT%XZ")
+            obj.status.Phase = "Switchover in progress"
+            obj.status.PhaseReason = "Switching over to " .. selected
+          else
+            error("Could not find a healthy instance matching the criteria: " .. tostring(instance))
           end
           return obj
+

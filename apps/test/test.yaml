@@ -1,0 +1,5 @@
+apps:
+  test:
+    cluster:
+      deploy: true
+      namespace: test
