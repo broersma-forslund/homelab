@@ -8,7 +8,7 @@ external-dns:
   image:
     registry: registry.k8s.io
     repository: external-dns/external-dns
-    tag: v0.18.0
+    tag: v0.19.0
 
   policy: sync
   sources:
