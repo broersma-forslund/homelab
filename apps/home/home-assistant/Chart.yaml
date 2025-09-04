@@ -4,5 +4,5 @@ version: 0.0.0
 
 dependencies:
 - name: home-assistant
-  version: 1.24.1
+  version: 1.25.0-copilot-fix-32
   repository: oci://ghcr.io/k8s-at-our-homes/helm-charts
