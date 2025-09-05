@@ -12,9 +12,6 @@ apps:
     argocd:
       deploy: true
       autoSync: true
-    authentik:
-      deploy: true
-      autoSync: false
     descheduler:
       deploy: true
     kubernetes-replicator:

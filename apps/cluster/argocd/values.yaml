@@ -1,3 +1,16 @@
+authentication:
+  clientIdSealed: AgCpLhd/M8mixf8v3+LIhTi7Z+NB+lE8up82xhJOuQdBKsKOdRnhJjgmVtVDYvM1YIN1S/H8B+o4gTbN5iKAu5QU4FnEutBaNC+UujQs83xotwTpfd0RSHk9dtFBH7kr5BZ6GVr8tpqfLgjBLAWuSugL2KYE43bDQHOVjIIRy8hl5t6xDV3357JTT2wC/OUYTikh656Q0l++N7hlKrmalaaNuZrvc2XHgtdk3Ex0VMI8gUQsCTB1LcUaF0TS6taiKxJhdTnDjKUGC/lXpI3kYkuOjBvYxH00FM6pQNKYcTE4Hme5TjTPiLy+RNTlmCn05/o+l6xAADJqHBWsa3TAPYd8FuOaPR3GN3rqlRDaolv3oD3c7eqaoxlHMUKzmgTLeZXINeH0+qGUSmDEoy6Or8coOsoHl31lyoFQx+NWOxNPrAalV/+eJZiJ5ZoJgsjHmkfH9UMyGEAeBoHCaLtVAZdo+gQ97TY6JcV8BcNav6MLMkhw8m0yE+vmDPpN+Db6cAbwgKWnApKCY1AQPbwP2e9sw2ob6eJv2wgx42W9sHeYFFCA9mA7+lc9+POKBg5prRXC0PaYtt9ZS3Fef1QkM+dTN4OXrIb+HLebojZBCHH/5hREe0yaxFz26ArNi6QMxtYSDUZUCt7Zhm203BqZ+M42Ez5XWqSMI5h0+kdtSzKhKgIjRjT/UXq3sqOJV4SF3q7v+JDdeNV0s5D+k/HTj3d9d0PfYdvohCOcy2TupHyrdRxPpD7QC+2RXA==
+  # echo -n "client_id" | kubeseal --cert https://sealed-secrets.mobrockers.com/v1/cert.pem --raw --name="authentik-credentials" -n argocd | clip.exe
+  clientSecretSealed: AgDAMXlbpLuSfsdTNc2GNsDJMmJYJMGgoPOg0jqRnCgGhlBSzVE1qbCr0MIEw57U+xb+b6HWRzMkKr8/3Yp36ikql3M6AellClraz789Zv8+FPXTW2hT6BsqR4Z7v+L2apRpe9OGPwrmxJ9WNUU+PUlUybQZJil0Ck/bH/0uYjyJB6EFyouXWFoZUGsqOo4Khb57XpHtNMqkW2WIXMwkL77Tp4NoQ2gKZKW3FNk6+M9SzNT0mCu76f53ClTpLjO7PhkQya9xcHUwYTyj/TC0SZ02NifIuQSjVN/qVnZ2kmQ/lGkoK3treGtRvFPaN9bcAQag9VsxROW+86QlLHtlTQwN7E+mAXmpiKV5jbvlL5Y5JUgJC+WjTAVwI63TUHnVIzYXM27FFOHkoJfRHBsdtZg++oVLPPFvixzGw5Y2gYzIu7TlAHMHuRYaAxvopDte3+RTuRZ7RFZ2I4UDRRPU1aFy+zL22UzH5YlOuwlH0DWtVl81+jamHpq0ju9X0EDRLGDvH3KWY0LuDmyGcJkUXXPIRZzUQvk/pd52Py0/wu2dxG1yEyVOmB1feA+EVYgKJ6zozJ6eln09tlYsEsaTkxCmz1CAeimaaqVUgrXufRLfSpBhlLIyvohyUr4Iu3wfhH60I+OB9s752LPyKH/HCYHSSwgesZeLFcu5vFWt2wqKorJGcVw1tgGk1SS5j1hwasMWRKz3fHCdjObQ2/jGO2FZgIgJYeGX9ltxhFfn6e2CHMy2iIL+nCVAhKDb+tQfmxleZA5BDzOUS0rvkGLfKcHafnnyQMdQvg0Yi88Gs1xyUTnzPE6IHM1fAF/uaxO9LkutjqjKg8gpnZYHPB9dsF2y/hzDuIkVuFtolOcESaqqRqw=
+  # echo -n "client_secret" | kubeseal --cert https://sealed-secrets.mobrockers.com/v1/cert.pem --raw --name="authentik-credentials" -n argocd | clip.exe
+  oidc:
+    name: Authentik
+    issuer: https://authentik.mobrockers.com/application/o/argo-cd/
+    logoutURL: https://authentik.mobrockers.com/application/o/argo-cd/end-session/
+    clientID: $authentik-credentials:client_id
+    clientSecret: $authentik-credentials:client_secret
+    requestedScopes: ['openid', 'profile', 'email', 'groups', 'offline_access']
+
 argo-cd:
   global:
     revisionHistoryLimit: 0

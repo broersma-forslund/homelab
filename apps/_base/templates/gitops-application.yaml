@@ -17,6 +17,7 @@ spec:
       - ../media/media.yaml
       - ../monitoring/monitoring.yaml
       - ../storage/storage.yaml
+      - ../security/security.yaml
       - ../test/test.yaml
   syncPolicy:
     syncOptions:

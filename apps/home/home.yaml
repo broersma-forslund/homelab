@@ -12,6 +12,5 @@ apps:
       autoSync: false
     dawarich:
       deploy: true
-      autoSync: false
     mealie:
       deploy: false

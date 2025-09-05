@@ -1,12 +1,26 @@
-dawarich:
-
-  ingress:
-    enabled: true
-    domain: timeline.mobrockers.com
-    annotations:
-      nginx.ingress.kubernetes.io/proxy-body-size: "100m"
-    tls:
+dawarich: 
+  database:
+    backups:
       enabled: true
+      destination: s3://dawarich-db-backups/
+      retention: 14d
+      schedule: '0 0 0 * * *'
+      secretName: dawarich-db-backup-bucket
+      provider: s3
+      s3:
+        endpoint: http://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc:80
+        accessKeyName: AWS_ACCESS_KEY_ID
+        secretKeyName: AWS_SECRET_ACCESS_KEY
+  ingress:
+    enabled: false
+  route:
+    enabled: true
+    hostnames:
+    - timeline.mobrockers.com
+    parentRefs:
+    - name: envoy-gateway
+      namespace: envoy-gateway
+      sectionName: web-https
 
   photon:
     config:
@@ -15,3 +29,12 @@ dawarich:
       logLevel: DEBUG
     persistence:
       size: 500Gi
+
+
+  redis:
+    master:
+      resources:
+        requests:
+          memory: 256Mi
+        limits:
+          memory: 1Gi

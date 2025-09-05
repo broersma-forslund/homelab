@@ -13,12 +13,7 @@ data:
   users.anonymous.enabled: 'false'
 
   oidc.config: |
-    name: Authentik
-    issuer: https://authentik.mobrockers.com/application/o/argocd/
-    logoutURL: https://authentik.mobrockers.com/application/o/argocd/end-session/
-    clientID: $authentik-credentials:client_id
-    clientSecret: $authentik-credentials:client_secret
-    requestedScopes: ['openid', 'profile', 'email', 'groups', 'offline_access']
+    {{ .Values.authentication.oidc | toYaml | nindent 4 }}
   accounts.kubechecks: apiKey
 
   resource.customizations.ignoreDifferences.admissionregistration.k8s.io_ValidatingWebhookConfiguration: |

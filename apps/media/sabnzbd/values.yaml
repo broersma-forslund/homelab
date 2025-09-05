@@ -1,8 +1,17 @@
 image:
   repository: ghcr.io/linuxserver/sabnzbd
-  tag: 4.5.2
+  tag: 4.5.3
 
 metrics:
   image:
     repository: ghcr.io/onedr0p/exportarr
     tag: v2.3.0
+
+route:
+  enabled: true
+  hostnames:
+    - sabnzbd.mobrockers.com
+  parentRefs:
+    - name: envoy-gateway
+      namespace: envoy-gateway
+      sectionName: web-https

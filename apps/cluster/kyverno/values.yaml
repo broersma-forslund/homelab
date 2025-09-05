@@ -2,6 +2,15 @@ kyverno-policies:
   podSecurityStandard: restricted
   podSecuritySeverity: low
 
+route:
+  enabled: true
+  hostnames:
+    - kyverno.mobrockers.com
+  parentRefs:
+    - name: envoy-gateway
+      namespace: envoy-gateway
+      sectionName: web-https
+
 kyverno:
   crds:
     annotations:
@@ -48,18 +57,6 @@ policy-reporter:
   ui:
     enabled: true
     replicaCount: 1
-
-    ingress:
-      enabled: true
-      hosts:
-      - host: kyverno.mobrockers.com
-        paths:
-        - path: /
-          pathType: Prefix
-      tls:
-      - hosts:
-        - kyverno.mobrockers.com
-
 
     openIDConnect:
       enabled: true

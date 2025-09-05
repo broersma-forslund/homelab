@@ -1,0 +1,35 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: envoy-gateway
+  annotations:
+    'cert-manager.io/revision-history-limit': "1"
+    'cert-manager.io/cluster-issuer': cloudflare-letsencrypt-dns
+spec:
+  addresses:
+  {{- with .Values.publicIp }}
+    - value: {{ . }}
+      type: IPAddress
+  {{- end }}
+    - value: {{ .Values.privateIp }}
+      type: IPAddress
+  gatewayClassName: envoy-gateway
+  infrastructure:
+    parametersRef:
+      group: gateway.envoyproxy.io
+      kind: EnvoyProxy
+      name: envoy-proxy
+  listeners:
+   - name: web-https
+     protocol: HTTPS
+     port: 443
+     hostname: '*.mobrockers.com'
+     allowedRoutes:
+       namespaces:
+         from: All
+     tls:
+       mode: Terminate
+       certificateRefs:
+       - group: ''
+         kind: Secret
+         name: star-mobrockers-com-tls

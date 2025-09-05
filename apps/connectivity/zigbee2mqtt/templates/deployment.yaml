@@ -53,7 +53,7 @@ spec:
               mountPath: /config
       containers:
         - name: zigbee2mqtt
-          image: '{{ .Values.zigbee2mqtt.image.repository }}:{{ .Values.zigbee2mqtt.image.tag }}'
+          image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
           env:
             - name: TZ
               value: 'Europe/Amsterdam'

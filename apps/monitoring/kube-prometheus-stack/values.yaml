@@ -82,15 +82,15 @@ kube-prometheus-stack:
     replicas: 1
     initChownData: false
     defaultDashboardsTimezone: Europe/Amsterdam
-    ingress:
-      enabled: true
-      annotations:
-        nginx.ingress.kubernetes.io/proxy-body-size: "20m"
-      hosts: 
-      - grafana.mobrockers.com
-      tls:
-      - hosts:
+    route:
+      main:
+        enabled: true
+        hostnames:
         - grafana.mobrockers.com
+        parentRefs:
+        - name: envoy-gateway
+          namespace: envoy-gateway
+          sectionName: web-https
     env:
       GF_SECURITY_DISABLE_INITIAL_ADMIN_CREATION: true
     grafana.ini:
@@ -111,7 +111,7 @@ kube-prometheus-stack:
         client_id: $__file{/etc/secrets/auth_generic_oauth/client_id}
         client_secret: $__file{/etc/secrets/auth_generic_oauth/client_secret}
         allow_assign_grafana_admin: true
-        role_attribute_path: contains(groups[*], 'Admins') && 'Admin' || contains(groups[*], 'Contributor') && 'Editor' || 'Viewer'
+        role_attribute_path: contains(groups[*], 'Grafana') && 'Admin' || contains(groups[*], 'Contributor') && 'Editor' || 'Viewer'
       server:
         domain: "https://grafana.mobrockers.com"
         root_url: "https://grafana.mobrockers.com"

@@ -10,8 +10,8 @@ cert-manager:
   enableCertificateOwnerRef: true
   dns01RecursiveNameservers: 1.1.1.1:53,8.8.8.8:53
   featureGates: ACMEHTTP01IngressPathTypeExact=false # Disable this feature because otherwise ingress-nginx will deny the Ingress admission
-  # extraArgs:
-  # - --enable-gateway-api
+  extraArgs:
+  - --enable-gateway-api
 
   prometheus:
     enabled: true

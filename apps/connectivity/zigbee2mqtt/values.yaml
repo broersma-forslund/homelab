@@ -1,7 +1,6 @@
-zigbee2mqtt:
-  image:
-    repository: koenkk/zigbee2mqtt
-    tag: 2.6.0
+image:
+  repository: koenkk/zigbee2mqtt
+  tag: 2.6.1
 
 config:
   image:
@@ -10,7 +9,7 @@ config:
 
 frontend:
   port: 8080
-  url: https://z2mqtt.mobrockers.com
+  url: https://zigbee2mqtt.mobrockers.com
 zigbee:
   adapter: tcp://10.0.30.51:6638
   pan_id: '23219'
@@ -24,3 +23,12 @@ mqtt:
   password: '!secret.yaml mqtt_password'
 
 credentialsSealed: AgC0syBWpnWmabbVA7M8UieO6RuP2dAnSbgZfgXIqGZ/0GGeTy4zzPhWqJTCcWlA9PnUz1KAv0UpLjSVt1/9gG1e6tu4cXkwppX5c1JNIu4SYSxQZD73+OaZD/0fkWSFYoYWthVxv0uYQM8waF/ljCTZmo15zebuBAg0qyEVH0h6gTRvXEhtoXLGlsCuG491sGCjsTi6FMC4Zm4I2htyB5ku3dvMdS4oa/nrupSXB2TIiGglSVH3+bmiIjNda6xxpU4dAqNXhz1K6DzYZ4s2MYGxSRy8Cw1Mup0+rjtav5WopmGQpFZjczlzsqoTbZKh1N0jK7aABeEwgSfwd5lRN+nVhwH4fDRs07l5Mq1UhbxdyEoABRH0g0lQ9zHSjOya8cTee5FXnQ/UnKAp/xZm9wxYmV252j9PcRF3B/FdpE2wxiruhBiJwbeFtSg9rcQzOEoCYdmvSidCqjosRGsgc5nxxw6Sj31fkdq5TdXTEV+XxpaKMAcNMrtWbD34Ycboz3RAlKAPJT/RvBQvA2xi8QzekLuP2C92jE+nQA4qAZ4hRTj62RGartmkW3YK8tGgtBFI7BgBIg6wpeKrjg/LVXJKEExPzaXvVE55GwXVHKr5VZRugcYXh6GSTGFe1cmSlFaXznr6gMV1pmgAk7lGzQu3a3CpZgEgyObTwWQtD+DuADyoEbUK5LQmQj7Fiokz3oC6R26JDax4jQNSBxAQ6J98oE2My9vTjs2aIDC9eLecHcUIAZ3/2eY1VIbA5YlgSEOcL7K4AyvmIRgX8BoHuO8FXH0p06lB4yoGjoCY1qYpvIrO9SsvJtFlEogI+JUHfGvIM22mwld72vJjoIsg5lwzNFx7SRlN8INf9fOOSnzZmJu+voKEQYg2JomrsD5QeeKj4E3mK5tkuuR2AUv39X2R8YpmScegTflj45K7yOnEaecweG6Lq09JmLO57EHBhsuvBNvHanHj+1uIiBotsW9F6xXVB5oiaj+N2TykGHjUEZQzdDnkypuObH3HfqeZOZ0gaVPqA65dXW/Ftu4HidWHH2Jf2EttaXqkGZ+ctA==
+
+route:
+  enabled: true
+  hostnames:
+    - zigbee2mqtt.mobrockers.com
+  parentRefs:
+    - name: envoy-gateway
+      namespace: envoy-gateway
+      sectionName: web-https

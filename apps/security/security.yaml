@@ -1,0 +1,5 @@
+apps:
+  security:
+    authentik:
+      deploy: true
+      autoSync: false

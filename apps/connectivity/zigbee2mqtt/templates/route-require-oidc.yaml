@@ -1,0 +1,17 @@
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: route-require-oidc
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: {{ template "common.fullname" . }}
+  oidc:
+    provider:
+      issuer: https://authentik.mobrockers.com/application/o/{{ template "common.fullname" . }}/
+    redirectURL: https://{{ template "common.fullname" . }}.mobrockers.com/oauth2/callback
+    logoutPath: /oauth2/logout
+    clientID: mOQsRiJU7jJD0fWjrsIrTWHi7U3dBjX0y64kcPPR
+    clientSecret:
+      name: route-oidc-secret

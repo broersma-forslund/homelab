@@ -1,0 +1,56 @@
+global:
+  revisionHistoryLimit: 0
+
+  volumes:
+  - name: postgres-credentials
+    secret:
+      secretName: authentik-db-app
+  volumeMounts:
+    - name: postgres-credentials
+      mountPath: /postgres-credentials
+      readOnly: true
+  env:
+    - name: AUTHENTIK_SECRET_KEY
+      valueFrom:
+        secretKeyRef:
+          name: authentik-secret
+          key: secretKey
+    - name: AUTHENTIK_POSTGRESQL__USE_PGBOUNCER
+      value: "false"
+
+authentik:
+  authentik:
+    postgresql:
+      # host: env://AUTHENTIK_DATA_POOLER_RW_SERVICE_HOST
+      host: env://AUTHENTIK_DB_RW_SERVICE_HOST
+      name: file:///postgres-credentials/dbname
+      user: file:///postgres-credentials/username
+      password: file:///postgres-credentials/password
+
+  server:
+    replicas: 2
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+
+    route:
+      main:
+        enabled: true
+        hostnames:
+        - authentik.mobrockers.com
+        parentRefs:
+        - name: envoy-gateway
+          namespace: envoy-gateway
+          sectionName: web-https
+
+  worker:
+    replicas: 2
+  redis:
+    enabled: true
+    master:
+      revisionHistoryLimit: 0
+
+  prometheus:
+    rules: 
+      enabled: true

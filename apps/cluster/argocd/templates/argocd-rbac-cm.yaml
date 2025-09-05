@@ -7,7 +7,7 @@ metadata:
     app.kubernetes.io/part-of: argocd
 data:
   policy.csv: |
-    g, Admins, role:admin
+    g, Argocd, role:admin
 
     # kubechecks svc
     p, role:readonly, applications, get, *, allow

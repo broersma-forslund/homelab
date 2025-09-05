@@ -5,7 +5,7 @@ metadata:
 spec:
   ports:
     - name: http
-      port: 80
+      port: 6246
       targetPort: http
   selector:
     app.kubernetes.io/instance: maintainerr

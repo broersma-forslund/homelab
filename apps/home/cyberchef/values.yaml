@@ -5,3 +5,11 @@ cyberchef:
     class: nginx
     tls:
       enabled: true
+  route:
+    enabled: true
+    hostnames:
+    - tools.mobrockers.com
+    parentRefs:
+    - name: envoy-gateway
+      namespace: envoy-gateway
+      sectionName: web-https
