@@ -165,6 +165,26 @@ data:
               }
           }   
       }
+      
+      -- Check if reconciliation is currently suspended
+      local isSuspended = false
+      if obj.metadata and obj.metadata.annotations and obj.metadata.annotations["cnpg.io/reconciliation"] == "disabled" then
+          isSuspended = true
+      end
+      
+      -- Add suspend/resume actions based on current state
+      if isSuspended then
+          actions["resume-reconciliation"] = {
+              ["iconClass"] = "fa fa-fw fa-play",
+              ["description"] = "Resume cluster reconciliation"
+          }
+      else
+          actions["suspend-reconciliation"] = {
+              ["iconClass"] = "fa fa-fw fa-pause",
+              ["description"] = "Suspend cluster reconciliation"
+          }
+      end
+      
       return actions
 
     definitions:
@@ -239,5 +259,30 @@ data:
           else
             error("Could not find a healthy instance matching the criteria: " .. tostring(instance))
           end
+          return obj
+      - name: suspend-reconciliation
+        action.lua: |
+          local os = require("os")
+          if obj.metadata == nil then
+              obj.metadata = {}
+          end
+          if obj.metadata.annotations == nil then
+              obj.metadata.annotations = {}
+          end
+          obj.metadata.annotations["cnpg.io/reconciliation"] = "disabled"
+          obj.metadata.annotations["cnpg.io/suspendedAt"] = os.date("!%Y-%m-%dT%XZ")
+          return obj
+      - name: resume-reconciliation
+        action.lua: |
+          local os = require("os")
+          if obj.metadata == nil then
+              obj.metadata = {}
+          end
+          if obj.metadata.annotations == nil then
+              obj.metadata.annotations = {}
+          end
+          obj.metadata.annotations["cnpg.io/reconciliation"] = nil
+          obj.metadata.annotations["cnpg.io/suspendedAt"] = nil
+          obj.metadata.annotations["cnpg.io/resumedAt"] = os.date("!%Y-%m-%dT%XZ")
           return obj
 
