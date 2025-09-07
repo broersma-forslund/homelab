@@ -262,7 +262,6 @@ data:
           return obj
       - name: suspend-reconciliation
         action.lua: |
-          local os = require("os")
           if obj.metadata == nil then
               obj.metadata = {}
           end
@@ -270,11 +269,9 @@ data:
               obj.metadata.annotations = {}
           end
           obj.metadata.annotations["cnpg.io/reconciliation"] = "disabled"
-          obj.metadata.annotations["cnpg.io/suspendedAt"] = os.date("!%Y-%m-%dT%XZ")
           return obj
       - name: resume-reconciliation
         action.lua: |
-          local os = require("os")
           if obj.metadata == nil then
               obj.metadata = {}
           end
@@ -282,7 +279,5 @@ data:
               obj.metadata.annotations = {}
           end
           obj.metadata.annotations["cnpg.io/reconciliation"] = nil
-          obj.metadata.annotations["cnpg.io/suspendedAt"] = nil
-          obj.metadata.annotations["cnpg.io/resumedAt"] = os.date("!%Y-%m-%dT%XZ")
           return obj
 
