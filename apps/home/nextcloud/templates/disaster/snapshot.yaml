@@ -1,7 +1,0 @@
-apiVersion: snapshot.storage.k8s.io/v1
-kind: VolumeSnapshot
-metadata:
-  name: nextcloud-db-3-snapshot
-spec:
-  source:
-    persistentVolumeClaimName: nextcloud-db-3
