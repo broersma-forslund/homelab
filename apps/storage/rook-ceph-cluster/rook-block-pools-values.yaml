@@ -16,9 +16,9 @@ rook-ceph-cluster:
       failureDomain: zone
       replicated:
         size: 2
-        hybridStorage:
-          primaryDeviceClass: nvme
-          secondaryDeviceClass: hdd
+        # hybridStorage:
+        #   primaryDeviceClass: nvme
+        #   secondaryDeviceClass: hdd
       enableRBDStats: true
     storageClass:
       enabled: true
