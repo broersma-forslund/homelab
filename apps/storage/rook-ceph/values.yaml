@@ -14,8 +14,6 @@ rook-ceph:
     enableMetadata: true
     enableLiveness: true
 
-    cephFSKernelMountOptions: ms_mode=secure
-
     serviceMonitor:
       enabled: true
 
