@@ -3,7 +3,7 @@ dawarich:
     backups:
       enabled: true
       destination: s3://dawarich-db-backups/
-      retention: 14d
+      retention: 8d
       schedule: '0 0 0 * * *'
       secretName: dawarich-db-backup-bucket
       provider: s3
