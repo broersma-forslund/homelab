@@ -4,5 +4,5 @@ version: 0.0.0
 
 dependencies:
 - name: nextcloud
-  version: 6.6.10
+  version: 8.0.1
   repository: https://nextcloud.github.io/helm
