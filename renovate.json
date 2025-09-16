@@ -11,5 +11,13 @@
     "managerFilePatterns": [
       "/(^|/).*?-?values\\.ya?ml$/"
     ]
-  }
+  },
+  "packageRules": [
+    {
+      "description": "Only allow stable Ceph versions (x.2.y) - ignore development (x.0.y) and release candidate (x.1.y) versions",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["quay.io/ceph/ceph"],
+      "allowedVersions": "/^v\\d+\\.2\\.\\d+$/"
+    }
+  ]
 }
