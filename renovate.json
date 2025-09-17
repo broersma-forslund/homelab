@@ -5,14 +5,26 @@
     "preview:dockerVersions"
   ],
   "configMigration": true,
-  "prConcurrentLimit": 0,
   "prHourlyLimit": 0,
+  "dependencyDashboard": true,
+  "prConcurrentLimit": 20,
+  "separateMinorPatch": true,
+  "separateMajorMinor": true,
+  "separateMultipleMajor": true,
+  "commitMessagePrefix": "[{{parentDir}}]",
+  "additionalBranchPrefix": "{{parentDir}}-"
   "helm-values": {
     "managerFilePatterns": [
       "/(^|/).*?-?values\\.ya?ml$/"
     ]
   },
   "packageRules": [
+    {
+      "matchUpdateTypes": [
+        "patch"
+      ],
+      "automerge": true
+    },
     {
       "description": "Only allow stable Ceph versions (x.2.y) - ignore development (x.0.y) and release candidate (x.1.y) versions",
       "matchDatasources": ["docker"],
