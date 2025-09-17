@@ -12,7 +12,7 @@
   "separateMajorMinor": true,
   "separateMultipleMajor": true,
   "commitMessagePrefix": "[{{parentDir}}]",
-  "additionalBranchPrefix": "{{parentDir}}-"
+  "additionalBranchPrefix": "{{parentDir}}-",
   "helm-values": {
     "managerFilePatterns": [
       "/(^|/).*?-?values\\.ya?ml$/"
