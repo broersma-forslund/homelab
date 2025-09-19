@@ -9,6 +9,8 @@ trivy-operator:
 
 
 trivy-operator-polr-adapter:
+  openReports:
+    enabled: true
   adapters:
     vulnerabilityReports:
       enabled: true
