@@ -4,7 +4,7 @@ version: 0.0.0
 
 dependencies:
   - name: trivy-operator
-    version: 0.30.0
+    version: 0.31.0
     repository: oci://ghcr.io/aquasecurity/helm-charts
   - name: trivy-operator-polr-adapter
     version: 0.11.1
