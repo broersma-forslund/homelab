@@ -10,14 +10,15 @@ immich:
     size: 32Gi
     backups:
       enabled: true
-      useBarmanCloudPlugin: true
-      endpoint: http://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc:80
-      path: s3://immich-db-backups/
-      retention: '14d'
-      compression: bzip2
+      destination: s3://immich-db-backups/
+      retention: 8d
+      schedule: '0 0 0 * * *'
       secretName: immich-db-backup-bucket
-      accessKeyName: AWS_ACCESS_KEY_ID
-      secretKeyName: AWS_SECRET_ACCESS_KEY
+      provider: s3
+      s3:
+        endpoint: http://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc:80
+        accessKeyName: AWS_ACCESS_KEY_ID
+        secretKeyName: AWS_SECRET_ACCESS_KEY
 
   ingress:
     enabled: true
