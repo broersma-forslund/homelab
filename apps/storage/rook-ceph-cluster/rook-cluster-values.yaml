@@ -88,29 +88,37 @@ rook-ceph-cluster:
       - name: njord-1-cp1
         devices:
         - name: /dev/disk/by-id/nvme-Samsung_SSD_990_PRO_1TB_S6Z1NU0X447710H_1
-          deviceClass: nvme
+          config:
+            enableCrushUpdates: true
         - name: /dev/disk/by-id/nvme-Samsung_SSD_990_PRO_1TB_S6Z1NU0X447684W_1
-          deviceClass: nvme
+          config:
+            enableCrushUpdates: true
         - name: /dev/disk/by-id/ata-ST20000NM007D-3DJ103_ZVT6HLMR
-          deviceClass: hdd
+          config:
+            enableCrushUpdates: true
         - name: /dev/disk/by-id/ata-ST20000NM007D-3DJ103_ZVT6YKCK
-          deviceClass: hdd
+          config:
+            enableCrushUpdates: true
       - name: njord-2-cp1
         devices:
         - name: /dev/disk/by-id/nvme-Lexar_SSD_NM710_2TB_PMT466R005385P2703
-          deviceClass: nvme
+          config:
+            enableCrushUpdates: true
       - name: njord-3-cp1
         devices:
         - name: /dev/disk/by-id/nvme-Lexar_SSD_NM710_2TB_PM40364101942P2703
-          deviceClass: nvme
+          config:
+            enableCrushUpdates: true
       - name: njord-2-app1
         devices:
         - name: /dev/disk/by-id/nvme-Lexar_SSD_NM710_2TB_PM40364102031P2703
-          deviceClass: nvme
+          config:
+            enableCrushUpdates: true
       - name: njord-3-app1
         devices:
         - name: /dev/disk/by-id/nvme-Lexar_SSD_NM710_2TB_PMT466R009894P2703
-          deviceClass: nvme
+          config:
+            enableCrushUpdates: true
 
     resources:
       mgr:
