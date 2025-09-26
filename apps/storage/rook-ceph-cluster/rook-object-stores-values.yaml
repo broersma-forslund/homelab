@@ -6,7 +6,8 @@ rook-ceph-cluster:
         enableCrushUpdates: true
         failureDomain: zone
         replicated:
-          size: 2
+          minSize: 2
+          size: 3
           hybridStorage:
             primaryDeviceClass: nvme
             secondaryDeviceClass: hdd
@@ -14,7 +15,8 @@ rook-ceph-cluster:
         enableCrushUpdates: true
         failureDomain: zone
         replicated:
-          size: 2
+          minSize: 2
+          size: 3
           hybridStorage:
             primaryDeviceClass: nvme
             secondaryDeviceClass: hdd
