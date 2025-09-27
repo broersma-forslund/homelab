@@ -4,6 +4,7 @@ rook-ceph-cluster:
     spec:
       metadataPool:
         enableCrushUpdates: true
+        enableRBDStats: true
         failureDomain: zone
         replicated:
           size: 3
@@ -13,9 +14,10 @@ rook-ceph-cluster:
       dataPools:
       - name: data0
         enableCrushUpdates: true
+        enableRBDStats: true
         failureDomain: zone
         replicated:
-          size: 3
+          size: 2
           hybridStorage:
             primaryDeviceClass: nvme
             secondaryDeviceClass: hdd
