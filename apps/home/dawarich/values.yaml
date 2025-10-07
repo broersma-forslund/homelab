@@ -28,7 +28,7 @@ dawarich:
       updateInterval: '168h'
       logLevel: DEBUG
     persistence:
-      size: 500Gi
+      size: 20Gi
 
 
   redis:
