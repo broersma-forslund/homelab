@@ -5,4 +5,4 @@ version: 1.0.0
 dependencies:
   - name: node-feature-discovery
     version: 0.18.0
-    repository: https://kubernetes-sigs.github.io/node-feature-discovery/charts
+    repository: oci://registry.k8s.io/nfd/charts
