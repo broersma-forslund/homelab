@@ -7,5 +7,5 @@ dependencies:
     version: v1.19.0
     repository: https://charts.jetstack.io
   - name: trust-manager
-    version: v0.20.0
+    version: v0.20.1
     repository: https://charts.jetstack.io
