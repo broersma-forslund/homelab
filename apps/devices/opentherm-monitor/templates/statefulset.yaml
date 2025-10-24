@@ -14,8 +14,8 @@ spec:
     spec:
       automountServiceAccountToken: false
       containers:
-      - name: sonarr
-        image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
+      - name: {{ template "common.fullname" . }}
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}@{{ .Values.image.sha }}
         env:
         - name: TZ
           value: Europe/Amsterdam
@@ -39,12 +39,9 @@ spec:
       volumes:
       - name: logs
         emptyDir: {}
-      - name: data
-        persistentVolumeClaim:
-          claimName: data
   volumeClaimTemplates:
   - metadata:
-      name: pdata
+      name: data
     spec:
       accessModes:
       - ReadWriteOnce

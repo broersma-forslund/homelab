@@ -1,3 +1,13 @@
 image:
   repository: hvxl/otmonitor
-  tag: 6.6
+  tag: latest
+  sha: sha256:d060793406684e047f623324df8fe92543d630080b0bbce0832d4ab1d74969e8
+
+route:
+  enabled: false
+  hostnames:
+    - opentherm-monitor.mobrockers.com
+  parentRefs:
+    - name: envoy-gateway
+      namespace: envoy-gateway
+      sectionName: web-https
