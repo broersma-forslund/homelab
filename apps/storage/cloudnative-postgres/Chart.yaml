@@ -7,5 +7,5 @@ dependencies:
     version: 0.26.1
     repository: oci://ghcr.io/cloudnative-pg/charts
   - name: plugin-barman-cloud
-    version: 0.2.0
+    version: 0.3.1
     repository: oci://ghcr.io/cloudnative-pg/charts
