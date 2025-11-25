@@ -6,8 +6,8 @@ dawarich:
       autoRegister: true
       providerName: Authentik
       issuerUrl: https://authentik.mobrockers.com/application/o/dawarich/
-      clientId: xxx
-      secretName: dawarich-oidc-credentials
+      clientId: ffCBiMvhKwUp7UlOagvZYZTuo7abXZArfNRp5FDe
+      secretName: oidc-credentials
   database:
     backups:
       enabled: true
