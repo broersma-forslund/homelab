@@ -1,4 +1,5 @@
-dawarich: 
+dawarich:
+  hostname: timeline.mobrockers.com
   config:
     oidc:
       enabled: true
