@@ -1,4 +1,7 @@
 dawarich: 
+  config:
+    oidc:
+      enabled: true
   database:
     backups:
       enabled: true
