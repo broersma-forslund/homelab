@@ -3,7 +3,8 @@ dawarich:
   config:
     oidc:
       enabled: true
-      providerName: Autentik
+      autoRegister: true
+      providerName: Authentik
       issuerUrl: https://authentik.mobrockers.com/application/o/dawarich/
       clientId: xxx
       secretName: dawarich-oidc-credentials
