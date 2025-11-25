@@ -1,4 +1,13 @@
-dawarich: 
+dawarich:
+  hostname: timeline.mobrockers.com
+  config:
+    oidc:
+      enabled: true
+      autoRegister: true
+      providerName: Authentik
+      issuerUrl: https://authentik.mobrockers.com/application/o/dawarich/
+      clientId: ffCBiMvhKwUp7UlOagvZYZTuo7abXZArfNRp5FDe
+      secretName: oidc-credentials
   database:
     backups:
       enabled: true
