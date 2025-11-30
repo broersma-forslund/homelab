@@ -8,3 +8,21 @@ google_assistant:
   - light
   - lock
   - vacuum
+  - climate
+  entity_config:
+    climate.mechanical_room_opentherm_gateway:
+      expose: false
+    climate.living_room_nest_thermostat:
+      expose: false
+    climate.bedroom_radiator:
+      expose: false
+    climate.kitchen_radiator:
+      expose: false
+    climate.bathroom_radiator:
+      expose: false
+    climate.office_radiator_left:
+      expose: false
+    climate.office_radiator_right:
+      expose: false
+    climate.hall_radiator:
+      expose: false
