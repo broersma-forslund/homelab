@@ -14,6 +14,8 @@ google_assistant:
       expose: false
     climate.living_room_nest_thermostat:
       expose: false
+    climate.living_room_radiator:
+      expose: false
     climate.bedroom_radiator:
       expose: false
     climate.kitchen_radiator:
