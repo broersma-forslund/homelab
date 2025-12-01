@@ -1,6 +1,6 @@
 image:
   repository: koenkk/zigbee2mqtt
-  tag: 2.6.3
+  tag: 2.7.0
 
 config:
   image:
