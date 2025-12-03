@@ -1,6 +1,7 @@
 id: '1661453236911'
 alias: Bathroom lights motion
-description: ''
+description: 'Turn bathroom lights on when motion detected between 08:00 and 22:00; turn off after 6 minutes of no motion.'
+mode: restart
 conditions:
   - condition: time
     after: '08:00:00'
