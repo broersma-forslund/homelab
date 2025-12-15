@@ -12,9 +12,6 @@ spec:
       issuer: https://authentik.mobrockers.com/application/o/{{ template "common.fullname" . }}/
     redirectURL: https://{{ template "common.fullname" . }}.mobrockers.com/oauth2/callback
     logoutPath: /oauth2/logout
-    cookieDomain: mobrockers.com
-    cookieConfig:
-      sameSite: 'Strict'
     scopes: ['offline_access']
     clientID: a0KXElMInxzoQXf9sOK4mNqe1P8MI4vqnMUSJL6o
     clientSecret:
