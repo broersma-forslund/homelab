@@ -12,6 +12,6 @@ spec:
       issuer: https://authentik.mobrockers.com/application/o/opentherm-monitor/
     redirectURL: https://opentherm-monitor.mobrockers.com/oauth2/callback
     logoutPath: /oauth2/logout
-    clientID:
+    clientID: eD5uQ5w1qIQUTtFWTXRn7gcqUgLYFJo3Qw3Jv8Jq
     clientSecret:
       name: route-oidc-secret

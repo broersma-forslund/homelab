@@ -1,6 +1,6 @@
 opentherm-monitor:
   route:
-    enabled: false
+    enabled: true
     hostnames:
       - opentherm-monitor.mobrockers.com
     parentRefs:
