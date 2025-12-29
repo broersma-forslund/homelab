@@ -1,0 +1,4 @@
+- id: bedroom_off
+  name: Bedroom - Off
+  entities:
+    light.bedroom_fan_light: { state: "off" }

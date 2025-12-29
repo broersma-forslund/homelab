@@ -1,0 +1,17 @@
+- id: kitchen_off
+  name: Kitchen - Off
+  entities:
+    light.kitchen_ceiling: { state: "off" }
+    light.kitchen_spots: { state: "off" }
+
+- id: kitchen_day
+  name: Kitchen - Day
+  entities:
+    light.kitchen_ceiling:
+      state: "on"
+      brightness: 255
+      kelvin: 4000
+    light.kitchen_spots:
+      state: "on"
+      brightness: 255
+      kelvin: 4000

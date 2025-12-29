@@ -18,14 +18,10 @@ logger:
       # Really? Cool... I know... I installed them...
       - "We found a custom integration"
 
-    homeassistant.util.yaml.loader:
-      # I use YAML anchors and aliasses, causing duplicate keys in YAML.
-      # For this use-case, that is on purpose, as an alias is used, but
-      # with some overrides.
-      # While a good warning, I'm going to disable it.
-      - "contains duplicate key"
-
     pychromecast.socket_client:
       # Surpress to chatty Cast integration
       - "Failed to connect to service ServiceInfo"
       - "Error communicating with socket, resetting connection"
+
+    homeassistant.components.mqtt.entity:
+      - '^The configuration for entity sensor\.valetudo_robin_[A-Za-z0-9_]+ uses the deprecated option `object_id` to set the default entity id'

@@ -3,28 +3,18 @@ google_assistant:
   report_state: true
   service_account: !include ../google-home-sync-token.json
   secure_devices_pin: !secret assistant_secure_devices_pin
-  expose_by_default: true
-  exposed_domains:
-  - light
-  - lock
-  - vacuum
-  - climate
+  expose_by_default: false
   entity_config:
-    climate.mechanical_room_opentherm_gateway:
-      expose: false
-    climate.living_room_nest_thermostat:
-      expose: false
-    climate.living_room_radiator:
-      expose: false
-    climate.bedroom_radiator:
-      expose: false
-    climate.kitchen_radiator:
-      expose: false
-    climate.bathroom_radiator:
-      expose: false
-    climate.office_radiator_left:
-      expose: false
-    climate.office_radiator_right:
-      expose: false
-    climate.hall_radiator:
-      expose: false
+    # lights
+    light.living_room_couch_light:
+    light.living_room_dining_table_light:
+    light.living_room_bookcase_spots:
+    lights.living_room_transition_spots:
+    light.kitchen_ceiling:
+    light.kitchen_spots:
+    light.bedroom_fan_light:
+    # scenes
+    scene.movie_night:
+    scene.house_night:
+    scene.living_room_day:
+    scene.romantic_dinner:

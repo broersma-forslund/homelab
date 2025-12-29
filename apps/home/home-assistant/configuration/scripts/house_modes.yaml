@@ -1,0 +1,21 @@
+movie_night:
+  alias: Movie Night
+  icon: mdi:movie
+  sequence:
+    - service: scene.turn_on
+      target:
+        entity_id: scene.living_room_movie
+    - service: scene.turn_on
+      target:
+        entity_id: scene.kitchen_off
+
+home_sleep:
+  alias: Sleep
+  icon: mdi:power-sleep
+  sequence:
+    - service: scene.turn_on
+      target:
+        entity_id:
+          - scene.living_room_off
+          - scene.kitchen_off
+          - scene.bedroom_off
