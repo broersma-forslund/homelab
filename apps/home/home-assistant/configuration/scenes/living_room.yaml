@@ -4,7 +4,7 @@
     light.living_room_couch_light: { state: "off" }
     light.living_room_dining_table_light: { state: "off" }
     light.living_room_bookcase_spots: { state: "off" }
-    lights.living_room_transition_spots: { state: "off" }
+    light.living_room_transition_spots: { state: "off" }
 
 - id: living_room_day
   name: Living Room - Day
@@ -21,7 +21,7 @@
       state: "on"
       brightness: 255
       kelvin: 4000
-    lights.living_room_transition_spots:
+    light.living_room_transition_spots:
       state: "on"
       brightness: 255
       kelvin: 4000
