@@ -13,7 +13,8 @@ logger:
     # Suppress noisy "We found a custom integration <name> ..." warnings
     - '^We found a custom integration [A-Za-z0-9_.-]+ which has not been tested by Home Assistant\. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant$'
     homeassistant.components.mqtt.entity:
-    - '^The configuration for entity sensor\.valetudo_robin_[A-Za-z0-9_]+ uses the deprecated option `object_id` to set the default entity id'
+    # Suppress MQTT entity deprecated object_id warnings for all entity types
+    - '^The configuration for entity (binary_sensor|button|camera|number|select|sensor|switch|vacuum)\.valetudo_robin(_[A-Za-z0-9_]+)? uses the deprecated option `object_id` to set the default entity id'
     homeassistant.components.mqtt.light.schema_json:
     - '^Invalid color mode ''hs'' received for entity light\.[A-Za-z0-9_.-]+$'
     custom_components.versatile_thermostat.prop_algorithm:
