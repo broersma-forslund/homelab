@@ -9,23 +9,14 @@ logger:
   default: warning
 
   filters:
-    homeassistant:
-      # This can happen during restart having Ingress tabs open.
-      # I really don't care about it.
-      - "Error doing job: Task exception was never retrieved"
-
     homeassistant.loader:
-      # Really? Cool... I know... I installed them...
-      - "We found a custom integration"
-
-    homeassistant.util.yaml.loader:
-      # I use YAML anchors and aliasses, causing duplicate keys in YAML.
-      # For this use-case, that is on purpose, as an alias is used, but
-      # with some overrides.
-      # While a good warning, I'm going to disable it.
-      - "contains duplicate key"
-
-    pychromecast.socket_client:
-      # Surpress to chatty Cast integration
-      - "Failed to connect to service ServiceInfo"
-      - "Error communicating with socket, resetting connection"
+    # Suppress noisy "We found a custom integration <name> ..." warnings
+    - '^We found a custom integration [A-Za-z0-9_.-]+ which has not been tested by Home Assistant\. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant$'
+    homeassistant.components.mqtt.entity:
+    - '^The configuration for entity sensor\.valetudo_robin_[A-Za-z0-9_]+ uses the deprecated option `object_id` to set the default entity id'
+    homeassistant.components.mqtt.light.schema_json:
+    - '^Invalid color mode ''hs'' received for entity light\.[A-Za-z0-9_.-]+$'
+    custom_components.versatile_thermostat.prop_algorithm:
+    - '^.*Thermostat - Proportional algorithm: calculation is not possible cause target_temp \([0-9]+(?:\.[0-9]+)?\) or current_temp \(None\) is null\. Heating/cooling will be disabled\. This could be normal at startup$'
+    homeassistant.components.dhcp:
+    - '^The deprecated constant DhcpServiceInfo was used from [A-Za-z0-9_.-]+\. It will be removed in HA Core [0-9]+\.[0-9]+\. Use homeassistant\.helpers\.service_info\.dhcp\.DhcpServiceInfo instead, please report it to the author of the .* custom integration$'
