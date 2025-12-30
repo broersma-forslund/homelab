@@ -1,40 +1,35 @@
 id: 'trvzb_temperature_sensor_fallback_notification'
 alias: TRVZB Temperature Sensor Fallback Alert
 description: >
-  Notify administrators when a TRVZB switches from external temperature sensor
-  to internal sensor (fallback mode). This automation uses event-based
-  monitoring to detect changes in all select.*_temperature_sensor_select
-  entities.
+  Notify administrators when a TRVZB switches from external temperature
+  sensor to internal sensor (fallback mode). Uses state trigger for optimal
+  performance. Entity IDs must be explicitly listed below.
 mode: queued
 max: 10
 trigger:
-  # Monitor all state changes via event
-  - platform: event
-    event_type: state_changed
-condition:
-  # Check if the entity is a temperature sensor select
-  - condition: template
-    value_template: >
-      {{ trigger.event.data.entity_id.endswith('_temperature_sensor_select') }}
-  # Check if it changed from 'external' to 'external_2' or 'external_3'
-  - condition: template
-    value_template: >
-      {{ trigger.event.data.old_state is not none and
-         trigger.event.data.old_state.state is not none and
-         trigger.event.data.old_state.state == 'external' and
-         trigger.event.data.new_state is not none and
-         trigger.event.data.new_state.state is not none and
-         trigger.event.data.new_state.state in ['external_2', 'external_3'] }}
+  # State trigger - most performant, only evaluates for listed entities
+  # Add your TRVZB temperature sensor select entities here:
+  # Example: select.bedroom_radiator_temperature_sensor_select
+  - platform: state
+    entity_id:
+    # Add all select.*_temperature_sensor_select entities here
+    # To find them, use Developer Tools > States and search for
+    # entities ending with "_temperature_sensor_select"
+    to:
+      - 'external_2'
+      - 'external_3'
+    from: 'external'
+condition: []
 action:
   - service: persistent_notification.create
     data:
       title: 'TRVZB Temperature Sensor Fallback Detected'
       message: >
         The TRVZB
-        {{ trigger.event.data.new_state.attributes.friendly_name |
-           default(trigger.event.data.entity_id) }}
+        {{ trigger.to_state.attributes.friendly_name |
+           default(trigger.entity_id) }}
         has switched from external temperature sensor mode to
-        {{ trigger.event.data.new_state.state }} mode.
+        {{ trigger.to_state.state }} mode.
 
         This indicates the external temperature sensor has not sent updates
         for several hours and the TRV has fallen back to using its internal
@@ -48,12 +43,12 @@ action:
 
         - Pairing status between the TRV and external sensor
 
-        Entity: {{ trigger.event.data.entity_id }}
+        Entity: {{ trigger.entity_id }}
 
-        Previous state: {{ trigger.event.data.old_state.state }}
+        Previous state: {{ trigger.from_state.state }}
 
-        Current state: {{ trigger.event.data.new_state.state }}
+        Current state: {{ trigger.to_state.state }}
 
         Time: {{ now().strftime('%Y-%m-%d %H:%M:%S') }}
       notification_id: >
-        trvzb_fallback_{{ trigger.event.data.entity_id | replace('.', '_') }}
+        trvzb_fallback_{{ trigger.entity_id | replace('.', '_') }}
