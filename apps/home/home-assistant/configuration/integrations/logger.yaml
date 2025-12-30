@@ -20,4 +20,3 @@ logger:
     - '^.*Thermostat - Proportional algorithm: calculation is not possible cause target_temp \([0-9]+(?:\.[0-9]+)?\) or current_temp \(None\) is null\. Heating/cooling will be disabled\. This could be normal at startup$'
     homeassistant.components.dhcp:
     - '^The deprecated constant DhcpServiceInfo was used from [A-Za-z0-9_.-]+\. It will be removed in HA Core [0-9]+\.[0-9]+\. Use homeassistant\.helpers\.service_info\.dhcp\.DhcpServiceInfo instead, please report it to the author of the .* custom integration$'
-  
