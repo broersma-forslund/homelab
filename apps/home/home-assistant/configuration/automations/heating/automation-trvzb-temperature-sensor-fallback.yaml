@@ -1,9 +1,10 @@
 id: 'trvzb_temperature_sensor_fallback_notification'
 alias: TRVZB Temperature Sensor Fallback Alert
 description: >
-  Notify administrators when a TRVZB switches from external temperature sensor 
-  to internal sensor (fallback mode). This automation uses event-based monitoring
-  to detect changes in all select.*_temperature_sensor_select entities.
+  Notify administrators when a TRVZB switches from external temperature sensor
+  to internal sensor (fallback mode). This automation uses event-based
+  monitoring to detect changes in all select.*_temperature_sensor_select
+  entities.
 mode: queued
 max: 10
 trigger:
@@ -27,19 +28,29 @@ action:
     data:
       title: 'TRVZB Temperature Sensor Fallback Detected'
       message: >
-        The TRVZB {{ trigger.event.data.new_state.attributes.friendly_name | default(trigger.event.data.entity_id) }} 
-        has switched from external temperature sensor mode to {{ trigger.event.data.new_state.state }} mode.
-        
-        This indicates the external temperature sensor has not sent updates for several hours
-        and the TRV has fallen back to using its internal sensor.
-        
+        The TRVZB
+        {{ trigger.event.data.new_state.attributes.friendly_name |
+           default(trigger.event.data.entity_id) }}
+        has switched from external temperature sensor mode to
+        {{ trigger.event.data.new_state.state }} mode.
+
+        This indicates the external temperature sensor has not sent updates
+        for several hours and the TRV has fallen back to using its internal
+        sensor.
+
         Please check:
+
         - Battery level of the external temperature sensor
-        - Connectivity of the external temperature sensor  
+
+        - Connectivity of the external temperature sensor
+
         - Pairing status between the TRV and external sensor
-        
+
         Entity: {{ trigger.event.data.entity_id }}
+
         Previous state: {{ trigger.event.data.old_state.state }}
+
         Current state: {{ trigger.event.data.new_state.state }}
+
         Time: {{ now().strftime('%Y-%m-%d %H:%M:%S') }}
       notification_id: 'trvzb_fallback_{{ trigger.event.data.entity_id }}'
