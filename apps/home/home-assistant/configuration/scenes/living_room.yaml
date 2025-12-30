@@ -26,32 +26,32 @@
       brightness: 255
       kelvin: 4000
 
-- id: living_room_romantic_dinner
-  entities:
-    light.living_room_couch_light:
-      state: "off"
-    light.living_room_dining_table_light:
-      state: "on"
-      brightness: 40
-      kelvin: 2200
-    light.living_room_bookcase_spots:
-      state: "on"
-      brightness: 40
-      kelvin: 2200
-    lights.living_room_transition_spots:
-      state: "on"
-      brightness: 80
-      kelvin: 2700
+# - id: living_room_romantic_dinner
+#   entities:
+#     light.living_room_couch_light:
+#       state: "off"
+#     light.living_room_dining_table_light:
+#       state: "on"
+#       brightness: 40
+#       kelvin: 2200
+#     light.living_room_bookcase_spots:
+#       state: "on"
+#       brightness: 40
+#       kelvin: 2200
+#     light.living_room_transition_spots:
+#       state: "on"
+#       brightness: 80
+#       kelvin: 2700
 
-- id: living_room_movie
-  entities:
-    light.living_room_couch_light: { state: "off" }
-    light.living_room_dining_table_light: { state: "off" }
-    light.living_room_bookcase_spots:
-      state: "on"
-      brightness: 40
-      kelvin: 2200
-    lights.living_room_transition_spots:
-      state: "on"
-      brightness: 80
-      kelvin: 2700
+# - id: living_room_movie
+#   entities:
+#     light.living_room_couch_light: { state: "off" }
+#     light.living_room_dining_table_light: { state: "off" }
+#     light.living_room_bookcase_spots:
+#       state: "on"
+#       brightness: 40
+#       kelvin: 2200
+#     light.living_room_transition_spots:
+#       state: "on"
+#       brightness: 80
+#       kelvin: 2700
