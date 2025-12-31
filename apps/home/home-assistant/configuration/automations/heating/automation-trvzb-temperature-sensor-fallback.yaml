@@ -4,6 +4,7 @@ description: >
   Notify administrators when a TRVZB is in fallback mode (external_2 or
   external_3). Checks every 3 hours since TRVZB switches to fallback after
   2 hours of no external sensor updates. Auto-discovers all TRVZBs.
+  Uses Spook's repairs.create for better integration with Home Assistant.
 mode: single
 trigger:
   # Time-based trigger - checks every 3 hours for minimal performance impact
@@ -24,29 +25,39 @@ action:
         {% endfor %}
         {{ ns.entities }}
       sequence:
-        - service: persistent_notification.create
+        # Create a repair issue using Spook integration
+        - service: spook.create_repair
           data:
-            title: 'TRVZB Temperature Sensor Fallback Detected'
-            message: >
+            identifier: >
+              trvzb_fallback_{{ repeat.item | replace('.', '_') }}
+            title: >
+              {{ state_attr(repeat.item, 'friendly_name') |
+              default(repeat.item) }} in Fallback Mode
+            description: >
               The TRVZB {{ state_attr(repeat.item, 'friendly_name') |
-              default(repeat.item) }} is in {{ states(repeat.item) }} mode.
+              default(repeat.item) }} is currently in {{ states(repeat.item) }}
+              mode instead of using the external temperature sensor.
 
               This indicates the external temperature sensor has not sent
               updates for several hours and the TRV has fallen back to using
-              its internal sensor.
+              its internal sensor, which may lead to inaccurate temperature
+              readings.
 
-              Please check:
+              **Troubleshooting steps:**
 
-              - Battery level of the external temperature sensor
+              1. Check the battery level of the external temperature sensor
+              2. Verify the external sensor is within Zigbee network range
+              3. Check if the external sensor is still paired with Home
+                 Assistant
+              4. Verify the pairing status between the TRV and external
+                 sensor
 
-              - Connectivity of the external temperature sensor
+              **Manual fix:**
 
-              - Pairing status between the TRV and external sensor
+              After resolving the external sensor issue, manually set the TRV
+              back to external mode using the `{{ repeat.item }}` entity.
 
-              Entity: {{ repeat.item }}
-
-              Current state: {{ states(repeat.item) }}
-
-              Time: {{ now().strftime('%Y-%m-%d %H:%M:%S') }}
-            notification_id: >
-              trvzb_fallback_{{ repeat.item | replace('.', '_') }}
+              - Entity: `{{ repeat.item }}`
+              - Current state: `{{ states(repeat.item) }}`
+              - Detected at: {{ now().strftime('%Y-%m-%d %H:%M:%S') }}
+            severity: warning

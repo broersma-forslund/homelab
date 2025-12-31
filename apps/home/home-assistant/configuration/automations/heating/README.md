@@ -2,7 +2,13 @@
 
 ## Overview
 
-This automation monitors TRVZB (Thermostatic Radiator Valve with Zigbee) devices in the Home Assistant instance and sends notifications to administrators when a TRV is in fallback mode (using internal temperature sensor instead of external sensor).
+This automation monitors TRVZB (Thermostatic Radiator Valve with Zigbee) devices in the Home Assistant instance and creates repair issues when a TRV is in fallback mode (using internal temperature sensor instead of external sensor).
+
+## Requirements
+
+**Spook Integration**: This automation requires the [Spook](https://spook.boo/) custom integration to be installed. Spook provides the `spook.create_repair` service that creates repair issues in Home Assistant's native Repairs UI.
+
+Install Spook via HACS or manually from: https://github.com/frenck/spook
 
 ## Problem Statement
 
@@ -15,7 +21,17 @@ When a TRVZB is configured to use an external temperature sensor, it will automa
 
 ## Solution
 
-The automation in `automation-trvzb-temperature-sensor-fallback.yaml` checks all TRVZBs every 3 hours and sends a persistent notification for any device in fallback mode.
+The automation in `automation-trvzb-temperature-sensor-fallback.yaml` checks all TRVZBs every 3 hours and creates a repair issue for any device in fallback mode. Repair issues appear in **Settings > System > Repairs**.
+
+## Why Spook Repairs Instead of Notifications?
+
+Using Spook's repair system provides several advantages over persistent notifications:
+
+✅ **Native Integration**: Appears in Home Assistant's built-in Repairs UI
+✅ **Better Visibility**: Shows up in Settings > System > Repairs with a badge
+✅ **Structured Information**: Formatted with title, description, and severity
+✅ **Automatic Cleanup**: Issues can be dismissed or automatically cleared when resolved
+✅ **Centralized**: All repairs in one place instead of scattered notifications
 
 ## Configuration Required
 
@@ -26,7 +42,28 @@ The automation in `automation-trvzb-temperature-sensor-fallback.yaml` checks all
 1. **Time-based Check**: Runs every 3 hours (TRVZB switches to fallback after 2 hours of no updates)
 2. **Auto-discovery**: Finds all `select.*_temperature_sensor_select` entities
 3. **Status Check**: Identifies entities in `external_2` or `external_3` state
-4. **Notification**: Creates a persistent notification for each device in fallback mode
+4. **Repair Issue**: Creates a repair issue via Spook for each device in fallback mode
+
+## Repair Issue Details
+
+When a TRVZB is found in fallback mode, a repair issue is created with:
+
+- **Title**: Device name and "in Fallback Mode"
+- **Severity**: Warning
+- **Description**: Detailed information including:
+  - Current fallback state (external_2 or external_3)
+  - Explanation of the issue
+  - Troubleshooting checklist (battery, connectivity, pairing)
+  - Manual fix instructions
+  - Entity ID and detection timestamp
+
+## Viewing and Resolving Issues
+
+1. Navigate to **Settings > System > Repairs** in Home Assistant
+2. Look for repairs with titles like "Bedroom Radiator in Fallback Mode"
+3. Click on the repair to see full troubleshooting details
+4. After fixing the external sensor issue, manually set the TRV back to `external` mode
+5. Dismiss the repair once resolved (or it will auto-clear on next check if TRV is back to external mode)
 
 ## Performance Considerations
 
@@ -34,47 +71,18 @@ This automation uses a **time-based trigger** which is highly efficient:
 - ✅ Runs only every 3 hours (8 times per day)
 - ✅ Minimal CPU and memory overhead
 - ✅ Auto-discovers all TRVZBs without configuration
-- ✅ Notification delay is acceptable (worst case: 3 hours after fallback occurs)
+- ✅ Issue detection delay is acceptable (worst case: 3 hours after fallback occurs)
 
 **Why This Approach:**
 - TRVZB devices switch to fallback mode after 2 hours without external sensor updates
 - Checking every 3 hours ensures detection within a reasonable timeframe
-- The impact of delayed notification is minimal (slightly cooler temperature)
+- The impact of delayed detection is minimal (slightly cooler temperature)
 - This approach provides the best balance of functionality and performance
 
 **Alternative Approaches Considered:**
 - **Event trigger** (`state_changed` event): Fires on every state change (100s/sec), extremely inefficient ❌
 - **State trigger**: Requires manual entity configuration, more immediate but more maintenance ⚠️
 - **Time-based trigger** (current): Best performance, zero configuration, acceptable delay ✅
-
-## Notification Details
-
-When triggered, the notification includes:
-
-- **Title**: "TRVZB Temperature Sensor Fallback Detected"
-- **Friendly Name**: The human-readable name of the affected TRV
-- **Current State**: The fallback mode (`external_2` or `external_3`)
-- **Previous State**: Confirms it was in `external` mode
-- **Troubleshooting Checklist**:
-  - Check battery level of external sensor
-  - Verify connectivity of external sensor
-  - Check pairing status between TRV and external sensor
-- **Entity ID**: For easy identification in Home Assistant
-- **Timestamp**: When the fallback was detected
-
-## Notification Details
-
-When a TRVZB is found in fallback mode, the notification includes:
-
-- **Title**: "TRVZB Temperature Sensor Fallback Detected"
-- **Friendly Name**: The human-readable name of the affected TRV
-- **Current State**: The fallback mode (`external_2` or `external_3`)
-- **Troubleshooting Checklist**:
-  - Check battery level of external sensor
-  - Verify connectivity of external sensor
-  - Check pairing status between TRV and external sensor
-- **Entity ID**: For easy identification in Home Assistant
-- **Timestamp**: When the check was performed
 
 ## Supported Entities
 
@@ -85,9 +93,11 @@ Any select entity ending with `_temperature_sensor_select` is automatically moni
 
 ## Automation Behavior
 
+## Automation Behavior
+
 - **Mode**: `single` (prevents overlapping executions)
 - **Schedule**: Every 3 hours (at 00:00, 03:00, 06:00, 09:00, 12:00, 15:00, 18:00, 21:00)
-- **Notification Persistence**: Each TRV gets a unique notification that persists until dismissed or the issue is resolved
+- **Repair Persistence**: Each TRV gets a unique repair issue that can be dismissed or auto-clears when resolved
 
 ## Maintenance
 
@@ -95,7 +105,7 @@ Any select entity ending with `_temperature_sensor_select` is automatically moni
 
 ## Troubleshooting
 
-If you receive a notification:
+If you receive a repair issue:
 
 1. **Check External Sensor Battery**
    - Low battery is the most common cause
@@ -111,8 +121,8 @@ If you receive a notification:
    - Set TRV back to `external` mode after pairing
 
 4. **Monitor the Situation**
-   - The notification will reappear on the next 3-hour check if still in fallback
-   - Once resolved (TRV returns to `external` mode), the notification will stop appearing
+   - The repair issue will reappear on the next 3-hour check if still in fallback
+   - Once resolved (TRV returns to `external` mode), dismiss the repair or it will auto-clear on next check
 
 ## Technical Details
 
@@ -128,8 +138,16 @@ Uses the `time_pattern` platform for scheduled checks:
 Uses a `repeat` loop with dynamic entity discovery:
 1. Template finds all `select.*_temperature_sensor_select` entities
 2. Filters to only those in `external_2` or `external_3` state
-3. Creates a notification for each affected device
-4. Unique notification IDs prevent duplicates
+3. Creates a repair issue via Spook for each affected device
+4. Unique issue identifiers prevent duplicates
+
+### Spook Integration
+
+Uses Spook's `spook.create_repair` service:
+- Creates repair issues in Home Assistant's native Repairs UI
+- Issues appear in Settings > System > Repairs
+- Supports markdown formatting in descriptions
+- Each issue has a unique identifier based on entity ID
 
 ### Why Time-based Instead of State-based?
 
@@ -142,5 +160,6 @@ Time-based triggers offer the best balance:
 ## Compatibility
 
 - **Home Assistant**: 2021.4 or later (requires time_pattern trigger support)
+- **Spook Integration**: Required - install via HACS or from https://github.com/frenck/spook
 - **TRVZB Devices**: Any Zigbee TRV that supports external temperature sensor mode
 - **Integration**: Works with Zigbee2MQTT, ZHA, or any integration that exposes `select.*_temperature_sensor_select` entities
