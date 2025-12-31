@@ -1,54 +1,52 @@
 id: 'trvzb_temperature_sensor_fallback_notification'
 alias: TRVZB Temperature Sensor Fallback Alert
 description: >
-  Notify administrators when a TRVZB switches from external temperature
-  sensor to internal sensor (fallback mode). Uses state trigger for optimal
-  performance. Entity IDs must be explicitly listed below.
-mode: queued
-max: 10
+  Notify administrators when a TRVZB is in fallback mode (external_2 or
+  external_3). Checks every 3 hours since TRVZB switches to fallback after
+  2 hours of no external sensor updates. Auto-discovers all TRVZBs.
+mode: single
 trigger:
-  # State trigger - most performant, only evaluates for listed entities
-  # Add your TRVZB temperature sensor select entities here:
-  # Example: select.bedroom_radiator_temperature_sensor_select
-  - platform: state
-    entity_id:
-    # Add all select.*_temperature_sensor_select entities here
-    # To find them, use Developer Tools > States and search for
-    # entities ending with "_temperature_sensor_select"
-    to:
-      - 'external_2'
-      - 'external_3'
-    from: 'external'
+  # Time-based trigger - checks every 3 hours for minimal performance impact
+  # TRVZB switches to fallback mode after 2 hours, so 3-hour checks are
+  # sufficient
+  - platform: time_pattern
+    hours: '/3'
 condition: []
 action:
-  - service: persistent_notification.create
-    data:
-      title: 'TRVZB Temperature Sensor Fallback Detected'
-      message: >
-        The TRVZB
-        {{ trigger.to_state.attributes.friendly_name |
-           default(trigger.entity_id) }}
-        has switched from external temperature sensor mode to
-        {{ trigger.to_state.state }} mode.
+  # Check all temperature_sensor_select entities for fallback modes
+  - repeat:
+      for_each: >
+        {% set ns = namespace(entities=[]) %}
+        {% for entity in states.select
+           | selectattr('entity_id', 'match', '.*_temperature_sensor_select$')
+           | selectattr('state', 'in', ['external_2', 'external_3']) %}
+          {% set ns.entities = ns.entities + [entity.entity_id] %}
+        {% endfor %}
+        {{ ns.entities }}
+      sequence:
+        - service: persistent_notification.create
+          data:
+            title: 'TRVZB Temperature Sensor Fallback Detected'
+            message: >
+              The TRVZB {{ state_attr(repeat.item, 'friendly_name') |
+              default(repeat.item) }} is in {{ states(repeat.item) }} mode.
 
-        This indicates the external temperature sensor has not sent updates
-        for several hours and the TRV has fallen back to using its internal
-        sensor.
+              This indicates the external temperature sensor has not sent
+              updates for several hours and the TRV has fallen back to using
+              its internal sensor.
 
-        Please check:
+              Please check:
 
-        - Battery level of the external temperature sensor
+              - Battery level of the external temperature sensor
 
-        - Connectivity of the external temperature sensor
+              - Connectivity of the external temperature sensor
 
-        - Pairing status between the TRV and external sensor
+              - Pairing status between the TRV and external sensor
 
-        Entity: {{ trigger.entity_id }}
+              Entity: {{ repeat.item }}
 
-        Previous state: {{ trigger.from_state.state }}
+              Current state: {{ states(repeat.item) }}
 
-        Current state: {{ trigger.to_state.state }}
-
-        Time: {{ now().strftime('%Y-%m-%d %H:%M:%S') }}
-      notification_id: >
-        trvzb_fallback_{{ trigger.entity_id | replace('.', '_') }}
+              Time: {{ now().strftime('%Y-%m-%d %H:%M:%S') }}
+            notification_id: >
+              trvzb_fallback_{{ repeat.item | replace('.', '_') }}
