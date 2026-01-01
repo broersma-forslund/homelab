@@ -91,8 +91,7 @@ action:
                 - variables:
                     counter_var: "var.trvzb_fallback_count_{{ repeat.item | replace('select.', '') | replace('_temperature_sensor_select', '') }}"
                     current_count: >
-                      {% set count_entity = 'var.trvzb_fallback_count_' + (repeat.item | replace('select.', '') | replace('_temperature_sensor_select', '')) %}
-                      {{ states(count_entity) | int(0) + 1 }}
+                      {{ states(counter_var) | int(0) + 1 }}
                 # Store updated counter (using variable.set_variable from Spook or similar)
                 - service: variable.set_variable
                   data:
