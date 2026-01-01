@@ -30,8 +30,8 @@ action:
             entity_id: "{{ repeat.item }}"
             current_state: "{{ states(repeat.item) }}"
             friendly_name: "{{ state_attr(repeat.item, 'friendly_name') | default(repeat.item) }}"
-            # Create unique issue_id based on entity_id
-            issue_id: "trvzb_temp_sensor_{{ repeat.item | replace('.', '_') | replace('select_', '') }}"
+            # Create unique issue_id based on room/device name portion of entity_id
+            issue_id: "trvzb_temp_sensor_{{ repeat.item | replace('select.', '') | replace('_temperature_sensor_select', '') }}"
         - choose:
             # CASE 1: ERROR - Internal or external_2 mode (permanent fallback)
             - conditions:
