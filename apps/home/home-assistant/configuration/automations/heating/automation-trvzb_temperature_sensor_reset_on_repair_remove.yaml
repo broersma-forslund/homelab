@@ -1,8 +1,8 @@
 id: "trvzb_temperature_sensor_reset_on_repair_remove"
 alias: "TRVZB Reset Temperature Sensor Mode on Repair Dismissal"
 description: >
-  On removal of a TRVZB repair, reset its counter and set the corresponding
-  *_temperature_sensor_select to external.
+  On removal of a namespaced repair issue, reset its counter and set the
+  corresponding *_temperature_sensor_select to external.
 mode: single
 
 trigger:
@@ -12,18 +12,17 @@ trigger:
 condition:
   - condition: template
     value_template: >
-      {% set a = trigger.to_state.attributes %}
-      {% set ev = a.get('event_type','') %}
-      {% set iid = a.get('issue_id','') %}
-      {{ ev == 'remove'
-         and iid.startswith('trvzb_ts_') }}
+      {{ trigger.to_state is not none
+         and trigger.to_state.attributes.get('event_type','') == 'remove'
+         and trigger.to_state.attributes.get('issue_id','').startswith('missing_external_temp__') }}
 
 action:
   - variables:
+      issue_prefix: "missing_external_temp"
       issue_id: "{{ trigger.to_state.attributes.issue_id }}"
-      encoded_entity: "{{ issue_id | replace('trvzb_ts_', '') }}"
-      target_entity_id: "{{ encoded_entity | replace('_d_', '.') | replace('_u_', '_') }}"
-      counter_var: "var.trvzb_fallback_count_{{ encoded_entity }}"
+      encoded_entity: "{{ issue_id | replace(issue_prefix ~ '__', '') }}"
+      target_entity_id: "{{ encoded_entity | replace('__d__', '.') }}"
+      counter_var: "var.{{ issue_prefix }}__count__{{ encoded_entity }}"
 
   - service: variable.set_variable
     data:

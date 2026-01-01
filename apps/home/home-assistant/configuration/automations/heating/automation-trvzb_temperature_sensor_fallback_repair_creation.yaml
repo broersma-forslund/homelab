@@ -2,7 +2,7 @@ id: "trvzb_temperature_sensor_fallback_repair_creation"
 alias: "TRVZB Temperature Sensor Fallback Repair Creation"
 description: >
   Monitor TRVZB temperature sensor modes via state_changed events:
-  - One repair per TRV (stable issue_id), severity overwritten as state changes
+  - One repair per TRV for this issue type, severity overwritten as state changes
   - ERROR repair for internal/external_2 (hard fallback)
   - WARNING repair for external_3 (recovered push, intermittent) + counter increment
   - Repair is NOT removed automatically; you dismiss it to acknowledge/reset
@@ -25,6 +25,7 @@ condition:
 
 action:
   - variables:
+      issue_prefix: "missing_external_temp"
       entity_id: "{{ trigger.event.data.entity_id }}"
       to_state: "{{ trigger.event.data.new_state.state }}"
       from_state: "{{ trigger.event.data.old_state.state }}"
@@ -32,26 +33,23 @@ action:
         {{ trigger.event.data.new_state.attributes.friendly_name
            | default(entity_id) }}
 
-      # Stable reversible encoding of entity_id:
-      # "_" -> "_u_" ; "." -> "_d_"
+      # Single normalization used everywhere '.' is undesirable:
+      # reversible by replacing '__d__' back to '.'
       encoded_entity: >-
-        {{ entity_id | replace('_', '_u_') | replace('.', '_d_') }}
+        {{ entity_id | replace('.', '__d__') }}
 
-      # Single issue id (no warning/error suffix)
-      issue_id: "trvzb_ts_{{ encoded_entity }}"
+      # Issue id is namespaced by issue type (not device type)
+      issue_id: "{{ issue_prefix }}__{{ encoded_entity }}"
 
-      # Persistent counter var aligned with encoded_entity
-      counter_var: "var.trvzb_fallback_count_{{ encoded_entity }}"
+      # Persistent counter var aligned with encoded_entity and issue type
+      counter_var: "var.{{ issue_prefix }}__count__{{ encoded_entity }}"
 
   - choose:
-      # ------------------------------------------------------------
       # ERROR - internal or external_2
-      # ------------------------------------------------------------
       - conditions:
           - condition: template
             value_template: "{{ to_state in ['internal', 'external_2'] }}"
         sequence:
-          # Reset counter whenever we enter the hard fallback state
           - service: variable.set_variable
             data:
               variable: "{{ counter_var }}"
@@ -61,7 +59,7 @@ action:
           - service: repairs.create
             data:
               issue_id: "{{ issue_id }}"
-              title: "{{ friendly_name }} Temperature Sensor Fallback"
+              title: "{{ friendly_name }} External Temperature Missing"
               severity: error
               domain: climate
               persistent: true
@@ -96,10 +94,7 @@ action:
                 - From: `{{ from_state }}` → To: `{{ to_state }}`
                 - Detected at: {{ now().strftime('%Y-%m-%d %H:%M:%S') }}
 
-      # ------------------------------------------------------------
       # WARNING - external_3
-      # Count occurrences on each transition into external_3.
-      # ------------------------------------------------------------
       - conditions:
           - condition: template
             value_template: "{{ to_state == 'external_3' }}"
@@ -116,7 +111,7 @@ action:
           - service: repairs.create
             data:
               issue_id: "{{ issue_id }}"
-              title: "{{ friendly_name }} Temperature Sensor Fallback"
+              title: "{{ friendly_name }} External Temperature Intermittent"
               severity: warning
               domain: climate
               persistent: true
@@ -126,11 +121,6 @@ action:
                 connectivity/pushing is intermittent.
 
                 **Occurrences since last dismissal:** {{ current_count }}
-
-                **What this means:**
-                - The TRV previously fell back (external_2/internal)
-                - External sensor updates resumed (external_3)
-                - The system is still unstable enough to warrant monitoring
 
                 **Reset workflow (preferred):**
                 Dismiss this repair when you’ve investigated and want the system to reset.
