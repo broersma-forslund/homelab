@@ -1,10 +1,13 @@
 id: 'trvzb_temperature_sensor_fallback_notification'
 alias: TRVZB Temperature Sensor Fallback Alert
 description: >
-  Notify administrators when a TRVZB is in fallback mode (external_2 or
-  external_3). Checks every 3 hours since TRVZB switches to fallback after
-  2 hours of no external sensor updates. Auto-discovers all TRVZBs.
-  Uses Spook's repairs.create for better integration.
+  Monitor TRVZB temperature sensor modes and manage repair alerts.
+  - Creates ERROR repairs for 'internal' or 'external_2' modes (permanent fallback)
+  - Creates WARNING repairs for 'external_3' mode (temporary fallback, auto-resets to external)
+  - Automatically removes repairs when TRVs return to acceptable states
+  - Tracks repair update counts for external_3 mode using persistent variables
+  - Uses unique issue_id per TRV to prevent duplicate repairs
+  Checks every 3 hours since TRVZB switches to fallback after 2 hours.
 mode: single
 trigger:
   # Time-based trigger - checks every 3 hours for minimal performance impact
@@ -13,49 +16,134 @@ trigger:
   - platform: time_pattern
     hours: '/3'
 action:
-  # Check all temperature_sensor_select entities for fallback modes
+  # Process all temperature_sensor_select entities
   - repeat:
       for_each: >
         {% set ns = namespace(entities=[]) %}
         {% for entity in states.select
-           | selectattr('entity_id', 'match', '.*_temperature_sensor_select$')
-           | selectattr('state', 'in', ['external_2', 'external_3']) %}
+           | selectattr('entity_id', 'match', '.*_temperature_sensor_select$') %}
           {% set ns.entities = ns.entities + [entity.entity_id] %}
         {% endfor %}
         {{ ns.entities }}
       sequence:
-        # Create a repair issue using Spook's repairs service
-        - service: repairs.create
-          data:
-            title: >
-              {{ state_attr(repeat.item, 'friendly_name') |
-              default(repeat.item) }} in Fallback Mode
-            domain: light
-            persistent: true
-            description: >
-              The TRVZB {{ state_attr(repeat.item, 'friendly_name') |
-              default(repeat.item) }} is currently in {{ states(repeat.item) }}
-              mode instead of using the external temperature sensor.
+        - variables:
+            entity_id: "{{ repeat.item }}"
+            current_state: "{{ states(repeat.item) }}"
+            friendly_name: "{{ state_attr(repeat.item, 'friendly_name') | default(repeat.item) }}"
+            # Create unique issue_id based on entity_id
+            issue_id: "trvzb_temp_sensor_{{ repeat.item | replace('.', '_') | replace('select_', '') }}"
+        - choose:
+            # CASE 1: ERROR - Internal or external_2 mode (permanent fallback)
+            - conditions:
+                - condition: template
+                  value_template: "{{ current_state in ['internal', 'external_2'] }}"
+              sequence:
+                - service: repairs.create
+                  data:
+                    issue_id: "{{ issue_id }}"
+                    title: >
+                      {{ friendly_name }} Temperature Sensor ERROR
+                    severity: error
+                    domain: homeassistant
+                    persistent: true
+                    description: >
+                      **CRITICAL:** The TRVZB {{ friendly_name }} is in {{ current_state }}
+                      mode and has PERMANENTLY fallen back to using its internal sensor.
 
-              This indicates the external temperature sensor has not sent
-              updates for several hours and the TRV has fallen back to using
-              its internal sensor, which may lead to inaccurate temperature
-              readings.
+                      {% if current_state == 'external_2' %}
+                      **external_2 mode** means the TRV switched to fallback mode and is now
+                      using its internal temperature sensor, which may be inaccurate due to
+                      proximity to the radiator valve.
+                      {% else %}
+                      **internal mode** means the TRV is configured to use only its internal
+                      temperature sensor instead of an external one.
+                      {% endif %}
 
-              **Troubleshooting steps:**
+                      **Troubleshooting steps:**
 
-              1. Check the battery level of the external temperature sensor
-              2. Verify the external sensor is within Zigbee network range
-              3. Check if the external sensor is still paired with Home
-                 Assistant
-              4. Verify the pairing status between the TRV and external
-                 sensor
+                      1. Check the battery level of the external temperature sensor
+                      2. Verify the external sensor is within Zigbee network range
+                      3. Check if the external sensor is still paired with Home Assistant
+                      4. Verify the pairing status between the TRV and external sensor
+                      5. Check for Zigbee network interference or connectivity issues
 
-              **Manual fix:**
+                      **Manual fix required:**
 
-              After resolving the external sensor issue, manually set the TRV
-              back to external mode using the `{{ repeat.item }}` entity.
+                      After resolving the external sensor issue, manually set the TRV
+                      back to **external** mode using the entity below.
 
-              - Entity: `{{ repeat.item }}`
-              - Current state: `{{ states(repeat.item) }}`
-              - Detected at: {{ now().strftime('%Y-%m-%d %H:%M:%S') }}
+                      - Entity: `{{ entity_id }}`
+                      - Current mode: `{{ current_state }}`
+                      - Detected at: {{ now().strftime('%Y-%m-%d %H:%M:%S') }}
+            # CASE 2: WARNING - external_3 mode (temporary fallback, now receiving data)
+            - conditions:
+                - condition: template
+                  value_template: "{{ current_state == 'external_3' }}"
+              sequence:
+                # Auto-reset to external mode
+                - service: select.select_option
+                  target:
+                    entity_id: "{{ entity_id }}"
+                  data:
+                    option: external
+                # Get current counter value from persistent storage variable
+                # We'll use a naming convention: var.trvzb_fallback_count_<entity>
+                - variables:
+                    counter_var: "var.trvzb_fallback_count_{{ repeat.item | replace('select.', '') | replace('_temperature_sensor_select', '') }}"
+                    current_count: >
+                      {% set count_entity = 'var.trvzb_fallback_count_' + (repeat.item | replace('select.', '') | replace('_temperature_sensor_select', '')) %}
+                      {{ states(count_entity) | int(0) + 1 }}
+                # Store updated counter (using variable.set_variable from Spook or similar)
+                - service: variable.set_variable
+                  data:
+                    variable: "{{ counter_var }}"
+                    value: "{{ current_count }}"
+                  continue_on_error: true
+                # Create or update warning repair with counter
+                - service: repairs.create
+                  data:
+                    issue_id: "{{ issue_id }}"
+                    title: >
+                      {{ friendly_name }} Temperature Sensor Recovered (Warning)
+                    severity: warning
+                    domain: homeassistant
+                    persistent: true
+                    description: >
+                      **WARNING:** The TRVZB {{ friendly_name }} was temporarily in fallback
+                      mode (external_3) but is now receiving external temperature data again.
+
+                      The TRV has been automatically reset to **external** mode.
+
+                      **What happened:**
+                      - The TRV temporarily lost connection to the external temperature sensor
+                      - It switched to internal mode as a fallback
+                      - External sensor connectivity has been restored
+                      - System automatically switched back to external mode
+
+                      **Fallback occurrences:** {{ current_count }} time(s)
+
+                      This warning indicates intermittent connectivity issues that may need
+                      investigation if they occur frequently.
+
+                      **Monitoring recommendations:**
+                      1. Check external sensor battery level regularly
+                      2. Verify Zigbee signal strength in the area
+                      3. Consider repositioning the sensor or adding Zigbee repeaters if issues persist
+
+                      - Entity: `{{ entity_id }}`
+                      - Previous mode: external_3 (now reset to external)
+                      - Last detected: {{ now().strftime('%Y-%m-%d %H:%M:%S') }}
+          # DEFAULT CASE: Acceptable state (external or external_1) - remove any existing repairs
+          default:
+            - service: repairs.remove
+              data:
+                issue_id: "{{ issue_id }}"
+              continue_on_error: true
+            # Reset counter when issue is resolved
+            - variables:
+                counter_var: "var.trvzb_fallback_count_{{ repeat.item | replace('select.', '') | replace('_temperature_sensor_select', '') }}"
+            - service: variable.set_variable
+              data:
+                variable: "{{ counter_var }}"
+                value: 0
+              continue_on_error: true
