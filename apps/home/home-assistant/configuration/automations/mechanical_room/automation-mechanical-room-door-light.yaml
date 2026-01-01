@@ -1,0 +1,29 @@
+id: 'mechanical_room_door_light'
+alias: Mechanical Room Door Light
+description: 'Turn on mechanical room light when door opens, turn off when door closes.'
+mode: single
+trigger:
+  - platform: state
+    entity_id: binary_sensor.mechanical_room_door_sensor_contact
+    to: 'on'
+    id: door_opened
+  - platform: state
+    entity_id: binary_sensor.mechanical_room_door_sensor_contact
+    to: 'off'
+    id: door_closed
+action:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id: door_opened
+        sequence:
+          - service: light.turn_on
+            target:
+              entity_id: light.mechanical_room_light
+      - conditions:
+          - condition: trigger
+            id: door_closed
+        sequence:
+          - service: light.turn_off
+            target:
+              entity_id: light.mechanical_room_light
