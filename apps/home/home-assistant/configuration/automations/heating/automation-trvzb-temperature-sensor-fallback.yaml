@@ -44,7 +44,7 @@ action:
                     title: >
                       {{ friendly_name }} Temperature Sensor ERROR
                     severity: error
-                    domain: homeassistant
+                    domain: light
                     persistent: true
                     description: >
                       **CRITICAL:** The TRVZB {{ friendly_name }} is in {{ current_state }}
