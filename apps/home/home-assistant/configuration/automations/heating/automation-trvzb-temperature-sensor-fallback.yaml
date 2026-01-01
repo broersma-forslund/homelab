@@ -4,7 +4,7 @@ description: >
   Notify administrators when a TRVZB is in fallback mode (external_2 or
   external_3). Checks every 3 hours since TRVZB switches to fallback after
   2 hours of no external sensor updates. Auto-discovers all TRVZBs.
-  Uses Home Assistant's repairs.create for better integration.
+  Uses Spook's repairs.create for better integration.
 mode: single
 trigger:
   # Time-based trigger - checks every 3 hours for minimal performance impact
@@ -24,14 +24,14 @@ action:
         {% endfor %}
         {{ ns.entities }}
       sequence:
-        # Create a repair issue using Home Assistant's repairs service
+        # Create a repair issue using Spook's repairs service
         - service: repairs.create
           data:
-            identifier: >
-              trvzb_fallback_{{ repeat.item | replace('.', '_') }}
             title: >
               {{ state_attr(repeat.item, 'friendly_name') |
               default(repeat.item) }} in Fallback Mode
+            domain: light
+            persistent: true
             description: >
               The TRVZB {{ state_attr(repeat.item, 'friendly_name') |
               default(repeat.item) }} is currently in {{ states(repeat.item) }}
@@ -59,4 +59,3 @@ action:
               - Entity: `{{ repeat.item }}`
               - Current state: `{{ states(repeat.item) }}`
               - Detected at: {{ now().strftime('%Y-%m-%d %H:%M:%S') }}
-            severity: warning
