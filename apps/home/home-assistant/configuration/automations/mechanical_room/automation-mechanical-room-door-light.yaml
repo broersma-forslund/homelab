@@ -5,10 +5,12 @@ mode: single
 trigger:
   - platform: state
     entity_id: binary_sensor.mechanical_room_door_sensor_contact
+    from: 'off'
     to: 'on'
     id: door_opened
   - platform: state
     entity_id: binary_sensor.mechanical_room_door_sensor_contact
+    from: 'on'
     to: 'off'
     id: door_closed
 action:
