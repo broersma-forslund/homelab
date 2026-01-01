@@ -4,7 +4,7 @@ description: >
   Notify administrators when a TRVZB is in fallback mode (external_2 or
   external_3). Checks every 3 hours since TRVZB switches to fallback after
   2 hours of no external sensor updates. Auto-discovers all TRVZBs.
-  Uses Spook's repairs.create for better integration with Home Assistant.
+  Uses Home Assistant's repairs.create for better integration.
 mode: single
 trigger:
   # Time-based trigger - checks every 3 hours for minimal performance impact
@@ -12,7 +12,6 @@ trigger:
   # sufficient
   - platform: time_pattern
     hours: '/3'
-condition: []
 action:
   # Check all temperature_sensor_select entities for fallback modes
   - repeat:
@@ -25,8 +24,8 @@ action:
         {% endfor %}
         {{ ns.entities }}
       sequence:
-        # Create a repair issue using Spook integration
-        - service: spook.create_repair
+        # Create a repair issue using Home Assistant's repairs service
+        - service: repairs.create
           data:
             identifier: >
               trvzb_fallback_{{ repeat.item | replace('.', '_') }}
