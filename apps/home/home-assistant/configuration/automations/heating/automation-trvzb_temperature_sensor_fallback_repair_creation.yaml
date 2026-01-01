@@ -1,0 +1,133 @@
+id: "trvzb_temperature_sensor_fallback_repair_creation"
+alias: "TRVZB Temperature Sensor Fallback Repair Creation"
+description: >
+  Monitor TRVZB temperature sensor modes via state_changed events:
+  - One repair per TRV for this issue type, severity overwritten as state changes
+  - ERROR repair for internal/external_2 (hard fallback)
+  - WARNING repair for external_3 (recovered push, intermittent) + counter increment
+  - Repair is NOT removed automatically; you dismiss it to acknowledge/reset
+  - On dismissal, a separate automation resets mode to external and clears counter
+mode: single
+
+trigger:
+  - platform: event
+    event_type: state_changed
+
+condition:
+  - condition: template
+    value_template: >
+      {% set e = trigger.event.data.get('entity_id','') %}
+      {% set to_s = trigger.event.data.get('new_state') %}
+      {% set from_s = trigger.event.data.get('old_state') %}
+      {{ e is match('^select\\..*_temperature_sensor_select$')
+         and to_s is not none and from_s is not none
+         and to_s.state != from_s.state }}
+
+action:
+  - variables:
+      issue_prefix: "missing_external_temp"
+      entity_id: "{{ trigger.event.data.entity_id }}"
+      to_state: "{{ trigger.event.data.new_state.state }}"
+      from_state: "{{ trigger.event.data.old_state.state }}"
+      friendly_name: >-
+        {{ trigger.event.data.new_state.attributes.friendly_name
+           | default(entity_id) }}
+
+      # Single normalization used everywhere '.' is undesirable:
+      # reversible by replacing '__d__' back to '.'
+      encoded_entity: >-
+        {{ entity_id | replace('.', '__d__') }}
+
+      # Issue id is namespaced by issue type (not device type)
+      issue_id: "{{ issue_prefix }}__{{ encoded_entity }}"
+
+      # Persistent counter var aligned with encoded_entity and issue type
+      counter_var: "var.{{ issue_prefix }}__count__{{ encoded_entity }}"
+
+  - choose:
+      # ERROR - internal or external_2
+      - conditions:
+          - condition: template
+            value_template: "{{ to_state in ['internal', 'external_2'] }}"
+        sequence:
+          - service: variable.set_variable
+            data:
+              variable: "{{ counter_var }}"
+              value: 0
+            continue_on_error: true
+
+          - service: repairs.create
+            data:
+              issue_id: "{{ issue_id }}"
+              title: "{{ friendly_name }} External Temperature Missing"
+              severity: error
+              domain: climate
+              persistent: true
+              description: >
+                **ERROR:** The TRVZB {{ friendly_name }} is in **{{ to_state }}**.
+                The TRV is currently using its **internal temperature sensor** because
+                external sensor data is not being applied.
+
+                {% if to_state == 'external_2' %}
+                **external_2** means the TRV switched to fallback after missing external
+                sensor updates for a period.
+                {% else %}
+                **internal** means it is configured to use its internal sensor.
+                {% endif %}
+
+                If external sensor pushing resumes, the TRV may automatically move to
+                **external_3**. This automation will downgrade this repair to WARNING
+                and start counting occurrences.
+
+                **Troubleshooting:**
+                1. Check external sensor battery and availability
+                2. Verify Zigbee range / routing
+                3. Confirm the sensor is paired and reporting to HA
+                4. Verify TRV↔sensor binding/pairing state
+                5. Check interference / network stability
+
+                **Reset workflow (preferred):**
+                When you are satisfied the issue is resolved, **dismiss this repair**.
+                Dismissal will automatically set the TRV back to **external** and clear counts.
+
+                - Entity: `{{ entity_id }}`
+                - From: `{{ from_state }}` → To: `{{ to_state }}`
+                - Detected at: {{ now().strftime('%Y-%m-%d %H:%M:%S') }}
+
+      # WARNING - external_3
+      - conditions:
+          - condition: template
+            value_template: "{{ to_state == 'external_3' }}"
+        sequence:
+          - variables:
+              current_count: "{{ states(counter_var) | int(0) + 1 }}"
+
+          - service: variable.set_variable
+            data:
+              variable: "{{ counter_var }}"
+              value: "{{ current_count }}"
+            continue_on_error: true
+
+          - service: repairs.create
+            data:
+              issue_id: "{{ issue_id }}"
+              title: "{{ friendly_name }} External Temperature Intermittent"
+              severity: warning
+              domain: climate
+              persistent: true
+              description: >
+                **WARNING:** The TRVZB {{ friendly_name }} entered **external_3**.
+                This indicates external temperature input resumed after fallback, but
+                connectivity/pushing is intermittent.
+
+                **Occurrences since last dismissal:** {{ current_count }}
+
+                **Reset workflow (preferred):**
+                Dismiss this repair when you’ve investigated and want the system to reset.
+                Dismissal will:
+                - set `{{ entity_id }}` back to **external**
+                - reset the counter to 0
+
+                - Entity: `{{ entity_id }}`
+                - From: `{{ from_state }}` → To: `{{ to_state }}`
+                - Last detected: {{ now().strftime('%Y-%m-%d %H:%M:%S') }}

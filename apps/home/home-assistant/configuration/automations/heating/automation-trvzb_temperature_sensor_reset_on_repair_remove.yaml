@@ -1,0 +1,37 @@
+id: "trvzb_temperature_sensor_reset_on_repair_remove"
+alias: "TRVZB Reset Temperature Sensor Mode on Repair Dismissal"
+description: >
+  On removal of a namespaced repair issue, reset its counter and set the
+  corresponding *_temperature_sensor_select to external.
+mode: single
+
+trigger:
+  - platform: state
+    entity_id: event.repair
+
+condition:
+  - condition: template
+    value_template: >
+      {{ trigger.to_state is not none
+         and trigger.to_state.attributes.get('event_type','') == 'remove'
+         and trigger.to_state.attributes.get('issue_id','').startswith('missing_external_temp__') }}
+
+action:
+  - variables:
+      issue_prefix: "missing_external_temp"
+      issue_id: "{{ trigger.to_state.attributes.issue_id }}"
+      encoded_entity: "{{ issue_id | replace(issue_prefix ~ '__', '') }}"
+      target_entity_id: "{{ encoded_entity | replace('__d__', '.') }}"
+      counter_var: "var.{{ issue_prefix }}__count__{{ encoded_entity }}"
+
+  - service: variable.set_variable
+    data:
+      variable: "{{ counter_var }}"
+      value: 0
+    continue_on_error: true
+
+  - service: select.select_option
+    target:
+      entity_id: "{{ target_entity_id }}"
+    data:
+      option: external
