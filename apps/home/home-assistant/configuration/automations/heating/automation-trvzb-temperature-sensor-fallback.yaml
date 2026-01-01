@@ -4,7 +4,8 @@ description: >
   Monitor TRVZB temperature sensor modes and manage repair alerts.
   - Creates ERROR repairs for 'internal' or 'external_2' modes (permanent fallback)
   - Creates WARNING repairs for 'external_3' mode (temporary fallback, auto-resets to external)
-  - Automatically removes repairs when TRVs return to acceptable states
+  - ERROR repairs are automatically removed when TRVs recover to external mode
+  - WARNING repairs must be manually cleared after investigating intermittent issues
   - Tracks repair update counts for external_3 mode using persistent variables
   - Uses unique issue_id per TRV to prevent duplicate repairs
   Checks every 3 hours since TRVZB switches to fallback after 2 hours.
@@ -38,13 +39,19 @@ action:
                 - condition: template
                   value_template: "{{ current_state in ['internal', 'external_2'] }}"
               sequence:
+                # Remove any existing WARNING repair (ERROR supersedes WARNING)
+                - service: repairs.remove
+                  data:
+                    issue_id: "{{ issue_id }}_warning"
+                  continue_on_error: true
+                # Create ERROR repair
                 - service: repairs.create
                   data:
                     issue_id: "{{ issue_id }}"
                     title: >
                       {{ friendly_name }} Temperature Sensor ERROR
                     severity: error
-                    domain: light
+                    domain: climate
                     persistent: true
                     description: >
                       **CRITICAL:** The TRVZB {{ friendly_name }} is in {{ current_state }}
@@ -80,6 +87,11 @@ action:
                 - condition: template
                   value_template: "{{ current_state == 'external_3' }}"
               sequence:
+                # Remove any existing ERROR repair (TRV has recovered)
+                - service: repairs.remove
+                  data:
+                    issue_id: "{{ issue_id }}"
+                  continue_on_error: true
                 # Auto-reset to external mode
                 - service: select.select_option
                   target:
@@ -101,11 +113,11 @@ action:
                 # Create or update warning repair with counter
                 - service: repairs.create
                   data:
-                    issue_id: "{{ issue_id }}"
+                    issue_id: "{{ issue_id }}_warning"
                     title: >
                       {{ friendly_name }} Temperature Sensor Recovered (Warning)
                     severity: warning
-                    domain: homeassistant
+                    domain: climate
                     persistent: true
                     description: >
                       **WARNING:** The TRVZB {{ friendly_name }} was temporarily in fallback
@@ -132,17 +144,25 @@ action:
                       - Entity: `{{ entity_id }}`
                       - Previous mode: external_3 (now reset to external)
                       - Last detected: {{ now().strftime('%Y-%m-%d %H:%M:%S') }}
-          # DEFAULT CASE: Acceptable state (external or external_1) - remove any existing repairs
+          # DEFAULT CASE: Acceptable state (external or external_1) - remove ERROR repair only
           default:
+            # Remove ERROR repair (WARNING repair should be manually cleared after investigation)
             - service: repairs.remove
               data:
                 issue_id: "{{ issue_id }}"
               continue_on_error: true
-            # Reset counter when issue is resolved
+            # Reset counter when issue is resolved (only if the variable already exists)
             - variables:
                 counter_var: "var.trvzb_fallback_count_{{ repeat.item | replace('select.', '') | replace('_temperature_sensor_select', '') }}"
-            - service: variable.set_variable
-              data:
-                variable: "{{ counter_var }}"
-                value: 0
-              continue_on_error: true
+            - choose:
+                - conditions:
+                    - condition: template
+                      value_template: >
+                        {% set s = states(counter_var) %}
+                        {{ s not in ['unknown', 'unavailable'] and s | int(0) > 0 }}
+                  sequence:
+                    - service: variable.set_variable
+                      data:
+                        variable: "{{ counter_var }}"
+                        value: 0
+                      continue_on_error: true
