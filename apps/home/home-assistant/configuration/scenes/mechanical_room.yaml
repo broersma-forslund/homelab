@@ -1,0 +1,12 @@
+- id: mechanical_room_off
+  name: Mechanical Room - Off
+  entities:
+    light.mechanical_room_light: { state: "off" }
+
+- id: mechanical_room_cleaning
+  name: Mechanical Room - Cleaning
+  entities:
+    light.mechanical_room_light:
+      state: "on"
+      brightness: 255
+      kelvin: 5000
