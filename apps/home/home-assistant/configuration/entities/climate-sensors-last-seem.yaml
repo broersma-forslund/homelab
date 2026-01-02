@@ -1,77 +1,77 @@
-- sensor:
-  - name: "Balcony Climate Temperature Last Seen"
-    unique_id: "balcony_climate_temp_last_seen"
-    device_class: timestamp
-    state: >
-      {% set s = states('sensor.balcony_climate_temperature') %}
-      {% if s not in ['unknown','unavailable','none',''] %}
-        {{ states.sensor.balcony_climate_temperature.last_updated }}
-      {% else %}
-        {{ none }}
-      {% endif %}
+sensor:
+- name: "Balcony Climate Temperature Last Seen"
+  unique_id: "balcony_climate_temp_last_seen"
+  device_class: timestamp
+  state: >
+    {% set s = states('sensor.balcony_climate_temperature') %}
+    {% if s not in ['unknown','unavailable','none',''] %}
+      {{ states.sensor.balcony_climate_temperature.last_updated }}
+    {% else %}
+      {{ none }}
+    {% endif %}
 
-  - name: "Bedroom Climate Temperature Last Seen"
-    unique_id: "bedroom_climate_temp_last_seen"
-    device_class: timestamp
-    state: >
-      {% set s = states('sensor.bedroom_climate_display_temperature') %}
-      {% if s not in ['unknown','unavailable','none',''] %}
-        {{ states.sensor.bedroom_climate_display_temperature.last_updated }}
-      {% else %}
-        {{ none }}
-      {% endif %}
+- name: "Bedroom Climate Temperature Last Seen"
+  unique_id: "bedroom_climate_temp_last_seen"
+  device_class: timestamp
+  state: >
+    {% set s = states('sensor.bedroom_climate_display_temperature') %}
+    {% if s not in ['unknown','unavailable','none',''] %}
+      {{ states.sensor.bedroom_climate_display_temperature.last_updated }}
+    {% else %}
+      {{ none }}
+    {% endif %}
 
-  - name: "Hall Climate Temperature Last Seen"
-    unique_id: "hall_climate_temp_last_seen"
-    device_class: timestamp
-    state: >
-      {% set s = states('sensor.hall_climate_temperature') %}
-      {% if s not in ['unknown','unavailable','none',''] %}
-        {{ states.sensor.hall_climate_temperature.last_updated }}
-      {% else %}
-        {{ none }}
-      {% endif %}
+- name: "Hall Climate Temperature Last Seen"
+  unique_id: "hall_climate_temp_last_seen"
+  device_class: timestamp
+  state: >
+    {% set s = states('sensor.hall_climate_temperature') %}
+    {% if s not in ['unknown','unavailable','none',''] %}
+      {{ states.sensor.hall_climate_temperature.last_updated }}
+    {% else %}
+      {{ none }}
+    {% endif %}
 
-  - name: "Kitchen Climate Temperature Last Seen"
-    unique_id: "kitchen_climate_temp_last_seen"
-    device_class: timestamp
-    state: >
-      {% set s = states('sensor.kitchen_climate_temperature') %}
-      {% if s not in ['unknown','unavailable','none',''] %}
-        {{ states.sensor.kitchen_climate_temperature.last_updated }}
-      {% else %}
-        {{ none }}
-      {% endif %}
+- name: "Kitchen Climate Temperature Last Seen"
+  unique_id: "kitchen_climate_temp_last_seen"
+  device_class: timestamp
+  state: >
+    {% set s = states('sensor.kitchen_climate_temperature') %}
+    {% if s not in ['unknown','unavailable','none',''] %}
+      {{ states.sensor.kitchen_climate_temperature.last_updated }}
+    {% else %}
+      {{ none }}
+    {% endif %}
 
-  - name: "Living Room Climate Temperature Last Seen"
-    unique_id: "living_room_climate_temp_last_seen"
-    device_class: timestamp
-    state: >
-      {% set s = states('sensor.living_room_climate_temperature') %}
-      {% if s not in ['unknown','unavailable','none',''] %}
-        {{ states.sensor.living_room_climate_temperature.last_updated }}
-      {% else %}
-        {{ none }}
-      {% endif %}
+- name: "Living Room Climate Temperature Last Seen"
+  unique_id: "living_room_climate_temp_last_seen"
+  device_class: timestamp
+  state: >
+    {% set s = states('sensor.living_room_climate_temperature') %}
+    {% if s not in ['unknown','unavailable','none',''] %}
+      {{ states.sensor.living_room_climate_temperature.last_updated }}
+    {% else %}
+      {{ none }}
+    {% endif %}
 
-  - name: "Office Climate Temperature Last Seen"
-    unique_id: "office_climate_temp_last_seen"
-    device_class: timestamp
-    state: >
-      {% set s = states('sensor.office_climate_display_temperature') %}
-      {% if s not in ['unknown','unavailable','none',''] %}
-        {{ states.sensor.office_climate_display_temperature.last_updated }}
-      {% else %}
-        {{ none }}
-      {% endif %}
+- name: "Office Climate Temperature Last Seen"
+  unique_id: "office_climate_temp_last_seen"
+  device_class: timestamp
+  state: >
+    {% set s = states('sensor.office_climate_display_temperature') %}
+    {% if s not in ['unknown','unavailable','none',''] %}
+      {{ states.sensor.office_climate_display_temperature.last_updated }}
+    {% else %}
+      {{ none }}
+    {% endif %}
 
-  - name: "Shower Climate Temperature Last Seen"
-    unique_id: "shower_climate_temp_last_seen"
-    device_class: timestamp
-    state: >
-      {% set s = states('sensor.shower_climate_temperature') %}
-      {% if s not in ['unknown','unavailable','none',''] %}
-        {{ states.sensor.shower_climate_temperature.last_updated }}
-      {% else %}
-        {{ none }}
-      {% endif %}
+- name: "Shower Climate Temperature Last Seen"
+  unique_id: "shower_climate_temp_last_seen"
+  device_class: timestamp
+  state: >
+    {% set s = states('sensor.shower_climate_temperature') %}
+    {% if s not in ['unknown','unavailable','none',''] %}
+      {{ states.sensor.shower_climate_temperature.last_updated }}
+    {% else %}
+      {{ none }}
+    {% endif %}
