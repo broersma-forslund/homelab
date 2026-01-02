@@ -1,12 +1,10 @@
 id: "trvzb_temperature_sensor_fallback_repair_creation"
 alias: "TRVZB Temperature Sensor Fallback Repair Creation"
 description: >
-  Monitor TRVZB temperature sensor modes via state_changed events:
-  - One repair per TRV for this issue type, severity overwritten as state changes
-  - ERROR repair for internal/external_2 (hard fallback)
-  - WARNING repair for external_3 (recovered push, intermittent) + counter increment
-  - Repair is NOT removed automatically; you dismiss it to acknowledge/reset
-  - On dismissal, a separate automation resets mode to external and clears counter
+  Create/overwrite a single repair per TRV based on temperature sensor mode changes.
+  Uses VT "last temperature date" sensors as evidence (age/staleness).
+  Repair is not auto-removed; dismissing the repair triggers reset-to-external via a
+  separate automation.
 mode: single
 
 trigger:
@@ -26,6 +24,7 @@ condition:
 action:
   - variables:
       issue_prefix: "missing_external_temp"
+
       entity_id: "{{ trigger.event.data.entity_id }}"
       to_state: "{{ trigger.event.data.new_state.state }}"
       from_state: "{{ trigger.event.data.old_state.state }}"
@@ -33,29 +32,44 @@ action:
         {{ trigger.event.data.new_state.attributes.friendly_name
            | default(entity_id) }}
 
-      # Single normalization used everywhere '.' is undesirable:
-      # reversible by replacing '__d__' back to '.'
+      # simple reversible encoding for issue_id
       encoded_entity: >-
         {{ entity_id | replace('.', '__d__') }}
-
-      # Issue id is namespaced by issue type (not device type)
       issue_id: "{{ issue_prefix }}__{{ encoded_entity }}"
 
-      # Persistent counter var aligned with encoded_entity and issue type
-      counter_var: "var.{{ issue_prefix }}__count__{{ encoded_entity }}"
+      # Derive room key from TRV select name:
+      # select.<room>_radiator..._temperature_sensor_select -> <room>
+      room_key: >-
+        {{ entity_id
+            | regex_replace('^select\\.', '')
+            | regex_replace('_radiator.*$', '') }}
+
+      # VT last-temperature-date sensor inferred from room key
+      vt_last_seen_sensor: "sensor.{{ room_key }}_thermostat_last_temperature_date"
+      vt_last_seen_raw: "{{ states(vt_last_seen_sensor) }}"
+
+      vt_last_seen_dt: >-
+        {% set v = vt_last_seen_raw %}
+        {% if v not in ['unknown','unavailable','none',''] %}
+          {{ as_datetime(v) }}
+        {% else %}
+          {{ none }}
+        {% endif %}
+
+      vt_last_seen_age_min: >-
+        {% if vt_last_seen_dt %}
+          {{ ((now() - vt_last_seen_dt).total_seconds() / 60) | round(0) }}
+        {% else %}
+          {{ none }}
+        {% endif %}
+
+      mode_last_changed: "{{ trigger.event.data.new_state.last_changed }}"
 
   - choose:
-      # ERROR - internal or external_2
       - conditions:
           - condition: template
             value_template: "{{ to_state in ['internal', 'external_2'] }}"
         sequence:
-          - service: variable.set_variable
-            data:
-              variable: "{{ counter_var }}"
-              value: 0
-            continue_on_error: true
-
           - service: repairs.create
             data:
               issue_id: "{{ issue_id }}"
@@ -64,50 +78,34 @@ action:
               domain: climate
               persistent: true
               description: >
-                **ERROR:** The TRVZB {{ friendly_name }} is in **{{ to_state }}**.
-                The TRV is currently using its **internal temperature sensor** because
-                external sensor data is not being applied.
+                **ERROR:** {{ friendly_name }} is in **{{ to_state }}** and is using its
+                **internal temperature sensor** because external temperature is not being applied.
 
                 {% if to_state == 'external_2' %}
-                **external_2** means the TRV switched to fallback after missing external
-                sensor updates for a period.
+                **external_2** indicates fallback after missing external temperature updates.
                 {% else %}
-                **internal** means it is configured to use its internal sensor.
+                **internal** indicates it is configured to use its internal sensor.
                 {% endif %}
 
-                If external sensor pushing resumes, the TRV may automatically move to
-                **external_3**. This automation will downgrade this repair to WARNING
-                and start counting occurrences.
+                **Versatile Thermostat status ({{ room_key }}):**
+                - VT last temperature date sensor: `{{ vt_last_seen_sensor }}`
+                - Value: {{ vt_last_seen_raw }}
+                {% if vt_last_seen_age_min is not none %}
+                - Age: {{ vt_last_seen_age_min }} minute(s)
+                {% endif %}
 
-                **Troubleshooting:**
-                1. Check external sensor battery and availability
-                2. Verify Zigbee range / routing
-                3. Confirm the sensor is paired and reporting to HA
-                4. Verify TRV↔sensor binding/pairing state
-                5. Check interference / network stability
-
-                **Reset workflow (preferred):**
-                When you are satisfied the issue is resolved, **dismiss this repair**.
-                Dismissal will automatically set the TRV back to **external** and clear counts.
-
-                - Entity: `{{ entity_id }}`
+                **TRV mode transition:**
                 - From: `{{ from_state }}` → To: `{{ to_state }}`
-                - Detected at: {{ now().strftime('%Y-%m-%d %H:%M:%S') }}
+                - Mode last changed: {{ mode_last_changed }}
 
-      # WARNING - external_3
+                **Reset workflow:**
+                Dismiss this repair when you’ve investigated.
+                Dismissal will set `{{ entity_id }}` back to **external**.
+
       - conditions:
           - condition: template
             value_template: "{{ to_state == 'external_3' }}"
         sequence:
-          - variables:
-              current_count: "{{ states(counter_var) | int(0) + 1 }}"
-
-          - service: variable.set_variable
-            data:
-              variable: "{{ counter_var }}"
-              value: "{{ current_count }}"
-            continue_on_error: true
-
           - service: repairs.create
             data:
               issue_id: "{{ issue_id }}"
@@ -116,18 +114,20 @@ action:
               domain: climate
               persistent: true
               description: >
-                **WARNING:** The TRVZB {{ friendly_name }} entered **external_3**.
-                This indicates external temperature input resumed after fallback, but
-                connectivity/pushing is intermittent.
+                **WARNING:** {{ friendly_name }} entered **external_3**.
+                External temperature input resumed after fallback, but reliability is intermittent.
 
-                **Occurrences since last dismissal:** {{ current_count }}
+                **Versatile Thermostat status ({{ room_key }}):**
+                - VT last temperature date sensor: `{{ vt_last_seen_sensor }}`
+                - Value: {{ vt_last_seen_raw }}
+                {% if vt_last_seen_age_min is not none %}
+                - Age: {{ vt_last_seen_age_min }} minute(s)
+                {% endif %}
 
-                **Reset workflow (preferred):**
-                Dismiss this repair when you’ve investigated and want the system to reset.
-                Dismissal will:
-                - set `{{ entity_id }}` back to **external**
-                - reset the counter to 0
-
-                - Entity: `{{ entity_id }}`
+                **TRV mode transition:**
                 - From: `{{ from_state }}` → To: `{{ to_state }}`
-                - Last detected: {{ now().strftime('%Y-%m-%d %H:%M:%S') }}
+                - Mode last changed: {{ mode_last_changed }}
+
+                **Reset workflow:**
+                Dismiss this repair after investigating.
+                Dismissal will set `{{ entity_id }}` back to **external**.
