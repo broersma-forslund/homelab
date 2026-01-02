@@ -1,133 +1,223 @@
 id: "trvzb_temperature_sensor_fallback_repair_creation"
 alias: "TRVZB Temperature Sensor Fallback Repair Creation"
-description: >
-  Create/overwrite a single repair per TRV based on temperature sensor mode changes.
-  Uses VT "last temperature date" sensors as evidence (age/staleness).
-  Repair is not auto-removed; dismissing the repair triggers reset-to-external via a
-  separate automation.
-mode: single
+mode: queued
+max: 20
 
 trigger:
-  - platform: event
-    event_type: state_changed
+  # Explicit TRV selects
+  - platform: state
+    entity_id:
+      - select.bedroom_radiator_temperature_sensor_select
+      - select.hall_radiator_temperature_sensor_select
+      - select.kitchen_radiator_temperature_sensor_select
+      - select.living_room_radiator_temperature_sensor_select
+      # - select.office_radiator_left_temperature_sensor_select
+      - select.office_radiator_right_temperature_sensor_select
+      # - select.shower_radiator_temperature_sensor_select
+    id: state_changed
 
-condition:
-  - condition: template
-    value_template: >
-      {% set e = trigger.event.data.get('entity_id','') %}
-      {% set to_s = trigger.event.data.get('new_state') %}
-      {% set from_s = trigger.event.data.get('old_state') %}
-      {{ e is match('^select\\..*_temperature_sensor_select$')
-         and to_s is not none and from_s is not none
-         and to_s.state != from_s.state }}
+  # Bootstrap for “already in external_2/external_3”
+  - platform: homeassistant
+    event: start
+    id: bootstrap
 
 action:
   - variables:
       issue_prefix: "missing_external_temp"
 
-      entity_id: "{{ trigger.event.data.entity_id }}"
-      to_state: "{{ trigger.event.data.new_state.state }}"
-      from_state: "{{ trigger.event.data.old_state.state }}"
-      friendly_name: >-
-        {{ trigger.event.data.new_state.attributes.friendly_name
-           | default(entity_id) }}
-
-      # simple reversible encoding for issue_id
-      encoded_entity: >-
-        {{ entity_id | replace('.', '__d__') }}
-      issue_id: "{{ issue_prefix }}__{{ encoded_entity }}"
-
-      # Derive room key from TRV select name:
-      # select.<room>_radiator..._temperature_sensor_select -> <room>
-      room_key: >-
-        {{ entity_id
-            | regex_replace('^select\\.', '')
-            | regex_replace('_radiator.*$', '') }}
-
-      # VT last-temperature-date sensor inferred from room key
-      vt_last_seen_sensor: "sensor.{{ room_key }}_thermostat_last_temperature_date"
-      vt_last_seen_raw: "{{ states(vt_last_seen_sensor) }}"
-
-      vt_last_seen_dt: >-
-        {% set v = vt_last_seen_raw %}
-        {% if v not in ['unknown','unavailable','none',''] %}
-          {{ as_datetime(v) }}
-        {% else %}
-          {{ none }}
-        {% endif %}
-
-      vt_last_seen_age_min: >-
-        {% if vt_last_seen_dt %}
-          {{ ((now() - vt_last_seen_dt).total_seconds() / 60) | round(0) }}
-        {% else %}
-          {{ none }}
-        {% endif %}
-
-      mode_last_changed: "{{ trigger.event.data.new_state.last_changed }}"
+      # Explicit mapping: TRV select -> VT last temp datetime sensor
+      vt_map: >
+        {{
+          {
+            'select.bedroom_radiator_temperature_sensor_select': 'sensor.bedroom_thermostat_last_temperature_date',
+            'select.hall_radiator_temperature_sensor_select': 'sensor.hall_thermostat_last_temperature_date',
+            'select.kitchen_radiator_temperature_sensor_select': 'sensor.kitchen_thermostat_last_temperature_date',
+            'select.living_room_radiator_temperature_sensor_select': 'sensor.living_room_thermostat_last_temperature_date',
+            'select.office_radiator_left_temperature_sensor_select': 'sensor.office_thermostat_last_temperature_date',
+            'select.office_radiator_right_temperature_sensor_select': 'sensor.office_thermostat_last_temperature_date',
+            'select.shower_radiator_temperature_sensor_select': 'sensor.shower_thermostat_last_temperature_date'
+          }
+        }}
 
   - choose:
+      # ============================================================
+      # Bootstrap pass
+      # ============================================================
       - conditions:
           - condition: template
-            value_template: "{{ to_state in ['internal', 'external_2'] }}"
+            value_template: "{{ trigger.id == 'bootstrap' }}"
         sequence:
-          - service: repairs.create
-            data:
-              issue_id: "{{ issue_id }}"
-              title: "{{ friendly_name }} External Temperature Missing"
-              severity: error
-              domain: climate
-              persistent: true
-              description: >
-                **ERROR:** {{ friendly_name }} is in **{{ to_state }}** and is using its
-                **internal temperature sensor** because external temperature is not being applied.
+          - repeat:
+              for_each: "{{ vt_map.keys() | list }}"
+              sequence:
+                - variables:
+                    entity_id: "{{ repeat.item }}"
+                    current_state: "{{ states(entity_id) }}"
+                    friendly_name: "{{ state_attr(entity_id, 'friendly_name') | default(entity_id) }}"
+                    mode_last_changed: "{{ states[entity_id].last_changed if states[entity_id] is not none else none }}"
 
-                {% if to_state == 'external_2' %}
-                **external_2** indicates fallback after missing external temperature updates.
-                {% else %}
-                **internal** indicates it is configured to use its internal sensor.
-                {% endif %}
+                    vt_last_seen_sensor: "{{ vt_map.get(entity_id, '') }}"
+                    vt_last_seen_raw: "{{ states(vt_last_seen_sensor) if vt_last_seen_sensor else 'unknown' }}"
+                    vt_last_seen_dt: "{{ as_datetime(vt_last_seen_raw, none) }}"
+                    vt_last_seen_age_min: >
+                      {% if vt_last_seen_dt is not none %}
+                        {{ ((as_datetime(now(), none) - vt_last_seen_dt).total_seconds() / 60) | round(0) }}
+                      {% else %}
+                        {{ none }}
+                      {% endif %}
 
-                **Versatile Thermostat status ({{ room_key }}):**
-                - VT last temperature date sensor: `{{ vt_last_seen_sensor }}`
-                - Value: {{ vt_last_seen_raw }}
-                {% if vt_last_seen_age_min is not none %}
-                - Age: {{ vt_last_seen_age_min }} minute(s)
-                {% endif %}
+                    encoded_entity: "{{ entity_id | replace('.', '__d__') }}"
+                    issue_id: "{{ issue_prefix }}__{{ encoded_entity }}"
 
-                **TRV mode transition:**
-                - From: `{{ from_state }}` → To: `{{ to_state }}`
-                - Mode last changed: {{ mode_last_changed }}
+                - choose:
+                    - conditions:
+                        - condition: template
+                          value_template: "{{ current_state in ['external_2', 'internal', 'internal_2'] }}"
+                      sequence:
+                        - service: repairs.create
+                          data:
+                            issue_id: "{{ issue_id }}"
+                            title: "{{ friendly_name }} External Temperature Missing"
+                            severity: error
+                            domain: climate
+                            persistent: true
+                            description: >
+                              **ERROR:** {{ friendly_name }} is currently in **{{ current_state }}**.
 
-                **Reset workflow:**
-                Dismiss this repair when you’ve investigated.
-                Dismissal will set `{{ entity_id }}` back to **external**.
+                              **VT last temperature date:**
+                              {% if vt_last_seen_sensor %}
+                              - Sensor: `{{ vt_last_seen_sensor }}`
+                              - Value: {{ vt_last_seen_raw }}
+                              {% if vt_last_seen_age_min is not none %}
+                              - Age: {{ vt_last_seen_age_min }} minute(s)
+                              {% endif %}
+                              {% else %}
+                              - No VT mapping configured for this TRV.
+                              {% endif %}
 
-      - conditions:
-          - condition: template
-            value_template: "{{ to_state == 'external_3' }}"
-        sequence:
-          - service: repairs.create
-            data:
-              issue_id: "{{ issue_id }}"
-              title: "{{ friendly_name }} External Temperature Intermittent"
-              severity: warning
-              domain: climate
-              persistent: true
-              description: >
-                **WARNING:** {{ friendly_name }} entered **external_3**.
-                External temperature input resumed after fallback, but reliability is intermittent.
+                              **TRV mode info:**
+                              - Current: `{{ current_state }}`
+                              - Mode last changed: {{ mode_last_changed }}
 
-                **Versatile Thermostat status ({{ room_key }}):**
-                - VT last temperature date sensor: `{{ vt_last_seen_sensor }}`
-                - Value: {{ vt_last_seen_raw }}
-                {% if vt_last_seen_age_min is not none %}
-                - Age: {{ vt_last_seen_age_min }} minute(s)
-                {% endif %}
+                              Dismiss this repair when you’re satisfied; dismissal sets `{{ entity_id }}` back to **external**.
 
-                **TRV mode transition:**
-                - From: `{{ from_state }}` → To: `{{ to_state }}`
-                - Mode last changed: {{ mode_last_changed }}
+                    - conditions:
+                        - condition: template
+                          value_template: "{{ current_state == 'external_3' }}"
+                      sequence:
+                        - service: repairs.create
+                          data:
+                            issue_id: "{{ issue_id }}"
+                            title: "{{ friendly_name }} External Temperature Intermittent"
+                            severity: warning
+                            domain: climate
+                            persistent: true
+                            description: >
+                              **WARNING:** {{ friendly_name }} is currently in **external_3**.
 
-                **Reset workflow:**
-                Dismiss this repair after investigating.
-                Dismissal will set `{{ entity_id }}` back to **external**.
+                              **VT last temperature date:**
+                              {% if vt_last_seen_sensor %}
+                              - Sensor: `{{ vt_last_seen_sensor }}`
+                              - Value: {{ vt_last_seen_raw }}
+                              {% if vt_last_seen_age_min is not none %}
+                              - Age: {{ vt_last_seen_age_min }} minute(s)
+                              {% endif %}
+                              {% else %}
+                              - No VT mapping configured for this TRV.
+                              {% endif %}
+
+                              **TRV mode info:**
+                              - Current: `external_3`
+                              - Mode last changed: {{ mode_last_changed }}
+
+                              Dismiss this repair after investigating; dismissal sets `{{ entity_id }}` back to **external**.
+
+      # ============================================================
+      # State-change pass (single entity)
+      # ============================================================
+    default:
+      # Only act on real state transitions
+      - condition: template
+        value_template: >
+          {{ trigger.from_state is not none
+             and trigger.to_state is not none
+             and trigger.from_state.state != trigger.to_state.state }}
+
+      - variables:
+          entity_id: "{{ trigger.entity_id }}"
+          to_state: "{{ trigger.to_state.state }}"
+          from_state: "{{ trigger.from_state.state }}"
+          friendly_name: "{{ trigger.to_state.attributes.friendly_name | default(entity_id) }}"
+          mode_last_changed: "{{ trigger.to_state.last_changed }}"
+
+          vt_last_seen_sensor: "{{ vt_map.get(entity_id, '') }}"
+          vt_last_seen_raw: "{{ states(vt_last_seen_sensor) if vt_last_seen_sensor else 'unknown' }}"
+          vt_last_seen_dt: "{{ as_datetime(vt_last_seen_raw, none) }}"
+          vt_last_seen_age_min: >
+            {% if vt_last_seen_dt is not none %}
+              {{ ((as_datetime(now(), none) - vt_last_seen_dt).total_seconds() / 60) | round(0) }}
+            {% else %}
+              {{ none }}
+            {% endif %}
+
+          encoded_entity: "{{ entity_id | replace('.', '__d__') }}"
+          issue_id: "{{ issue_prefix }}__{{ encoded_entity }}"
+
+      - choose:
+          - conditions:
+              - condition: template
+                value_template: "{{ to_state in ['external_2', 'internal', 'internal_2'] }}"
+            sequence:
+              - service: repairs.create
+                data:
+                  issue_id: "{{ issue_id }}"
+                  title: "{{ friendly_name }} External Temperature Missing"
+                  severity: error
+                  domain: climate
+                  persistent: true
+                  description: >
+                    **ERROR:** {{ friendly_name }} transitioned **{{ from_state }} → {{ to_state }}**.
+
+                    **VT last temperature date:**
+                    {% if vt_last_seen_sensor %}
+                    - Sensor: `{{ vt_last_seen_sensor }}`
+                    - Value: {{ vt_last_seen_raw }}
+                    {% if vt_last_seen_age_min is not none %}
+                    - Age: {{ vt_last_seen_age_min }} minute(s)
+                    {% endif %}
+                    {% else %}
+                    - No VT mapping configured for this TRV.
+                    {% endif %}
+
+                    - Mode last changed: {{ mode_last_changed }}
+
+                    Dismiss this repair when you’re satisfied; dismissal sets `{{ entity_id }}` back to **external**.
+
+          - conditions:
+              - condition: template
+                value_template: "{{ to_state == 'external_3' }}"
+            sequence:
+              - service: repairs.create
+                data:
+                  issue_id: "{{ issue_id }}"
+                  title: "{{ friendly_name }} External Temperature Intermittent"
+                  severity: warning
+                  domain: climate
+                  persistent: true
+                  description: >
+                    **WARNING:** {{ friendly_name }} transitioned **{{ from_state }} → external_3**.
+
+                    **VT last temperature date:**
+                    {% if vt_last_seen_sensor %}
+                    - Sensor: `{{ vt_last_seen_sensor }}`
+                    - Value: {{ vt_last_seen_raw }}
+                    {% if vt_last_seen_age_min is not none %}
+                    - Age: {{ vt_last_seen_age_min }} minute(s)
+                    {% endif %}
+                    {% else %}
+                    - No VT mapping configured for this TRV.
+                    {% endif %}
+
+                    - Mode last changed: {{ mode_last_changed }}
+
+                    Dismiss this repair after investigating; dismissal sets `{{ entity_id }}` back to **external**.
