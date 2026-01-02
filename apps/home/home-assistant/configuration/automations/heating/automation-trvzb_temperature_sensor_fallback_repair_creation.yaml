@@ -10,7 +10,7 @@ trigger:
       - select.hall_radiator_temperature_sensor_select
       - select.kitchen_radiator_temperature_sensor_select
       - select.living_room_radiator_temperature_sensor_select
-      # - select.office_radiator_left_temperature_sensor_select
+      - select.office_radiator_left_temperature_sensor_select
       - select.office_radiator_right_temperature_sensor_select
       # - select.shower_radiator_temperature_sensor_select
     id: state_changed
