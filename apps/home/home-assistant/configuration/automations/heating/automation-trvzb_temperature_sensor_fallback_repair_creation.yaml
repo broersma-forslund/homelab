@@ -38,7 +38,7 @@ action:
   - choose:
       - conditions:
           - condition: template
-            value_template: "{{ trigger.id == 'bootstrap' }}"
+            value_template: "{{ trigger.id == 'bootstrap' or trigger.id is none }}"
         sequence:
           - repeat:
               for_each: "{{ vt_map.keys() | list }}"
@@ -58,7 +58,7 @@ action:
                 - choose:
                     - conditions:
                         - condition: template
-                          value_template: "{{ current_state in ['external_2', 'internal', 'internal_2'] }}"
+                          value_template: "{{ current_state in ['internal', 'external_2'] }}"
                       sequence:
                         - service: repairs.create
                           data:
@@ -135,7 +135,7 @@ action:
       - choose:
           - conditions:
               - condition: template
-                value_template: "{{ to_state in ['external_2', 'internal', 'internal_2'] }}"
+                value_template: "{{ to_state in ['internal', 'external_2'] }}"
             sequence:
               - service: repairs.create
                 data:
