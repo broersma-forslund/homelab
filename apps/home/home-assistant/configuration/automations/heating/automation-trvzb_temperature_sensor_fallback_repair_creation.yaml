@@ -4,7 +4,6 @@ mode: queued
 max: 20
 
 trigger:
-  # Explicit TRV selects
   - platform: state
     entity_id:
       - select.bedroom_radiator_temperature_sensor_select
@@ -16,7 +15,6 @@ trigger:
       # - select.shower_radiator_temperature_sensor_select
     id: state_changed
 
-  # Bootstrap for “already in external_2/external_3”
   - platform: homeassistant
     event: start
     id: bootstrap
@@ -24,8 +22,6 @@ trigger:
 action:
   - variables:
       issue_prefix: "missing_external_temp"
-
-      # Explicit mapping: TRV select -> VT last temp datetime sensor
       vt_map: >
         {{
           {
@@ -40,9 +36,6 @@ action:
         }}
 
   - choose:
-      # ============================================================
-      # Bootstrap pass
-      # ============================================================
       - conditions:
           - condition: template
             value_template: "{{ trigger.id == 'bootstrap' }}"
@@ -58,13 +51,6 @@ action:
 
                     vt_last_seen_sensor: "{{ vt_map.get(entity_id, '') }}"
                     vt_last_seen_raw: "{{ states(vt_last_seen_sensor) if vt_last_seen_sensor else 'unknown' }}"
-                    vt_last_seen_dt: "{{ as_datetime(vt_last_seen_raw, none) }}"
-                    vt_last_seen_age_min: >
-                      {% if vt_last_seen_dt is not none %}
-                        {{ ((as_datetime(now(), none) - vt_last_seen_dt).total_seconds() / 60) | round(0) }}
-                      {% else %}
-                        {{ none }}
-                      {% endif %}
 
                     encoded_entity: "{{ entity_id | replace('.', '__d__') }}"
                     issue_id: "{{ issue_prefix }}__{{ encoded_entity }}"
@@ -84,13 +70,10 @@ action:
                             description: >
                               **ERROR:** {{ friendly_name }} is currently in **{{ current_state }}**.
 
-                              **VT last temperature date:**
+                              **VT last external temperature received at:**
                               {% if vt_last_seen_sensor %}
                               - Sensor: `{{ vt_last_seen_sensor }}`
-                              - Value: {{ vt_last_seen_raw }}
-                              {% if vt_last_seen_age_min is not none %}
-                              - Age: {{ vt_last_seen_age_min }} minute(s)
-                              {% endif %}
+                              - Timestamp: {{ vt_last_seen_raw }}
                               {% else %}
                               - No VT mapping configured for this TRV.
                               {% endif %}
@@ -115,13 +98,10 @@ action:
                             description: >
                               **WARNING:** {{ friendly_name }} is currently in **external_3**.
 
-                              **VT last temperature date:**
+                              **VT last external temperature received at:**
                               {% if vt_last_seen_sensor %}
                               - Sensor: `{{ vt_last_seen_sensor }}`
-                              - Value: {{ vt_last_seen_raw }}
-                              {% if vt_last_seen_age_min is not none %}
-                              - Age: {{ vt_last_seen_age_min }} minute(s)
-                              {% endif %}
+                              - Timestamp: {{ vt_last_seen_raw }}
                               {% else %}
                               - No VT mapping configured for this TRV.
                               {% endif %}
@@ -132,11 +112,7 @@ action:
 
                               Dismiss this repair after investigating; dismissal sets `{{ entity_id }}` back to **external**.
 
-      # ============================================================
-      # State-change pass (single entity)
-      # ============================================================
     default:
-      # Only act on real state transitions
       - condition: template
         value_template: >
           {{ trigger.from_state is not none
@@ -152,13 +128,6 @@ action:
 
           vt_last_seen_sensor: "{{ vt_map.get(entity_id, '') }}"
           vt_last_seen_raw: "{{ states(vt_last_seen_sensor) if vt_last_seen_sensor else 'unknown' }}"
-          vt_last_seen_dt: "{{ as_datetime(vt_last_seen_raw, none) }}"
-          vt_last_seen_age_min: >
-            {% if vt_last_seen_dt is not none %}
-              {{ ((as_datetime(now(), none) - vt_last_seen_dt).total_seconds() / 60) | round(0) }}
-            {% else %}
-              {{ none }}
-            {% endif %}
 
           encoded_entity: "{{ entity_id | replace('.', '__d__') }}"
           issue_id: "{{ issue_prefix }}__{{ encoded_entity }}"
@@ -178,13 +147,10 @@ action:
                   description: >
                     **ERROR:** {{ friendly_name }} transitioned **{{ from_state }} → {{ to_state }}**.
 
-                    **VT last temperature date:**
+                    **VT last external temperature received at:**
                     {% if vt_last_seen_sensor %}
                     - Sensor: `{{ vt_last_seen_sensor }}`
-                    - Value: {{ vt_last_seen_raw }}
-                    {% if vt_last_seen_age_min is not none %}
-                    - Age: {{ vt_last_seen_age_min }} minute(s)
-                    {% endif %}
+                    - Timestamp: {{ vt_last_seen_raw }}
                     {% else %}
                     - No VT mapping configured for this TRV.
                     {% endif %}
@@ -207,13 +173,10 @@ action:
                   description: >
                     **WARNING:** {{ friendly_name }} transitioned **{{ from_state }} → external_3**.
 
-                    **VT last temperature date:**
+                    **VT last external temperature received at:**
                     {% if vt_last_seen_sensor %}
                     - Sensor: `{{ vt_last_seen_sensor }}`
-                    - Value: {{ vt_last_seen_raw }}
-                    {% if vt_last_seen_age_min is not none %}
-                    - Age: {{ vt_last_seen_age_min }} minute(s)
-                    {% endif %}
+                    - Timestamp: {{ vt_last_seen_raw }}
                     {% else %}
                     - No VT mapping configured for this TRV.
                     {% endif %}
