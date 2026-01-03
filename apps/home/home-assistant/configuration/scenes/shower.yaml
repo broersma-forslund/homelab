@@ -1,0 +1,12 @@
+- id: shower_off
+  name: Shower - Off
+  entities:
+    light.shower_light: { state: "off" }
+
+- id: shower_morning
+  name: Shower - Morning
+  entities:
+    light.shower_light:
+      state: "on"
+      brightness: 255
+      kelvin: 5000
