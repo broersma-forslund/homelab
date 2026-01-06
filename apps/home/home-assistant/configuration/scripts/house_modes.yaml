@@ -1,4 +1,4 @@
-home_sleep:
+sleep_mode:
   alias: Sleep
   icon: mdi:power-sleep
   sequence:
@@ -40,7 +40,6 @@ morning_mode:
       target:
         entity_id:
           - scene.bedroom_morning
-          - scene.bathroom_day
           - scene.kitchen_morning
 
 guests_mode:
@@ -52,7 +51,6 @@ guests_mode:
         entity_id:
           - scene.living_room_day
           - scene.kitchen_day
-          - scene.bathroom_day
 
 movie_night:
   alias: Movie Night
@@ -84,20 +82,6 @@ cleaning_mode:
           - scene.living_room_day
           - scene.kitchen_cleaning
 
-work_mode:
-  alias: Work Mode
-  icon: mdi:briefcase
-  sequence:
-    - service: scene.turn_on
-      target:
-        entity_id:
-          - scene.living_room_off
-          - scene.kitchen_off
-  # Uncomment when office has smart lights:
-  # - service: scene.turn_on
-  #   target:
-  #     entity_id: scene.office_work
-
 relax_mode:
   alias: Relax/Wellness Mode
   icon: mdi:spa
@@ -107,7 +91,6 @@ relax_mode:
         entity_id:
           - scene.bedroom_relax
           - scene.living_room_relax
-          - scene.bathroom_night
 
 party_mode:
   alias: Party Mode

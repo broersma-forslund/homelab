@@ -2,15 +2,6 @@
 
 This document describes all the house modes (scripts) and room scenes available in the Home Assistant configuration.
 
-## Table of Contents
-- [House Modes (Scripts)](#house-modes-scripts)
-- [Room-Specific Scenes](#room-specific-scenes)
-- [Voice Control with Google Assistant](#voice-control-with-google-assistant)
-- [Usage Guide](#usage-guide)
-- [Future Improvements](#future-improvements)
-
----
-
 ## House Modes (Scripts)
 
 House modes are orchestrated scripts that control multiple rooms at once to create cohesive lighting and ambiance throughout the home. All modes are defined in `/configuration/scripts/house_modes.yaml`.
@@ -44,7 +35,7 @@ House modes are orchestrated scripts that control multiple rooms at once to crea
 
 ---
 
-### 3. Sleep/Night Mode (`home_sleep`)
+### 3. Sleep/Night Mode (`sleep_mode`)
 **Icon:** `mdi:power-sleep`  
 **Purpose:** Prepare the house for sleep
 **Voice Command:** "Activate Sleep" or "Turn on Sleep mode"
