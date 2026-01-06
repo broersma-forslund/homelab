@@ -299,9 +299,9 @@ House modes are orchestrated scripts that control multiple rooms at once to crea
 
 ## Voice Control with Google Assistant
 
-The following scripts and scenes are exposed to Google Assistant for voice control:
+The following scripts are exposed to Google Assistant for voice control. Scripts orchestrate multiple rooms together, making them ideal for voice commands like "Activate Movie Night" which sets the entire house to the appropriate mode.
 
-### Voice-Activated Scripts
+### Voice-Activated House Mode Scripts
 - `script.movie_night` - "Activate Movie Night"
 - `script.romantic_dinner` - "Activate Romantic Dinner"
 - `script.party_mode` - "Activate Party Mode"
@@ -311,14 +311,8 @@ The following scripts and scenes are exposed to Google Assistant for voice contr
 - `script.home_sleep` - "Activate Sleep" / "Turn on Sleep mode"
 - `script.guests_mode` - "Activate Guests Mode"
 
-### Voice-Activated Scenes
-- `scene.living_room_movie` - "Turn on Living Room Movie"
-- `scene.living_room_party` - "Turn on Living Room Party"
-- `scene.living_room_relax` - "Turn on Living Room Relax"
-- `scene.living_room_romantic_dinner` - "Turn on Living Room Romantic Dinner"
-- `scene.kitchen_movie` - "Turn on Kitchen Movie"
-- `scene.kitchen_romantic_dinner` - "Turn on Kitchen Romantic Dinner"
-- `scene.kitchen_party` - "Turn on Kitchen Party"
+**Why Scripts, Not Scenes?**  
+Scripts are exposed to Google Assistant because they control multiple rooms in coordination. Individual room scenes (like `scene.living_room_movie`) are for internal use by scripts and automations, not direct voice control. This way, you say "Activate Movie Night" once and the whole house adjusts appropriately.
 
 **Configuration:** See `/configuration/integrations/google_home.yaml`
 

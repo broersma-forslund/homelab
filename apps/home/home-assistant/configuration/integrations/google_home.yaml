@@ -22,11 +22,3 @@ google_assistant:
     script.morning_mode: {}
     script.home_sleep: {}
     script.guests_mode: {}
-    # scenes - voice-activated room scenes
-    scene.living_room_movie: {}
-    scene.living_room_party: {}
-    scene.living_room_relax: {}
-    scene.living_room_romantic_dinner: {}
-    scene.kitchen_movie: {}
-    scene.kitchen_romantic_dinner: {}
-    scene.kitchen_party: {}
