@@ -51,3 +51,21 @@
       state: "on"
       brightness: 200
       kelvin: 3000
+
+- id: kitchen_movie
+  name: Kitchen - Movie
+  entities:
+    light.kitchen_ceiling_light: { state: "off" }
+    light.kitchen_spots:
+      state: "on"
+      brightness: 40
+      kelvin: 2200
+
+- id: kitchen_romantic_dinner
+  name: Kitchen - Romantic Dinner
+  entities:
+    light.kitchen_ceiling_light: { state: "off" }
+    light.kitchen_spots:
+      state: "on"
+      brightness: 60
+      kelvin: 2200

@@ -1,12 +1,13 @@
-- id: shower_off
-  name: Shower - Off
-  entities:
-    light.shower_light: { state: "off" }
+# Future expansion: Scenes for when shower gets smart lights
+# - id: shower_off
+#   name: Shower - Off
+#   entities:
+#     light.shower_light: { state: "off" }
 
-- id: shower_morning
-  name: Shower - Morning
-  entities:
-    light.shower_light:
-      state: "on"
-      brightness: 255
-      kelvin: 5000
+# - id: shower_morning
+#   name: Shower - Morning/Energize
+#   entities:
+#     light.shower_light:
+#       state: "on"
+#       brightness: 255
+#       kelvin: 5000

@@ -14,10 +14,7 @@
 - id: bedroom_night
   name: Bedroom - Night
   entities:
-    light.bedroom_fan_light:
-      state: "on"
-      brightness: 20
-      kelvin: 2000
+    light.bedroom_fan_light: { state: "off" }
 
 - id: bedroom_relax
   name: Bedroom - Relax

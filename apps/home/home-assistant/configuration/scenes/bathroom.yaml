@@ -16,13 +16,5 @@
   entities:
     light.bathroom_light:
       state: "on"
-      brightness: 30
-      kelvin: 2200
-
-- id: bathroom_energize
-  name: Bathroom - Energize
-  entities:
-    light.bathroom_light:
-      state: "on"
-      brightness: 255
-      kelvin: 5000
+      brightness: 20
+      kelvin: 2000

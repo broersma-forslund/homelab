@@ -9,9 +9,6 @@ home_sleep:
           - scene.kitchen_off
           - scene.bedroom_night
           - scene.bathroom_night
-          - scene.office_off
-          - scene.shower_off
-          - scene.mechanical_room_off
 
 home_mode:
   alias: Home
@@ -34,9 +31,6 @@ away_mode:
           - scene.kitchen_off
           - scene.bedroom_off
           - scene.bathroom_off
-          - scene.office_off
-          - scene.shower_off
-          - scene.mechanical_room_off
 
 morning_mode:
   alias: Morning
@@ -46,7 +40,7 @@ morning_mode:
       target:
         entity_id:
           - scene.bedroom_morning
-          - scene.bathroom_energize
+          - scene.bathroom_day
           - scene.kitchen_morning
 
 guests_mode:
@@ -60,21 +54,6 @@ guests_mode:
           - scene.kitchen_day
           - scene.bathroom_day
 
-vacation_mode:
-  alias: Vacation
-  icon: mdi:beach
-  sequence:
-    - service: scene.turn_on
-      target:
-        entity_id:
-          - scene.living_room_off
-          - scene.kitchen_off
-          - scene.bedroom_off
-          - scene.bathroom_off
-          - scene.office_off
-          - scene.shower_off
-          - scene.mechanical_room_off
-
 movie_night:
   alias: Movie Night
   icon: mdi:movie
@@ -83,7 +62,17 @@ movie_night:
       target:
         entity_id:
           - scene.living_room_movie
-          - scene.kitchen_off
+          - scene.kitchen_movie
+
+romantic_dinner:
+  alias: Romantic Dinner
+  icon: mdi:candelabra-fire
+  sequence:
+    - service: scene.turn_on
+      target:
+        entity_id:
+          - scene.living_room_romantic_dinner
+          - scene.kitchen_romantic_dinner
 
 cleaning_mode:
   alias: Cleaning Mode
@@ -94,18 +83,6 @@ cleaning_mode:
         entity_id:
           - scene.living_room_day
           - scene.kitchen_cleaning
-          - scene.mechanical_room_cleaning
-
-energize_mode:
-  alias: Energize
-  icon: mdi:lightning-bolt
-  sequence:
-    - service: scene.turn_on
-      target:
-        entity_id:
-          - scene.kitchen_morning
-          - scene.bathroom_energize
-          - scene.shower_morning
 
 work_mode:
   alias: Work Mode
@@ -114,9 +91,12 @@ work_mode:
     - service: scene.turn_on
       target:
         entity_id:
-          - scene.office_work
           - scene.living_room_off
           - scene.kitchen_off
+  # Uncomment when office has smart lights:
+  # - service: scene.turn_on
+  #   target:
+  #     entity_id: scene.office_work
 
 relax_mode:
   alias: Relax/Wellness Mode
@@ -129,20 +109,6 @@ relax_mode:
           - scene.living_room_relax
           - scene.bathroom_night
 
-emergency_mode:
-  alias: Emergency/Evacuation
-  icon: mdi:alert-circle
-  sequence:
-    - service: scene.turn_on
-      target:
-        entity_id:
-          - scene.living_room_day
-          - scene.kitchen_day
-          - scene.bedroom_morning
-          - scene.bathroom_day
-          - scene.office_work
-          - scene.mechanical_room_cleaning
-
 party_mode:
   alias: Party Mode
   icon: mdi:party-popper
@@ -152,18 +118,3 @@ party_mode:
         entity_id:
           - scene.living_room_party
           - scene.kitchen_party
-
-eco_mode:
-  alias: Eco Mode
-  icon: mdi:leaf
-  sequence:
-    - service: scene.turn_on
-      target:
-        entity_id:
-          - scene.living_room_off
-          - scene.kitchen_off
-          - scene.bedroom_off
-          - scene.bathroom_off
-          - scene.office_off
-          - scene.shower_off
-          - scene.mechanical_room_off
