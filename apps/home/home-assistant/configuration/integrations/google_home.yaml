@@ -1,27 +1,27 @@
-google_assistant:
-  project_id: meijhorst-home-assistant-86079
-  service_account: !include ../google-home-sync-token.json
-  secure_devices_pin: !secret assistant_secure_devices_pin
-  report_state: true
-  expose_by_default: false
-  exposed_domains:
-    - light
-    - script
-  entity_config:
-    # lights
-    light.living_room_couch_light: {}
-    light.living_room_dining_table_light: {}
-    light.living_room_bookcase_spots: {}
-    light.living_room_transition_spots: {}
-    light.kitchen_ceiling: {}
-    light.kitchen_spots: {}
-    light.bedroom_fan_light: {}
-    # scripts - voice-activated house modes
-    script.movie_night: {}
-    script.romantic_dinner: {}
-    script.party_mode: {}
-    script.relax_mode: {}
-    script.cleaning_mode: {}
-    script.morning_mode: {}
-    script.home_sleep: {}
-    script.guests_mode: {}
+google_assistant: {}
+  # project_id: meijhorst-home-assistant-86079
+  # service_account: !include ../google-home-sync-token.json
+  # secure_devices_pin: !secret assistant_secure_devices_pin
+  # report_state: true
+  # expose_by_default: false
+  # exposed_domains:
+  #   - light
+  #   - script
+  # entity_config:
+  #   # lights
+  #   light.living_room_couch_light: {}
+  #   light.living_room_dining_table_light: {}
+  #   light.living_room_bookcase_spots: {}
+  #   light.living_room_transition_spots: {}
+  #   light.kitchen_ceiling: {}
+  #   light.kitchen_spots: {}
+  #   light.bedroom_fan_light: {}
+  #   # scripts - voice-activated house modes
+  #   script.movie_night: {}
+  #   script.romantic_dinner: {}
+  #   script.party_mode: {}
+  #   script.relax_mode: {}
+  #   script.cleaning_mode: {}
+  #   script.morning_mode: {}
+  #   script.home_sleep: {}
+  #   script.guests_mode: {}
