@@ -13,8 +13,12 @@ google_assistant:
     light.kitchen_ceiling: {}
     light.kitchen_spots: {}
     light.bedroom_fan_light: {}
-    # # scripts
-    # script.movie_night: {}
-    # # scenes
-    # scene.living_room_day: {}
-    # scene.living_room_romantic_dinner: {}
+    # scripts - voice-activated house modes
+    script.movie_night: {}
+    script.romantic_dinner: {}
+    script.party_mode: {}
+    script.relax_mode: {}
+    script.cleaning_mode: {}
+    script.morning_mode: {}
+    script.home_sleep: {}
+    script.guests_mode: {}

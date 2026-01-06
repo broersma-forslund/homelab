@@ -15,3 +15,57 @@
       state: "on"
       brightness: 255
       kelvin: 4000
+
+- id: kitchen_morning
+  name: Kitchen - Morning
+  entities:
+    light.kitchen_ceiling_light:
+      state: "on"
+      brightness: 255
+      kelvin: 5000
+    light.kitchen_spots:
+      state: "on"
+      brightness: 255
+      kelvin: 5000
+
+- id: kitchen_cleaning
+  name: Kitchen - Cleaning
+  entities:
+    light.kitchen_ceiling_light:
+      state: "on"
+      brightness: 255
+      kelvin: 5000
+    light.kitchen_spots:
+      state: "on"
+      brightness: 255
+      kelvin: 5000
+
+- id: kitchen_party
+  name: Kitchen - Party
+  entities:
+    light.kitchen_ceiling_light:
+      state: "on"
+      brightness: 200
+      kelvin: 3000
+    light.kitchen_spots:
+      state: "on"
+      brightness: 200
+      kelvin: 3000
+
+- id: kitchen_movie
+  name: Kitchen - Movie
+  entities:
+    light.kitchen_ceiling_light: { state: "off" }
+    light.kitchen_spots:
+      state: "on"
+      brightness: 40
+      kelvin: 2200
+
+- id: kitchen_romantic_dinner
+  name: Kitchen - Romantic Dinner
+  entities:
+    light.kitchen_ceiling_light: { state: "off" }
+    light.kitchen_spots:
+      state: "on"
+      brightness: 60
+      kelvin: 2200

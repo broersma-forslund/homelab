@@ -1,0 +1,30 @@
+# Future expansion: Scenes for when office gets smart lights
+# - id: office_off
+#   name: Office - Off
+#   entities:
+#     light.office_desk_light: { state: "off" }
+#     light.office_ceiling_light: { state: "off" }
+
+# - id: office_work
+#   name: Office - Work Mode
+#   entities:
+#     light.office_desk_light:
+#       state: "on"
+#       brightness: 255
+#       kelvin: 5000
+#     light.office_ceiling_light:
+#       state: "on"
+#       brightness: 200
+#       kelvin: 4500
+
+# - id: office_relax
+#   name: Office - Relax
+#   entities:
+#     light.office_desk_light:
+#       state: "on"
+#       brightness: 150
+#       kelvin: 3000
+#     light.office_ceiling_light:
+#       state: "on"
+#       brightness: 100
+#       kelvin: 3000

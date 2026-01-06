@@ -7,15 +7,114 @@ home_sleep:
         entity_id:
           - scene.living_room_off
           - scene.kitchen_off
-          - scene.bedroom_off
+          - scene.bedroom_night
+          - scene.bathroom_night
 
-# movie_night:
-#   alias: Movie Night
-#   icon: mdi:movie
-#   sequence:
-#     - service: scene.turn_on
-#       target:
-#         entity_id: scene.living_room_movie
-#     - service: scene.turn_on
-#       target:
-#         entity_id: scene.kitchen_off
+home_mode:
+  alias: Home
+  icon: mdi:home
+  sequence:
+    - service: scene.turn_on
+      target:
+        entity_id:
+          - scene.living_room_day
+          - scene.kitchen_day
+
+away_mode:
+  alias: Away
+  icon: mdi:home-export-outline
+  sequence:
+    - service: scene.turn_on
+      target:
+        entity_id:
+          - scene.living_room_off
+          - scene.kitchen_off
+          - scene.bedroom_off
+          - scene.bathroom_off
+
+morning_mode:
+  alias: Morning
+  icon: mdi:weather-sunset-up
+  sequence:
+    - service: scene.turn_on
+      target:
+        entity_id:
+          - scene.bedroom_morning
+          - scene.bathroom_day
+          - scene.kitchen_morning
+
+guests_mode:
+  alias: Guests
+  icon: mdi:account-multiple
+  sequence:
+    - service: scene.turn_on
+      target:
+        entity_id:
+          - scene.living_room_day
+          - scene.kitchen_day
+          - scene.bathroom_day
+
+movie_night:
+  alias: Movie Night
+  icon: mdi:movie
+  sequence:
+    - service: scene.turn_on
+      target:
+        entity_id:
+          - scene.living_room_movie
+          - scene.kitchen_movie
+
+romantic_dinner:
+  alias: Romantic Dinner
+  icon: mdi:candelabra-fire
+  sequence:
+    - service: scene.turn_on
+      target:
+        entity_id:
+          - scene.living_room_romantic_dinner
+          - scene.kitchen_romantic_dinner
+
+cleaning_mode:
+  alias: Cleaning Mode
+  icon: mdi:spray-bottle
+  sequence:
+    - service: scene.turn_on
+      target:
+        entity_id:
+          - scene.living_room_day
+          - scene.kitchen_cleaning
+
+work_mode:
+  alias: Work Mode
+  icon: mdi:briefcase
+  sequence:
+    - service: scene.turn_on
+      target:
+        entity_id:
+          - scene.living_room_off
+          - scene.kitchen_off
+  # Uncomment when office has smart lights:
+  # - service: scene.turn_on
+  #   target:
+  #     entity_id: scene.office_work
+
+relax_mode:
+  alias: Relax/Wellness Mode
+  icon: mdi:spa
+  sequence:
+    - service: scene.turn_on
+      target:
+        entity_id:
+          - scene.bedroom_relax
+          - scene.living_room_relax
+          - scene.bathroom_night
+
+party_mode:
+  alias: Party Mode
+  icon: mdi:party-popper
+  sequence:
+    - service: scene.turn_on
+      target:
+        entity_id:
+          - scene.living_room_party
+          - scene.kitchen_party

@@ -1,15 +1,41 @@
 id: '1661453236911'
 alias: Bathroom lights motion
-description: 'Turn bathroom lights on when motion detected between 08:00 and 22:00; turn off after 6 minutes of no motion.'
+description: 'Turn bathroom lights on when motion detected. Uses night scene between 22:00 and 08:00, day scene otherwise. Turns off after 6 minutes of no motion.'
 mode: restart
-conditions:
-  - condition: time
-    after: '08:00:00'
-    before: '22:00:00'
-use_blueprint:
-  path: homeassistant/motion_light.yaml
-  input:
-    motion_entity: binary_sensor.bathroom_motion_sensor_occupancy
-    light_target:
-      area_id: bathroom
-    no_motion_wait: 360
+trigger:
+  - platform: state
+    entity_id: binary_sensor.bathroom_motion_sensor_occupancy
+    to: 'on'
+    id: motion_detected
+  - platform: state
+    entity_id: binary_sensor.bathroom_motion_sensor_occupancy
+    to: 'off'
+    for:
+      minutes: 6
+    id: motion_cleared
+action:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id: motion_detected
+          - condition: time
+            after: '22:00:00'
+            before: '08:00:00'
+        sequence:
+          - service: scene.turn_on
+            target:
+              entity_id: scene.bathroom_night
+      - conditions:
+          - condition: trigger
+            id: motion_detected
+        sequence:
+          - service: scene.turn_on
+            target:
+              entity_id: scene.bathroom_day
+      - conditions:
+          - condition: trigger
+            id: motion_cleared
+        sequence:
+          - service: scene.turn_on
+            target:
+              entity_id: scene.bathroom_off
