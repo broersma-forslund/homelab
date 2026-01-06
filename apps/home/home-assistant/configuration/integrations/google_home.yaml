@@ -1,4 +1,4 @@
-google_assistant: {}
+# google_assistant:
   # project_id: meijhorst-home-assistant-86079
   # service_account: !include ../google-home-sync-token.json
   # secure_devices_pin: !secret assistant_secure_devices_pin
