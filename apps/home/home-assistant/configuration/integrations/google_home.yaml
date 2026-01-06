@@ -1,9 +1,12 @@
 google_assistant:
   project_id: meijhorst-home-assistant-86079
-  report_state: true
   service_account: !include ../google-home-sync-token.json
   secure_devices_pin: !secret assistant_secure_devices_pin
+  report_state: true
   expose_by_default: false
+  exposed_domains:
+    - light
+    - script
   entity_config:
     # lights
     light.living_room_couch_light: {}
