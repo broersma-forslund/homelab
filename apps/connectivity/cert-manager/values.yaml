@@ -30,6 +30,7 @@ trust-manager:
   crds:
     enabled: true
     keep: false
+  revisionHistoryLimit: 0
 
   defaultPackageImage:
     repository: quay.io/jetstack/trust-pkg-debian-bookworm
