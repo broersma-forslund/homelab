@@ -31,11 +31,10 @@ spec:
           
       preconditions:
         all:
-          - key: '{{ request.object.metadata.deletionTimestamp || "" }}'
+          - key: '{{`{{ request.object.metadata.deletionTimestamp || "" }}`}}'
             operator: Equals
             value: ''
-          - key: >-
-              {{ (request.object.metadata.ownerReferences[?contains(excludedOwnerKinds, kind)]) | length(@) }}
+          - key: '{{`{{ (request.object.metadata.ownerReferences[?contains(excludedOwnerKinds, kind)]) | length(@) }}`}}'
             operator: Equals
             value: 0
 
