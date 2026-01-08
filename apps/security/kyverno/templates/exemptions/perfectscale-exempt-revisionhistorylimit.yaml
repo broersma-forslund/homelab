@@ -1,10 +1,12 @@
 apiVersion: kyverno.io/v2
 kind: PolicyException
 metadata:
-  name: delta-exception
+  name: revisionhistorylimit-perfectscale-exempt
 spec:
   exceptions:
   - policyName: set-revisionhistorylimit-zero
+    ruleNames:
+    - set-revisionhistorylimit-zero
   match:
     any:
     - resources:
