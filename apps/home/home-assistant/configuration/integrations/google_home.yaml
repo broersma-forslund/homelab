@@ -1,5 +1,5 @@
 google_assistant:
-  project_id: meijhorst-home-assistant-86079
+  project_id: broersma-forslund-home
   service_account: !include ../google-home-sync-token.json
   secure_devices_pin: !secret assistant_secure_devices_pin
   report_state: true
