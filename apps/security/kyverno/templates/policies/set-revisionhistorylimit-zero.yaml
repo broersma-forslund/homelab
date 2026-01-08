@@ -30,7 +30,7 @@ spec:
               - ThanosRuler
           
       preconditions:
-        any:
+        all:
           - key: '{{`{{ request.object.metadata.labels."kyverno.io/skip" || "" }}`}}'
             operator: Equals
             value: ''
