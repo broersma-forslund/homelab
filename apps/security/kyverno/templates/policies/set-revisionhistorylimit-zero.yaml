@@ -34,9 +34,10 @@ spec:
           - key: '{{`{{ request.object.metadata.deletionTimestamp || "" }}`}}'
             operator: Equals
             value: ''
-          - key: '{{`{{ (request.object.metadata.ownerReferences[?contains(excludedOwnerKinds, kind)]) | length(@) }}`}}'
-            operator: Equals
-            value: 0
+          # Always produce a LIST (never "" / null)
+          - key: '{{`{{ request.object.metadata.ownerReferences[].kind || `[]` }}`}}'
+            operator: AllNotIn
+            value: '{{`{{ excludedOwnerKinds }}`}}'
 
       mutate:
         patchStrategicMerge:
