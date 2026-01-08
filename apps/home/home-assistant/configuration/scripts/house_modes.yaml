@@ -39,7 +39,7 @@ morning_mode:
     - service: scene.turn_on
       target:
         entity_id:
-          - scene.bedroom_morning
+          - scene.living_room_relax
           - scene.kitchen_morning
 
 guests_mode:

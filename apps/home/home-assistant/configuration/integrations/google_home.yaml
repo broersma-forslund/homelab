@@ -20,6 +20,8 @@ google_assistant:
       expose: true
     light.bedroom_fan_light:
       expose: true
+    light.mechanical_room_light:
+      expose: true
     # scripts - voice-activated house modes
     script.movie_night:
       expose: true
@@ -33,7 +35,7 @@ google_assistant:
       expose: true
     script.morning_mode:
       expose: true
-    script.home_sleep:
+    script.sleep_mode:
       expose: true
     script.guests_mode:
       expose: true
