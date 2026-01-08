@@ -3,6 +3,8 @@ exporter:
   secret:
     create: false
   settings:
+    additionalLabels: 
+      kyverno.io/skip: "true"
     clusterName: njord
     deployKubeStateMetrics: false
     deployWindowsExporter: false

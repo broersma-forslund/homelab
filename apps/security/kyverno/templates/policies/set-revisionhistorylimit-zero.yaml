@@ -31,6 +31,9 @@ spec:
           
       preconditions:
         all:
+          - key: '{{ request.object.metadata.labels."kyverno.io/skip" || "" }}'
+            operator: Equals
+            value: ''
           - key: {{ "{{ request.object.metadata.ownerReferences[].kind || `[]` }}" | quote }}
             operator: AllNotIn
             value: '{{`{{ excludedOwnerKinds }}`}}'
