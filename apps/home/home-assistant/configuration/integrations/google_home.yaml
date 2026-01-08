@@ -3,4 +3,37 @@ google_assistant:
   service_account: !include ../google-home-sync-token.json
   secure_devices_pin: !secret assistant_secure_devices_pin
   report_state: true
-  expose_by_default: true
+  expose_by_default: false
+  entity_config:
+    # lights
+    light.living_room_couch_light:
+      expose: true
+    light.living_room_dining_table_light:
+      expose: true
+    light.living_room_bookcase_spots:
+      expose: true
+    light.living_room_transition_spots:
+      expose: true
+    light.kitchen_ceiling:
+      expose: true
+    light.kitchen_spots:
+      expose: true
+    light.bedroom_fan_light:
+      expose: true
+    # scripts - voice-activated house modes
+    script.movie_night:
+      expose: true
+    script.romantic_dinner:
+      expose: true
+    script.party_mode:
+      expose: true
+    script.relax_mode:
+      expose: true
+    script.cleaning_mode:
+      expose: true
+    script.morning_mode:
+      expose: true
+    script.home_sleep:
+      expose: true
+    script.guests_mode:
+      expose: true
