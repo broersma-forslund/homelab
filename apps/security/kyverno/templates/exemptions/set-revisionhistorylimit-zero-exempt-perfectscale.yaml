@@ -1,7 +1,7 @@
 apiVersion: kyverno.io/v2
 kind: PolicyException
 metadata:
-  name: revisionhistorylimit-perfectscale-exempt
+  name: set-revisionhistorylimit-zero-exempt-perfectscale
 spec:
   exceptions:
   - policyName: set-revisionhistorylimit-zero
