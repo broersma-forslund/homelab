@@ -1,7 +1,5 @@
 exporter:
   revisionHistoryLimit: 1
-  additionalLabels: 
-    kyverno.io/skip: "true"
   secret:
     create: false
   settings:

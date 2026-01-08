@@ -34,6 +34,7 @@ kyverno:
       enabled: false # Can enable from 1.34?
     policyExceptions:
       enabled: true
+      namespace: kyverno
 
   admissionController:
     replicas: 3
