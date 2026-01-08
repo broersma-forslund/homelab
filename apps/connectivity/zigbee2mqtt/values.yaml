@@ -27,8 +27,9 @@ credentialsSealed: AgC0syBWpnWmabbVA7M8UieO6RuP2dAnSbgZfgXIqGZ/0GGeTy4zzPhWqJTCc
 route:
   enabled: true
   hostnames:
-    - zigbee2mqtt.mobrockers.com
+  - zigbee2mqtt.mobrockers.com
   parentRefs:
-    - name: envoy-gateway
+    parentRefs:
+    - name: private
       namespace: envoy-gateway
       sectionName: web-https

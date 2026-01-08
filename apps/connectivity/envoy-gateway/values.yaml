@@ -1,6 +1,3 @@
-# publicIp: 87.212.115.7
-privateIp: 10.0.103.21
-
 gateway-helm:
   deployment:
     envoyGateway:
@@ -22,3 +19,12 @@ gateway-helm:
       logging:
         level:
           default: info # debug/info/error/warn
+
+privateGateway:
+  enabled: true
+  loadBalancerIP: 10.0.103.21
+
+publicGateway:
+  enabled: false
+  loadBalancerIP: 10.0.103.21
+  publicIP: 87.212.115.7

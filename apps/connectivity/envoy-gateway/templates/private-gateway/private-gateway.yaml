@@ -1,24 +1,21 @@
+{{- if .Values.privateGateway.enabled }}
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
-  name: envoy-gateway
+  name: private
   annotations:
     'cert-manager.io/revision-history-limit': "1"
     'cert-manager.io/cluster-issuer': cloudflare-letsencrypt-dns
 spec:
-  addresses:
-  {{- with .Values.publicIp }}
-    - value: {{ . }}
-      type: IPAddress
-  {{- end }}
-    - value: {{ .Values.privateIp }}
-      type: IPAddress
   gatewayClassName: envoy-gateway
+  addresses:
+    - value: {{ .Values.privateGateway.loadBalancerIP}}
+      type: IPAddress
   infrastructure:
     parametersRef:
       group: gateway.envoyproxy.io
       kind: EnvoyProxy
-      name: envoy-proxy
+      name: private-gateway-infra
   listeners:
    - name: web-https
      protocol: HTTPS
@@ -65,3 +62,4 @@ spec:
        - group: ''
          kind: Secret
          name: star-s3-mobrockers-com-tls
+{{- end }}

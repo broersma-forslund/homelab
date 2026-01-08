@@ -1,13 +1,14 @@
+{{- if .Values.publicGateway.enabled }}
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: EnvoyProxy
 metadata:
-  name: envoy-proxy
+  name: public-gateway-infra
 spec:
   provider:
     type: Kubernetes
     kubernetes:
       envoyDeployment:
-        replicas: 3
+        replicas: 2
         container:
           resources:
             requests:
@@ -17,5 +18,7 @@ spec:
               memory: 1Gi
       envoyService:
         annotations:
-          'io.cilium/lb-ipam-ips': '{{ .Values.privateIp }}'
+          'io.cilium/lb-ipam-ips': '{{ .Values.publicGateway.loadBalancerIP }}'
         externalTrafficPolicy: Local
+        allocateLoadBalancerNodePorts: false
+{{- end }}

@@ -5,7 +5,7 @@ metadata:
   name: {{ $route.name}}-proxy-route
 spec:
   parentRefs:
-  - name: envoy-gateway
+  - name: private
     namespace: envoy-gateway
     sectionName: web-https
   hostnames:

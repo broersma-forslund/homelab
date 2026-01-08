@@ -10,8 +10,8 @@ metrics:
 route:
   enabled: true
   hostnames:
-    - sabnzbd.mobrockers.com
+  - sabnzbd.mobrockers.com
   parentRefs:
-    - name: envoy-gateway
-      namespace: envoy-gateway
-      sectionName: web-https
+  - name: private
+    namespace: envoy-gateway
+    sectionName: web-https
