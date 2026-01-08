@@ -20,25 +20,25 @@ spec:
               operations:
                 - CREATE
                 - UPDATE
-      preconditions:
-        all:
-          # Ensure the object is not being deleted
-          - key: '{{`{{ request.object.metadata.deletionTimestamp || "" }}`}}'
-            operator: Equals
-            value: ''
-        any:
-          # If ownerReferences don't exist, allow the policy
-          - key: '{{`{{ request.object.metadata.ownerReferences || "" }}`}}'
-            operator: Equals
-            value: ''
-          # If ownerReferences is not prometheus operator managed, allow the policy
-          - key: '{{`{{ request.object.metadata.ownerReferences[0].kind || "" }}`}}'
-            operator: NotIn
+
+      context:
+        - name: excludedOwnerKinds
+          variable:
             value:
               - Prometheus
               - Alertmanager
               - ThanosRuler
           
+      preconditions:
+        all:
+          - key: '{{ request.object.metadata.deletionTimestamp || "" }}'
+            operator: Equals
+            value: ''
+          - key: >-
+              {{ (request.object.metadata.ownerReferences[?contains(excludedOwnerKinds, kind)]) | length(@) }}
+            operator: Equals
+            value: 0
+
       mutate:
         patchStrategicMerge:
           spec:
