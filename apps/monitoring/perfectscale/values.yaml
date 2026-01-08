@@ -1,10 +1,10 @@
 exporter:
-  revisionHistoryLimit: 0
+  revisionHistoryLimit: 1
+  additionalLabels: 
+    kyverno.io/skip: "true"
   secret:
     create: false
   settings:
-    additionalLabels: 
-      kyverno.io/skip: "true"
     clusterName: njord
     deployKubeStateMetrics: false
     deployWindowsExporter: false
