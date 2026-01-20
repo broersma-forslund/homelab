@@ -33,8 +33,10 @@ velero:
         name: azure-credentials
         key: credentials
       config:
+        useAAD: 'true'
         subscriptionId: e71a7bce-3743-48a9-a257-87b8d7180790
         resourceGroup: meijhorst
+        storageAccount: meijhorstbackups
 
     features: EnableCSI
 
@@ -48,7 +50,10 @@ velero:
       schedule: '23 3 * * *'
       useOwnerReferencesInBackup: true
       template:
-        ttl: '120h'
+        ttl: '7d'
+        labelSelector:
+          matchLabels:
+            velero.io/schedule-name: backup
 
   metrics:
     serviceMonitor:
