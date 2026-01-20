@@ -4,7 +4,7 @@ velero:
 
   initContainers:
    - name: velero-plugin-for-microsoft-azure
-     image: velero/velero-plugin-for-microsoft-azure:v1.13.1
+     image: velero/velero-plugin-for-microsoft-azure:v1.13.2
      imagePullPolicy: IfNotPresent
      volumeMounts:
       - mountPath: /target
