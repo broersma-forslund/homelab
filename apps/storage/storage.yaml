@@ -16,6 +16,9 @@ apps:
       - rook-cluster-values.yaml
       - rook-file-systems-values.yaml
       - rook-object-stores-values.yaml
+    velero:
+      deploy: true
+      autoSync: false
     cloudnative-postgres:
       deploy: true
       serverSideApply: true

@@ -1,0 +1,57 @@
+velero:
+  revisionHistoryLimit: 0
+  resources: { }
+
+  initContainers:
+   - name: velero-plugin-for-microsoft-azure
+     image: velero/velero-plugin-for-microsoft-azure:v1.13.1
+     imagePullPolicy: IfNotPresent
+     volumeMounts:
+      - mountPath: /target
+        name: plugins
+
+  configuration:
+    defaultSnapshotMoveData: true
+    backupStorageLocation:
+    - name: default
+      provider: azure
+      bucket: velero
+      default: true
+      credential:
+        name: azure-credentials
+        key: credentials
+      config:
+        useAAD: 'true'
+        subscriptionId: e71a7bce-3743-48a9-a257-87b8d7180790
+        resourceGroup: meijhorst
+        storageAccount: meijhorstbackups
+
+    volumeSnapshotLocation:
+    - name: default
+      provider: azure
+      credential:
+        name: azure-credentials
+        key: credentials
+      config:
+        subscriptionId: e71a7bce-3743-48a9-a257-87b8d7180790
+        resourceGroup: meijhorst
+
+    features: EnableCSI
+
+  deployNodeAgent: true
+  nodeAgent:
+    disableHostPath: true # only needed for FS backups
+    extraArgs:
+    - --node-agent-configmap=velero-node-agent-config
+  schedules:
+    backup:
+      schedule: '23 3 * * *'
+      useOwnerReferencesInBackup: true
+      template:
+        ttl: '120h'
+
+  metrics:
+    serviceMonitor:
+      enabled: true
+    nodeAgentPodMonitor:
+      enabled: true
