@@ -59,6 +59,8 @@ velero:
         labelSelector:
           matchLabels:
             velero.io/schedule-name: backup
+        includedResources:
+        - persistentvolumeclaims
 
   metrics:
     serviceMonitor:
