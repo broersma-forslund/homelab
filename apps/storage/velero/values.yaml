@@ -52,10 +52,10 @@ velero:
     - --node-agent-configmap=velero-node-agent-config
   schedules:
     backup:
-      schedule: '*/1 * * * *'
+      schedule: '16 3 * * *'
       useOwnerReferencesInBackup: true
       template:
-        ttl: '10m'
+        ttl: '48h'
         labelSelector:
           matchLabels:
             velero.io/schedule-name: backup
