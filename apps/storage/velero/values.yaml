@@ -55,7 +55,7 @@ velero:
       schedule: '23 3 * * *'
       useOwnerReferencesInBackup: true
       template:
-        ttl: '7d'
+        ttl: '168h'
         labelSelector:
           matchLabels:
             velero.io/schedule-name: backup
