@@ -3,6 +3,8 @@ immich:
     size: 1Ti
     storageClass: 'ceph-filesystem'
     accessMode: ReadWriteMany
+    labels:
+      velero.io/schedule-name: backup
 
   database:
     clusterName: immich-data
