@@ -51,16 +51,61 @@ velero:
     extraArgs:
     - --node-agent-configmap=velero-node-agent-config
   schedules:
-    backup:
-      schedule: '16 3 * * *'
+    # ----------------------------
+    # CRITICAL - data we cannot easily re-create
+    # ----------------------------
+
+    # Hourly short-term restore points (keep 72h = 3 days)
+    critical-hourly:
+      schedule: "46 * * * *"          # every hour at :46
       useOwnerReferencesInBackup: true
       template:
-        ttl: '48h'
+        ttl: "72h"
+        includedResources:
+          - persistentvolumeclaims
         labelSelector:
           matchLabels:
-            velero.io/schedule-name: backup
+            velero.io/backup-class: critical
+
+    # Daily long-term restore points (keep 720h = 30 days)
+    critical-daily:
+      schedule: "17 2 * * *"          # daily 02:17
+      useOwnerReferencesInBackup: true
+      template:
+        ttl: "720h"
         includedResources:
-        - persistentvolumeclaims
+          - persistentvolumeclaims
+        labelSelector:
+          matchLabels:
+            velero.io/backup-class: critical
+
+    # ----------------------------
+    # NONCRITICAL - data we can re-create, but for which initial setup is tedious
+    # ----------------------------
+
+    # Weekly restore points on Saturday morning (keep 720h = 30 days)
+    noncritical-weekly-saturday:
+      schedule: "23 3 * * 6"         # Saturday 03:23
+      useOwnerReferencesInBackup: true
+      template:
+        ttl: "720h"
+        includedResources:
+          - persistentvolumeclaims
+        labelSelector:
+          matchLabels:
+            velero.io/backup-class: noncritical
+
+    # Monthly restore points on the 1st of the month (keep 2190h = 3 months)
+    noncritical-monthly:
+      schedule: "41 0 1 * *"          # 1st of month 00:41
+      useOwnerReferencesInBackup: true
+      template:
+        ttl: "2190h"
+        includedResources:
+          - persistentvolumeclaims
+        labelSelector:
+          matchLabels:
+            velero.io/backup-class: noncritical
 
   metrics:
     serviceMonitor:
