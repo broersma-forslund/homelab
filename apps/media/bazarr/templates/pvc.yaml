@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: bazarr-data
   labels:
-    velero.io/schedule-name: backup
+    velero.io/backup-class: noncritical
 spec:
   accessModes:
     - ReadWriteOnce
