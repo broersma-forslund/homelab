@@ -4,7 +4,7 @@ immich:
     storageClass: 'ceph-filesystem'
     accessMode: ReadWriteMany
     labels:
-      velero.io/schedule-name: backup
+      velero.io/backup-class: critical
 
   database:
     clusterName: immich-data
