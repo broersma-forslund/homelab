@@ -24,6 +24,8 @@ rook-ceph-cluster:
       hosting:
         advertiseEndpoint:
           dnsName: rook-ceph-rgw-ceph-objectstore.rook-ceph.svc
+          useTls: false
+          port: 80
         dnsNames:
         - 's3.mobrockers.com'
       gateway:
