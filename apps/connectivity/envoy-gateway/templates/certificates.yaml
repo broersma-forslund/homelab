@@ -10,6 +10,6 @@ spec:
     kind: ClusterIssuer
     name: cloudflare-letsencrypt-dns
   revisionHistoryLimit: 1
-  secretName: {{ $certificate.secretName }}
+  secretName: {{ $certificate.name }}
 ---
 {{- end }}
