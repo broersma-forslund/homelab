@@ -7,7 +7,7 @@ spec:
   parentRefs:
   - group: gateway.networking.k8s.io
     kind: Gateway
-    name: envoy-gateway
+    name: private
     namespace: envoy-gateway
     sectionName: s3-mobrockers-com
   rules:
