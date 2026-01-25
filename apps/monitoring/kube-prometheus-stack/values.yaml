@@ -88,7 +88,7 @@ kube-prometheus-stack:
         hostnames:
         - grafana.mobrockers.com
         parentRefs:
-        - name: envoy-gateway
+        - name: private
           namespace: envoy-gateway
           sectionName: web-https
     env:
