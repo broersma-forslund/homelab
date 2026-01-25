@@ -3,9 +3,6 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
   name: private
-  annotations:
-    'cert-manager.io/revision-history-limit': "1"
-    'cert-manager.io/cluster-issuer': cloudflare-letsencrypt-dns
 spec:
   gatewayClassName: envoy-gateway
   addresses:
@@ -29,37 +26,20 @@ spec:
        certificateRefs:
        - group: ''
          kind: Secret
-         name: star-mobrockers-com-tls
-  #  - name: s3-https-root
-  #    protocol: HTTPS
-  #    port: 443
-  #    hostname: 's3.mobrockers.com'
-  #    allowedRoutes:
-  #      namespaces:
-  #       from: Selector
-  #       selector:
-  #         matchLabels:
-  #           kubernetes.io/metadata.name: rook-ceph
-  #    tls:
-  #      mode: Terminate
-  #      certificateRefs:
-  #      - group: ''
-  #        kind: Secret
-  #        name: star-s3-mobrockers-com-tls
-  #  - name: s3-https-wildcard
-  #    protocol: HTTPS
-  #    port: 443
-  #    hostname: '*.s3.mobrockers.com'
-  #    allowedRoutes:
-  #      namespaces:
-  #       from: Selector
-  #       selector:
-  #         matchLabels:
-  #           kubernetes.io/metadata.name: rook-ceph
-  #    tls:
-  #      mode: Terminate
-  #      certificateRefs:
-  #      - group: ''
-  #        kind: Secret
-  #        name: star-s3-mobrockers-com-tls
+         name: wildcard-mobrockers-com
+   - name: s3-mobrockers-com
+     protocol: HTTPS
+     port: 443
+     allowedRoutes:
+       namespaces:
+        from: Selector
+        selector:
+          matchLabels:
+            kubernetes.io/metadata.name: rook-ceph
+     tls:
+       mode: Terminate
+       certificateRefs:
+       - group: ''
+         kind: Secret
+         name: wildcard-s3-mobrockers-com
 {{- end }}
