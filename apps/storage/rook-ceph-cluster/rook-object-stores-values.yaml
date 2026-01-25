@@ -22,6 +22,8 @@ rook-ceph-cluster:
             secondaryDeviceClass: hdd
       allowUsersInNamespaces: ['*']
       hosting:
+        advertiseEndpoint:
+          dnsName: rook-ceph-rgw-ceph-objectstore.rook-ceph.svc
         dnsNames:
         - 's3.mobrockers.com'
       gateway:
@@ -32,8 +34,6 @@ rook-ceph-cluster:
             memory: 200Mi
           limits:
             memory: 500Mi
-        # securePort: 443
-        # sslCertificateRef:
         instances: 2
         priorityClassName: system-cluster-critical
         opsLogSidecar:

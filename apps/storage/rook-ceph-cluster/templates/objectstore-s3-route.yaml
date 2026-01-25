@@ -1,31 +1,26 @@
-# apiVersion: gateway.networking.k8s.io/v1
-# kind: HTTPRoute
-# metadata:
-#   name: rook-ceph-objectstore-s3-route
-# spec:
-#   hostnames: ['s3.mobrockers.com', '*.s3.mobrockers.com']
-#   parentRefs:
-#   - group: gateway.networking.k8s.io
-#     kind: Gateway
-#     name: envoy-gateway
-#     namespace: envoy-gateway
-#     sectionName: s3-https-wildcard
-#   - group: gateway.networking.k8s.io
-#     kind: Gateway
-#     name: envoy-gateway
-#     namespace: envoy-gateway
-#     sectionName: s3-https-root
-#   rules:
-#   - backendRefs:
-#     - group: ''
-#       kind: Service
-#       name: rook-ceph-rgw-ceph-objectstore
-#       port: 80
-#       weight: 1
-#     matches:
-#     - path:
-#         type: PathPrefix
-#         value: /
-#     timeouts:
-#       request: 0s
-#       backendRequest: 0s
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: rook-ceph-objectstore-s3-route
+spec:
+  hostnames: ['s3.mobrockers.com', '*.s3.mobrockers.com']
+  parentRefs:
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: envoy-gateway
+    namespace: envoy-gateway
+    sectionName: s3-mobrockers-com
+  rules:
+  - backendRefs:
+    - group: ''
+      kind: Service
+      name: rook-ceph-rgw-ceph-objectstore
+      port: 80
+      weight: 1
+    matches:
+    - path:
+        type: PathPrefix
+        value: /
+    timeouts:
+      request: 0s
+      backendRequest: 0s
