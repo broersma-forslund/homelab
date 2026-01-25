@@ -30,6 +30,7 @@ spec:
    - name: s3-mobrockers-com
      protocol: HTTPS
      port: 443
+     hostname: '*.s3.mobrockers.com'
      allowedRoutes:
        namespaces:
         from: Selector
