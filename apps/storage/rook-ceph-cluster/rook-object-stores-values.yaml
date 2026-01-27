@@ -35,7 +35,7 @@ rook-ceph-cluster:
             cpu: 10m
             memory: 200Mi
           limits:
-            memory: 500Mi
+            memory: 6Gi
         instances: 2
         priorityClassName: system-cluster-critical
         opsLogSidecar:
