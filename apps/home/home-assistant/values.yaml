@@ -30,7 +30,7 @@ home-assistant:
       name: svc-cluster-local-bundle
   additionalInitContainers:
   - name: mqtts-proxy
-    image: cgr.dev/chainguard/stunnel:latest@sha256:bea7352a6eb066f14c07beb19ab6b769454948edd84e11b04f3f7eaa120440eb
+    image: cgr.dev/chainguard/stunnel:latest@sha256:400e33fb5a4d1c3a590968844aa748d851ed7c5fc203343ae5ec472a5972ee81
     restartPolicy: Always
     command: ["stunnel", "/etc/conf/stunnel.conf"]
     volumeMounts:
