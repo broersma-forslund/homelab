@@ -1,5 +1,5 @@
 route:
-  enabled: false
+  enabled: true
   hostnames:
     - kubechecks.mobrockers.com
   parentRefs:

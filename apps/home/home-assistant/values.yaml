@@ -10,6 +10,17 @@ home-assistant:
   persistence:
     size: 10Gi
 
+  route:
+    enabled: true
+    hostnames:
+      - home.mobrockers.com
+    parentRefs:
+      - name: private
+        namespace: envoy-gateway
+        sectionName: web-https
+      - name: public
+        namespace: envoy-gateway
+        sectionName: web-https
   ingress:
     enabled: true
     class: nginx
