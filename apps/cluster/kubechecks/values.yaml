@@ -1,3 +1,12 @@
+route:
+  enabled: false
+  hostnames:
+    - kubechecks.mobrockers.com
+  parentRefs:
+    - name: public
+      namespace: envoy-gateway
+      sectionName: web-https
+
 kubechecks:
   configMap:
     create: true
@@ -13,7 +22,7 @@ kubechecks:
       
       KUBECHECKS_TIDY_OUTDATED_COMMENTS_MODE: delete
       KUBECHECKS_REPLAN_COMMENT_MSG: '/kubechecks retry'
-      KUBECHECKS_FALLBACK_K8S_VERSION: '1.30'
+      KUBECHECKS_FALLBACK_K8S_VERSION: '1.34'
       KUBECHECKS_WORST_PREUPGRADE_STATE: Warning
       KUBECHECKS_REPO_SHALLOW_CLONE: 'true'
       KUBECHECKS_SCHEMAS_LOCATION: https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json
@@ -31,7 +40,7 @@ kubechecks:
 
     image:
       name: ghcr.io/zapier/kubechecks
-      tag: v2.5.3
+      tag: v2.6.0
 
     podSecurityContext:
 #       runAsNonRoot: true
