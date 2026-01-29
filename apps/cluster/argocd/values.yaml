@@ -52,7 +52,7 @@ argo-cd:
   server:
     replicas: 2
     service:
-      servicePortHttpsAppProtocol: kubernetes.io/h2c
+      servicePortHttpAppProtocol: kubernetes.io/h2c
 
     httproute:
       enabled: true
