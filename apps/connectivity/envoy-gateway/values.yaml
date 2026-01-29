@@ -20,11 +20,21 @@ gateway-helm:
         level:
           default: info # debug/info/error/warn
 
+certificates:
+  - name: wildcard-mobrockers-com
+    dnsNames:
+      - 'mobrockers.com'
+      - '*.mobrockers.com'
+  - name: wildcard-s3-mobrockers-com
+    dnsNames:
+      - 's3.mobrockers.com'
+      - '*.s3.mobrockers.com'
+
 privateGateway:
   enabled: true
   loadBalancerIP: 10.0.103.21
 
 publicGateway:
-  enabled: false
-  loadBalancerIP: 10.0.103.21
+  enabled: true
+  loadBalancerIP: 10.0.103.22
   publicIP: 87.212.115.7

@@ -1,6 +1,6 @@
 image:
   repository: ghcr.io/maintainerr/maintainerr
-  tag: 2.26.0
+  tag: 2.26.1
 
 route:
   enabled: true
@@ -8,5 +8,8 @@ route:
   - maintainerr.mobrockers.com
   parentRefs:
   - name: private
+    namespace: envoy-gateway
+    sectionName: web-https
+  - name: public
     namespace: envoy-gateway
     sectionName: web-https

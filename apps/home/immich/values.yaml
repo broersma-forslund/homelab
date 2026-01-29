@@ -3,6 +3,8 @@ immich:
     size: 1Ti
     storageClass: 'ceph-filesystem'
     accessMode: ReadWriteMany
+    labels:
+      velero.io/backup-class: critical
 
   database:
     clusterName: immich-data
@@ -19,6 +21,20 @@ immich:
         endpoint: http://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc:80
         accessKeyName: AWS_ACCESS_KEY_ID
         secretKeyName: AWS_SECRET_ACCESS_KEY
+
+  route:
+    enabled: true
+    hostnames:
+      - photos.mobrockers.com
+    parentRefs:
+      - name: private
+        namespace: envoy-gateway
+        sectionName: web-https
+      - name: public
+        namespace: envoy-gateway
+        sectionName: web-https
+    timeouts:
+      request: 3600s
 
   ingress:
     enabled: true

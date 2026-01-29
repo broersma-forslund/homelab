@@ -7,7 +7,6 @@ adguard:
         replicator.v1.mittwald.de/replication-allowed-namespaces: "private-external-dns"
 
   primary:
-
     ingress:
       enabled: false
     route:
@@ -15,7 +14,10 @@ adguard:
       hostnames:
       - adguard.mobrockers.com
       parentRefs:
-      - name: envoy-gateway
+      - name: private
+        namespace: envoy-gateway
+        sectionName: web-https
+      - name: public
         namespace: envoy-gateway
         sectionName: web-https
       filters:
