@@ -7,13 +7,23 @@ rook-ceph-cluster:
     enabled: true
     createPrometheusRules: true
 
-  ingress:
+  route:
     dashboard:
       host:
         name: ceph.mobrockers.com
-      tls:
-      - hosts:
-        - ceph.mobrockers.com
+        path: "/"
+        pathType: PathPrefix
+      parentRefs:
+        - group: gateway.networking.k8s.io
+          kind: Gateway
+          name: private
+          namespace: envoy-gateway
+          sectionName: web-https
+        - group: gateway.networking.k8s.io
+          kind: Gateway
+          name: public
+          namespace: envoy-gateway
+          sectionName: web-https
 
   cephClusterSpec:
     cephVersion:
