@@ -2,15 +2,7 @@
 apiVersion: {{ .Values.route.apiVersion | default "gateway.networking.k8s.io/v1" }}
 kind: {{ .Values.route.kind | default "HTTPRoute" }}
 metadata:
-  {{- with .Values.route.annotations }}
-  annotations:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
   name: cilium-hubble
-  labels:
-    {{- with .Values.route.labels }}
-    {{- toYaml . | nindent 4 }}
-    {{- end }}
 spec:
   {{- with .Values.route.parentRefs }}
   parentRefs:
@@ -21,9 +13,6 @@ spec:
     {{- tpl (toYaml .) $ | nindent 4 }}
   {{- end }}
   rules:
-    {{- if .Values.route.additionalRules }}
-    {{- tpl (toYaml .Values.route.additionalRules) $ | nindent 4 }}
-    {{- end }}
     - backendRefs:
         - name: hubble-ui
           port: 80
