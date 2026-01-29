@@ -1,4 +1,6 @@
 snapshot-controller:
+  webhook:
+    enabled: false
   controller:
     revisionHistoryLimit: 0
     args:
