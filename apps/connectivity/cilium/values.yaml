@@ -1,3 +1,15 @@
+route:
+  enabled: true
+  hostnames:
+    - hubble.mobrockers.com
+  parentRefs:
+    - name: private
+      namespace: envoy-gateway
+      sectionName: web-https
+    - name: public
+      namespace: envoy-gateway
+      sectionName: web-https
+
 cilium:
   MTU: 1450
   k8sServiceHost: localhost
@@ -55,22 +67,6 @@ cilium:
     ui:
       enabled: true
       rollOutPods: true
-      ingress:
-        enabled: true
-        annotations:
-          nginx.ingress.kubernetes.io/auth-url: |-
-            http://ak-outpost-authentik-embedded-outpost.authentik.svc.cluster.local:9000/outpost.goauthentik.io/auth/nginx
-          nginx.ingress.kubernetes.io/auth-signin: |-
-            https://hubble.mobrockers.com/outpost.goauthentik.io/start?rd=$escaped_request_uri
-          nginx.ingress.kubernetes.io/auth-response-headers: |-
-            Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
-          nginx.ingress.kubernetes.io/auth-snippet: |
-            proxy_set_header X-Forwarded-Host $http_host;
-        hosts:
-          - hubble.mobrockers.com
-        tls:
-          - hosts:
-              - hubble.mobrockers.com
 
   securityContext:
     capabilities:

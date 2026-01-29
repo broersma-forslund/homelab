@@ -1,0 +1,17 @@
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: route-require-oidc
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: {{ template "common.fullname" . }}-hubble
+  oidc:
+    provider:
+      issuer: https://authentik.mobrockers.com/application/o/{{ template "common.fullname" . }}-hubble/
+    redirectURL: https://hubble.mobrockers.com/oauth2/callback
+    logoutPath: /oauth2/logout
+    clientID: FyWvA1qRo7UUW0B1V20rHxxWPgoI4WmRNEdNqWYM
+    clientSecret:
+      name: hubble-route-oidc-secret
