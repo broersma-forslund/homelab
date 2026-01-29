@@ -5,7 +5,7 @@ snapshot-controller:
     revisionHistoryLimit: 0
     args:
       automaxprocs: true
-      feature-gates: CSIVolumeGroupSnapshot=true
+      feature-gates: CSIVolumeGroupSnapshot=false
     resources:
       requests:
         cpu: 10m
