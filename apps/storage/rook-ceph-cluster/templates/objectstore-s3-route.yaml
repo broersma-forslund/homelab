@@ -13,7 +13,7 @@ spec:
     sectionName: s3-mobrockers-com
   rules:
   - backendRefs:
-      name: rook-ceph-rgw-ceph-objectstore
+    - name: rook-ceph-rgw-ceph-objectstore
       port: 80
     # matches:
     # - path:
