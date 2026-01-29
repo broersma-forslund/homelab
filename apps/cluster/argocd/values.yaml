@@ -51,10 +51,8 @@ argo-cd:
 
   server:
     replicas: 2
-    metrics:
-      enabled: true
-      serviceMonitor:
-        enabled: true
+    service:
+      servicePortHttpsAppProtocol: kubernetes.io/h2c
 
     httproute:
       enabled: true
@@ -64,15 +62,21 @@ argo-cd:
       - name: private
         namespace: envoy-gateway
         sectionName: web-https
+      - name: public
+        namespace: envoy-gateway
+        sectionName: web-https
 
     grpcroute:
-      enabled: false
+      enabled: true
       hostnames:
-        - grpc.argocd.mobrockers.com
+        - argocd-grpc.mobrockers.com
       parentRefs:
       - name: private
         namespace: envoy-gateway
-        sectionName: grpc-https
+        sectionName: web-https
+      - name: private
+        namespace: envoy-gateway
+        sectionName: web-https
 
     ingress:
       enabled: true
@@ -84,6 +88,11 @@ argo-cd:
       - hosts:
         - argocd.mobrockers.com
 
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+  
   repoServer:
     replicas: 1
     metrics:
