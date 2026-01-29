@@ -11,7 +11,7 @@ rook-ceph-cluster:
     dashboard:
       host:
         name: ceph.mobrockers.com
-        path: "/"
+        path: /
         pathType: PathPrefix
       parentRefs:
         - group: gateway.networking.k8s.io

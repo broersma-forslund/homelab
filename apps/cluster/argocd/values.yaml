@@ -67,7 +67,7 @@ argo-cd:
         sectionName: web-https
 
     grpcroute:
-      enabled: true
+      enabled: false # grpcroute does not yet work: https://github.com/argoproj/argo-helm/pull/3585
       hostnames:
         - argocd-grpc.mobrockers.com
       parentRefs:
