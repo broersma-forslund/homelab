@@ -14,14 +14,13 @@ spec:
   {{- end }}
   rules:
     - backendRefs:
-        - name: hubble-ui
+        - group: ''
+          kind: Service
+          name: hubble-ui
           port: 80
-      {{- with .Values.route.filters }}
-      filters:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.route.matches }}
+          weight: 1
       matches:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        - path:
+            type: PathPrefix
+            value: /
   {{- end }}
