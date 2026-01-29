@@ -10,6 +10,9 @@ route:
   - name: private
     namespace: envoy-gateway
     sectionName: web-https
+  - name: public
+    namespace: envoy-gateway
+    sectionName: web-https
 
 kyverno:
   crds:

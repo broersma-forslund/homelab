@@ -5,14 +5,18 @@ gatus:
       enabled: true
 
   gatus:
-    ingress:
+    route:
       enabled: true
-      hosts:
-      - status.mobrockers.com
-      tls:
-      - hosts:
+      hostnames:
         - status.mobrockers.com
-        
+      parentRefs:
+        - name: private
+          namespace: envoy-gateway
+          sectionName: web-https
+        - name: public
+          namespace: envoy-gateway
+          sectionName: web-https
+
     config:
       debug: true
       endpoints:
