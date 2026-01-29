@@ -16,7 +16,7 @@ data:
     {{ .Values.authentication.oidc | toYaml | nindent 4 }}
   accounts.kubechecks: apiKey
 
-  resource.cuztomizations.ignoreDifferences.gateway.networking.k8s.io_HTTPRoute: |
+  resource.customizations.ignoreDifferences.gateway.networking.k8s.io_HTTPRoute: |
     jqPathExpressions:
     - '.spec.rules[]?.backendRefs[]? | select(.group == "") | .group'
     - '.spec.rules[]?.backendRefs[]? | select(.kind == "Service") | .kind'
