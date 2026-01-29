@@ -6,7 +6,7 @@ metadata:
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  name: {{ template "common.fullname" . }}-hubble
+  name: cilium-hubble
   labels:
     {{- with .Values.route.labels }}
     {{- toYaml . | nindent 4 }}
