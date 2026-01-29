@@ -16,17 +16,15 @@ data:
     {{ .Values.authentication.oidc | toYaml | nindent 4 }}
   accounts.kubechecks: apiKey
 
-  # resource.customizations.ignoreDifferences.gateway.networking.k8s.io_Gateway: |
-  #   jqPathExpressions:
-  #   - '.spec.rules[]?.backendRefs[]? | select(.group == "") | .group'
-  #   - '.spec.rules[]?.backendRefs[]? | select(.kind == "Service") | .kind'
-  #   - '.spec.rules[]?.backendRefs[]? | select(.weight == 1) | .weight'
-
   resource.customizations.ignoreDifferences.gateway.networking.k8s.io_HTTPRoute: |
     jqPathExpressions:
+    - '.spec.parentRefs[]? | select(.group == "gateway.networking.k8s.io") | .group'
+    - '.spec.parentRefs[]? | select(.kind == "Gateway") | .Gateway'
     - '.spec.rules[]?.backendRefs[]? | select(.group == "") | .group'
     - '.spec.rules[]?.backendRefs[]? | select(.kind == "Service") | .kind'
     - '.spec.rules[]?.backendRefs[]? | select(.weight == 1) | .weight'
+    - '.spec.rules[]?.matches[]?.path? | select(.type == "PathPrefix") | .type'
+    - '.spec.rules[]?.matches[]?.path? | select(.value == "/") | .value'
 
   resource.customizations.ignoreDifferences.admissionregistration.k8s.io_ValidatingWebhookConfiguration: |
     jqPathExpressions:
