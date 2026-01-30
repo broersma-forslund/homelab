@@ -36,7 +36,7 @@ argo-cd:
       create: false
     params:
       server.insecure: 'true'
-      # controller.diff.server.side: 'true'
+      controller.diff.server.side: 'true'
 
   controller:
     replicas: 1
