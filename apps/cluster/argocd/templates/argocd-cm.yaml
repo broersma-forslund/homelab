@@ -16,29 +16,6 @@ data:
     {{ .Values.authentication.oidc | toYaml | nindent 4 }}
   accounts.kubechecks: apiKey
 
-  resource.customizations.ignoreDifferences.gateway.networking.k8s.io_HTTPRoute: |
-    jqPathExpressions:
-    - '.spec.parentRefs[]? | select(.group == "gateway.networking.k8s.io") | .group'
-    - '.spec.parentRefs[]? | select(.kind == "Gateway") | .kind'
-    - '.spec.rules[]?.backendRefs[]? | select(.group == "") | .group'
-    - '.spec.rules[]?.backendRefs[]? | select(.kind == "Service") | .kind'
-    - '.spec.rules[]?.backendRefs[]? | select(.weight == 1) | .weight'
-    - '.spec.rules[]?.matches[]?| select(.path.type == "PathPrefix" and .path.value == "/")'
-    - '.spec.rules[]?.matches[]?.path? | select(.type == "PathPrefix") | .type'
-    - '.spec.rules[]?.matches[]?.path? | select(.value == "/") | .value'
-
-  resource.customizations.ignoreDifferences.admissionregistration.k8s.io_ValidatingWebhookConfiguration: |
-    jqPathExpressions:
-    - '.webhooks[]?.clientConfig.caBundle'
-  resource.customizations.ignoreDifferences.admissionregistration.k8s.io_MutatingWebhookConfiguration: |
-    jqPathExpressions:
-    - '.webhooks[]?.clientConfig.caBundle'
-
-  resource.customizations.ignoreDifferences.argoproj.io_Application: |
-    jqPathExpressions:
-      - .metadata.finalizers[]? | select(. == "post-delete-finalizer.argocd.argoproj.io" or . == "post-delete-finalizer.argocd.argoproj.io/cleanup")
-      - if (.metadata.finalizers | length) == 0 then .metadata.finalizers else empty end
-
   # -- Ignoring status for all resources. An update will still be sent if the status update causes the health to change.
   # @default -- See [values.yaml]
   resource.customizations.ignoreResourceUpdates.all: |
