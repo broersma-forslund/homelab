@@ -6,3 +6,20 @@ tautulli:
   image:
     repository: ghcr.io/linuxserver/tautulli
     tag: 2.16.0
+
+route:
+  parentRefs:
+  - name: private
+    namespace: envoy-gateway
+    sectionName: web-https
+  - name: public
+    namespace: envoy-gateway
+    sectionName: web-https
+  plex:
+    enabled: true
+    hostnames:
+    - plex.mobrockers.com
+  tautulli:
+    enabled: true
+    hostnames:
+    - tautulli.mobrockers.com
