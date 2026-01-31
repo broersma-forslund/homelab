@@ -18,7 +18,7 @@ spec:
     - backendRefs:
         - name: {{ template "common.fullname" . }}
           port: 32400
-    timeouts:
-      request: 0s
-      backendRequest: 0s
+      timeouts:
+        request: 0s
+        backendRequest: 0s
 {{- end }}
