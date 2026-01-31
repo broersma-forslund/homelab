@@ -18,4 +18,4 @@ spec:
     - backendRefs:
         - name: {{ template "common.fullname" . }}
           port: 8181
-  {{- end }}
+{{- end }}
