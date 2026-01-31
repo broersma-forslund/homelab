@@ -1,0 +1,24 @@
+{{- if .Values.route.plex.enabled -}}
+apiVersion: {{ .Values.route.apiVersion | default "gateway.networking.k8s.io/v1" }}
+kind: {{ .Values.route.kind | default "HTTPRoute" }}
+metadata:
+  name: {{ template "common.fullname" . }}
+  labels:
+    {{- include "common.labels" . | nindent 4 }}
+spec:
+  {{- with .Values.route.parentRefs }}
+  parentRefs:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.route.plex.hostnames }}
+  hostnames:
+    {{- tpl (toYaml .) $ | nindent 4 }}
+  {{- end }}
+  rules:
+    - backendRefs:
+        - name: {{ template "common.fullname" . }}
+          port: 32400
+      timeouts:
+        request: 0s
+        backendRequest: 0s
+{{- end }}
