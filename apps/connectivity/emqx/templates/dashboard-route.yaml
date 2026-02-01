@@ -16,10 +16,10 @@ spec:
     - backendRefs:
         - name: emqx-dashboard
           port: 18083
-      filters:
-      - type: ExtensionRef
-        extensionRef:
-          group: gateway.envoyproxy.io
-          kind: HTTPRouteFilter
-          name: basic-auth-credential-injection
+      # filters:
+      # - type: ExtensionRef
+      #   extensionRef:
+      #     group: gateway.envoyproxy.io
+      #     kind: HTTPRouteFilter
+      #     name: basic-auth-credential-injection
 {{- end }}
