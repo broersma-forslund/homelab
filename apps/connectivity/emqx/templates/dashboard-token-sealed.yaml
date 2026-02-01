@@ -5,7 +5,7 @@ metadata:
   namespace: emqx
 spec:
   encryptedData:
-    # echo -n "admin:dashboard-token" | kubeseal --cert https://sealed-secrets.mobrockers.com/v1/cert.pem --raw --name="emqx-dashboard-token" -n emqx | clip.exe
-    # The format should be "username:password" for basic auth
-    username: PLACEHOLDER_TO_BE_REPLACED
-    password: PLACEHOLDER_TO_BE_REPLACED
+    # echo -n "admin" | kubeseal --cert https://sealed-secrets.mobrockers.com/v1/cert.pem --raw --name="emqx-dashboard-token" -n emqx | clip.exe
+    # echo -n "password" | kubeseal --cert https://sealed-secrets.mobrockers.com/v1/cert.pem --raw --name="emqx-dashboard-token" -n emqx | clip.exe
+    username: AgBWFF7NK8P2Im1k0wkTB1GKJoe9uPRKA6LRhc0he5lNbWjGj/fzQ9MEEXwid1xSp60OQ03h/3hKv+yh8DnzEx30xnHVInJNtzrC8GPXj32h7rBAOipf/mv4NnfgA2DOYd+6/J4Ddp2wtxwcvRwBMTPQ0GVBdPtu9grvC03cj4HVMUe0bRmT9+lDDoTCLD3gifr7M6k8TBrDp8TJxH8/mkeltpVy8cFeNjTLoim24Na6GrtwTPBiu7SDk2hmcCNfVaiATilsAaemCg8yE0XvxWaIiNz06+cn9vDuA7GT4EFtPjV+4AghEn5leJ5+w37ZMmlGMjAHVKJAx+AR3uFTrbe00vXz6CV2iNw0qT/n+gldHnJXUgeSzrQeIZ0zvyJjxeu+vwZ/YUSP3MiCu9HZAuPjEBgEA3Swke8pcbG9dZPWGqOh0hew40rWr1SELbBhYNpdXCTIY2Q1jHzquVC0dH86NRtEWIYR1B2ItRcQE6e9J3kovVq5uFK1jBjZogBAgCJK0rvYqomxi0BlRbC3+tKIeNh7KjKdxB9YUBoidcC146HD3HQp/WrUJZRLsEgG1p2//Zpn5w49AQi9d3ewtsTrIKb3UZxAaWGRPWz9BhZF0Qw1yvLmgIhWlgF9Tttb+L5OpJRw/iruwcwx0XYxC89XJ6hMnZh5bmBMRbK/NCwo0PMSy9u51BvrPLt0Bqiqs2tonWjvPQ==
+    password: AgCz3Jb/orVk+fZuIf/8kn9bKO2usO2twpYDkekh/lxp5ZHkox/bIXfDZDAUwAQOSnjLKaoov1dYB47zlG/jYdic3Gu2/+jpCkLDJk7dR1ayYjGhz/42hR9HobmhRPkmcbRH6tl25Zm5Wch8Xt4N7SLHpZxb/Pp6JOveIJ741Avde8ZzbYV+vMOXcg/ps5hpjr8W01EGC3ZiZ2SFRkgrcqEt8kFJCJ1aoG2NVMHkLI6PJtU7LglFcGNl3uxFIoHNNsLdJgTVs4wifCska4BuZ2vA9nGAAJilCM+j4b4sy5ConiCDbWPWwYkO7Gr5VukCKGlvtZVPiazblp1sAAnf2csZYPcSN8yMjTJnn/q9XiY/hHUIMqQRNiDns1y3gaIaxWRuuDen9g42SUlxMPG//vWwir6Xq6zDjVRrfpeqiTtk/PAx9yJrKgFp1bcYvjb/azUl9zMZ7Ws6s2+m5B2WrbOsxfMySMAnNCn4jHzZs8Sa3C5EIly5CaKYrHP+1bYqolI0VQO9ChNcTdBWfLToQ7LQA0DRVbaM3VENOsm/dI4fM+vjKg1KdT8TzpS6+e8OhLpZ58fQCKDfEocxkseFACcKPIAJ4Lcbk9I9WzH8IsgTL1dooV+H0dHJ+CdDS++jIqj5d7gmM8YBJeRL//F8CANkz1hkUwHe4f9cXKnE/UBSVqHgad37Na2TtL47T+UympsfMrbn+Ch35MamZ2ivQXaTB9G/ikCEa9x7QH6oGxKLKOL9NqrKJnYV6rXx

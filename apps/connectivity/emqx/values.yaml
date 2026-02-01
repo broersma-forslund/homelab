@@ -8,6 +8,11 @@ route:
       name: private
       namespace: envoy-gateway
       sectionName: web-https
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: public
+      namespace: envoy-gateway
+      sectionName: web-https
 
 emqx-operator:
   revisionHistoryLimit: 0

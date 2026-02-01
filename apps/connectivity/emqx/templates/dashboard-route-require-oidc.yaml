@@ -12,6 +12,6 @@ spec:
       issuer: https://authentik.mobrockers.com/application/o/emqx/
     redirectURL: https://emqx.mobrockers.com/oauth2/callback
     logoutPath: /oauth2/logout
-    clientID: PLACEHOLDER_CLIENT_ID
+    clientID: FrQmQnbUFYlOX7ppghAODr2i0QWCGYZNlD5wSUFh
     clientSecret:
       name: emqx-dashboard-oidc-secret
