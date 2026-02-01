@@ -26,6 +26,6 @@ app.kubernetes.io/name: {{ template "common.name" . }}
 helm.sh/chart: {{ include "chartName" . }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 app.kubernetes.io/instance: {{ .Release.Name }}
-app.kubernetes.io/version: {{ .Values.image.tag | quote }}
+app.kubernetes.io/version: {{ .Values.overseerr.image.tag | quote }}
 app.kubernetes.io/part-of: "overseerr"
 {{- end -}}
