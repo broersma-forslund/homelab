@@ -24,6 +24,6 @@ apps:
     public-external-dns:
       deploy: true
     ingress-nginx:
-      deploy: true
+      deploy: false
     zigbee2mqtt:
       deploy: true
