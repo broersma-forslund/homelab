@@ -1,0 +1,10 @@
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: adguard-dashboard-token
+  namespace: adguard
+spec:
+  encryptedData:
+    # echo -n "admin:password" | base64 | kubeseal --cert https://sealed-secrets.mobrockers.com/v1/cert.pem --raw --name="adguard-dashboard-token" -n adguard | clip.exe
+    # The value should be base64 encoded "username:password", then sealed
+    token: PLACEHOLDER_TO_BE_REPLACED

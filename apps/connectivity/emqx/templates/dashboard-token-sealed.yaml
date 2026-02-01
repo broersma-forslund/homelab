@@ -1,0 +1,9 @@
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: emqx-dashboard-token
+  namespace: emqx
+spec:
+  encryptedData:
+    # echo -n "dashboard-token" | kubeseal --cert https://sealed-secrets.mobrockers.com/v1/cert.pem --raw --name="emqx-dashboard-token" -n emqx | clip.exe
+    dashboard-token: PLACEHOLDER_TO_BE_REPLACED

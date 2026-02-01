@@ -1,3 +1,14 @@
+route:
+  enabled: true
+  hostnames:
+    - sealed-secrets.mobrockers.com
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: public
+      namespace: envoy-gateway
+      sectionName: web-https
+
 sealed-secrets:
 
   keyrenewperiod: "0"

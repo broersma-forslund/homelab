@@ -2,7 +2,7 @@
 apiVersion: {{ .Values.route.apiVersion | default "gateway.networking.k8s.io/v1" }}
 kind: {{ .Values.route.kind | default "HTTPRoute" }}
 metadata:
-  name: emqx-dashboard
+  name: sealed-secrets-cert
 spec:
   {{- with .Values.route.parentRefs }}
   parentRefs:
@@ -13,11 +13,11 @@ spec:
     {{- tpl (toYaml .) $ | nindent 4 }}
   {{- end }}
   rules:
-    - backendRefs:
-        - name: emqx-dashboard
-          port: 18083
-      {{- with .Values.route.filters }}
-      filters:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /v1/cert.pem
+      backendRefs:
+        - name: sealed-secrets-controller
+          port: 8080
 {{- end }}
