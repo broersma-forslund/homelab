@@ -20,8 +20,6 @@ adguard:
       - name: public
         namespace: envoy-gateway
         sectionName: web-https
-      # Basic auth is now handled by BackendTrafficPolicy using secret reference
-      # See adguard-backend-auth.yaml and adguard-dashboard-token-sealed.yaml
 
   secondary:
     replicas: 3
