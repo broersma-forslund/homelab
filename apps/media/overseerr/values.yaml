@@ -2,3 +2,15 @@ overseerr:
   image:
     repository: sctx/overseerr
     tag: 1.34.0
+
+route:
+  enabled: true
+  hostnames:
+  - maintainerr.mobrockers.com
+  parentRefs:
+  - name: private
+    namespace: envoy-gateway
+    sectionName: web-https
+  - name: public
+    namespace: envoy-gateway
+    sectionName: web-https
