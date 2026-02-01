@@ -24,6 +24,6 @@ spec:
   rules:
     - backendRefs:
         - name: {{ template "common.fullname" . }}
-          port: 6246
+          port: 80
 {{- end }}
   
