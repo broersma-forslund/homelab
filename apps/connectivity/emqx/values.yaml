@@ -1,3 +1,14 @@
+route:
+  enabled: true
+  hostnames:
+    - emqx.mobrockers.com
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: private
+      namespace: envoy-gateway
+      sectionName: web-https
+
 emqx-operator:
   revisionHistoryLimit: 0
   replicaCount: 1
