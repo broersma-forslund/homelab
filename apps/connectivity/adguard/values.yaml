@@ -20,7 +20,12 @@ adguard:
       - name: public
         namespace: envoy-gateway
         sectionName: web-https
-
+      filters:
+      - type: ExtensionRef
+        extensionRef:
+          group: gateway.envoyproxy.io
+          kind: HTTPRouteFilter
+          name: basic-auth-credential-injection
   secondary:
     replicas: 3
 

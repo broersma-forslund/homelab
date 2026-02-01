@@ -1,0 +1,10 @@
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: adguard-dashboard-authorization-header
+  namespace: adguard
+spec:
+  encryptedData:
+    # basicAuth="admin:password" | base64 -w0
+    # echo -n "Basic $basicAuth" | kubeseal --cert https://sealed-secrets.mobrockers.com/v1/cert.pem --raw --name="adguard-dashboard-authorization-header" -n adguard | clip.exe
+    credential: AgAyGTgvdah6auh104TYS8QCInLg89Pgz/06CTOdV1egG+r0AW1DitldksG+U0FBRQMZ2iDPb5qNChi7WtUTbuO2ebSHUX0TTXEUwyUKLKw8wBVApG4ha/5ISrgjciblvxG/ptJUHXjoxF/8OD9ZE6geTEnHP0KlcZJtYyRANWpeuPpLzdtdhFE307QEBFW19rXPwqSpB339uvQxeSOh2/g1QdN+GTFBOuMyogp2a+Xgl9WniJS53O34WlOkrMuAdO4j+wvjJ3sFOOOcnAGAkNNk1hBCJ7b66Krne973LRAYig007mI/job4WVTQ3Hc0vwvYQv12+CHWjr1hsS1lQWTsrxucikUR8Q2Z/FGRpEB1QjJoCGfP0L7QQtA3+U1QmmFAWhoaEpPNdIlX3Qs/90fobusqZKoM3FNrpgr4pCB2aIKVzMh0z9q4L9lf/TvIvH+kIPPQwMtLGLAOUT8+VlJSPzClBDsgz7HSX3SPkSnbqzKn98gzrwhyBKSoULZ4nN1keo5pdfnYuaUFZCa7e9UW/xtAfUs/ZsEkwT3xWxr5ZUN8LE5OVDYNJqLflFQqf8q30zR8wveO7CTOG3FPn1BQZAYGI4x4+09Ms4k9vrvtU00y/zCFBQTyzwKsU0JGSlPL7J5Bfzi1PxqZtmpPPmgO29hbkejtisr4ayNXLZEgbuWA8Y86ng2DRmOIHcMQZaBeIoPPIWE=
