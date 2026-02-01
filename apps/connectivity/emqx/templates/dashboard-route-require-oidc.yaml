@@ -1,0 +1,17 @@
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: emqx-dashboard-require-oidc
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: emqx-dashboard
+  oidc:
+    provider:
+      issuer: https://authentik.mobrockers.com/application/o/emqx/
+    redirectURL: https://emqx.mobrockers.com/oauth2/callback
+    logoutPath: /oauth2/logout
+    clientID: FrQmQnbUFYlOX7ppghAODr2i0QWCGYZNlD5wSUFh
+    clientSecret:
+      name: emqx-dashboard-oidc-secret

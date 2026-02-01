@@ -1,0 +1,13 @@
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: emqx-dashboard-auth
+  namespace: emqx
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: emqx-dashboard
+  basicAuth:
+    users:
+      name: emqx-dashboard-token
