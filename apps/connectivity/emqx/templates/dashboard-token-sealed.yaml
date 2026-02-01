@@ -5,5 +5,7 @@ metadata:
   namespace: emqx
 spec:
   encryptedData:
-    # echo -n "dashboard-token" | kubeseal --cert https://sealed-secrets.mobrockers.com/v1/cert.pem --raw --name="emqx-dashboard-token" -n emqx | clip.exe
-    dashboard-token: PLACEHOLDER_TO_BE_REPLACED
+    # echo -n "admin:dashboard-token" | kubeseal --cert https://sealed-secrets.mobrockers.com/v1/cert.pem --raw --name="emqx-dashboard-token" -n emqx | clip.exe
+    # The format should be "username:password" for basic auth
+    username: PLACEHOLDER_TO_BE_REPLACED
+    password: PLACEHOLDER_TO_BE_REPLACED

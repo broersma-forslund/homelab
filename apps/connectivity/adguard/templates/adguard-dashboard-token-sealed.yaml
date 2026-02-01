@@ -5,6 +5,8 @@ metadata:
   namespace: adguard
 spec:
   encryptedData:
-    # echo -n "admin:password" | base64 | kubeseal --cert https://sealed-secrets.mobrockers.com/v1/cert.pem --raw --name="adguard-dashboard-token" -n adguard | clip.exe
-    # The value should be base64 encoded "username:password", then sealed
-    token: PLACEHOLDER_TO_BE_REPLACED
+    # echo -n "admin" | kubeseal --cert https://sealed-secrets.mobrockers.com/v1/cert.pem --raw --name="adguard-dashboard-token" -n adguard | clip.exe
+    # echo -n "password" | kubeseal --cert https://sealed-secrets.mobrockers.com/v1/cert.pem --raw --name="adguard-dashboard-token" -n adguard | clip.exe
+    # The basicAuth expects username and password as separate keys
+    username: PLACEHOLDER_TO_BE_REPLACED
+    password: PLACEHOLDER_TO_BE_REPLACED

@@ -20,17 +20,8 @@ adguard:
       - name: public
         namespace: envoy-gateway
         sectionName: web-https
-      # Basic auth header for dashboard access
-      # To use a secret instead of hardcoded value:
-      # 1. Create a sealed secret with: echo -n "admin:password" | base64 | kubeseal ...
-      # 2. Unseal it to get the base64 value
-      # 3. Update the value below with "Basic <base64_value>"
-      filters:
-      - type: RequestHeaderModifier
-        requestHeaderModifier:
-          set:
-          - name: Authorization
-            value: "Basic YWRtaW46bm5ZZWtDWkQybWtNUmRtbjV5ZTljOG8rbUVjdm1vQ1dEUHBGR3dyc3Nlcz0="
+      # Basic auth is now handled by BackendTrafficPolicy using secret reference
+      # See adguard-backend-auth.yaml and adguard-dashboard-token-sealed.yaml
 
   secondary:
     replicas: 3
