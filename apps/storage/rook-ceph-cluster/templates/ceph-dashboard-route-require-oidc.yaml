@@ -1,0 +1,18 @@
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: ceph-dashboard-route-require-oidc
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: rook-ceph-dashboard
+  oidc:
+    provider:
+      issuer: https://authentik.mobrockers.com/application/o/ceph-dashboard/
+    redirectURL: https://ceph.mobrockers.com/oauth2/callback
+    logoutPath: /oauth2/logout
+    clientID: ceph-dashboard-client-id-placeholder
+    clientSecret: 
+      name: ceph-dashboard-route-oidc-secret
+    forwardAccessToken: true
