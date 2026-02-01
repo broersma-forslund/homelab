@@ -6,7 +6,7 @@ overseerr:
 route:
   enabled: true
   hostnames:
-  - maintainerr.mobrockers.com
+  - overseerr.mobrockers.com
   parentRefs:
   - name: private
     namespace: envoy-gateway
