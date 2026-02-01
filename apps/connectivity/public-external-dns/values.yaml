@@ -12,7 +12,6 @@ external-dns:
 
   policy: sync
   sources:
-    - ingress
     - service
     - crd
     - gateway-httproute
