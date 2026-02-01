@@ -2,7 +2,7 @@
 apiVersion: {{ .Values.route.apiVersion | default "gateway.networking.k8s.io/v1" }}
 kind: {{ .Values.route.kind | default "HTTPRoute" }}
 metadata:
-  name: sealed-secrets-cert
+  name: sealed-secrets
 spec:
   {{- with .Values.route.parentRefs }}
   parentRefs:
