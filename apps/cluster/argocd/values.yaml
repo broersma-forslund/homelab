@@ -79,14 +79,7 @@ argo-cd:
         sectionName: web-https
 
     ingress:
-      enabled: true
-      tls: false
-      annotations:
-        nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-      hostname: argocd.mobrockers.com
-      extraTls:
-      - hosts:
-        - argocd.mobrockers.com
+      enabled: false
 
     metrics:
       enabled: true

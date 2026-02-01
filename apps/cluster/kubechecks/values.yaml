@@ -60,7 +60,7 @@ kubechecks:
           name: kubechecks-config
 
   ingress:
-    create: true
+    create: false
     hosts:
       kubechecks.mobrockers.com:
         paths:

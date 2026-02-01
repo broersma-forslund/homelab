@@ -37,13 +37,7 @@ immich:
       request: 3600s
 
   ingress:
-    enabled: true
-    domain: photos.mobrockers.com
-    annotations:
-      # proxy-body-size is set to 0 to remove the body limit on file uploads
-      nginx.ingress.kubernetes.io/proxy-body-size: '0'
-    tls:
-      enabled: true
+    enabled: false
 
   server:
     podSecurityContext:

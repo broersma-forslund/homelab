@@ -5,11 +5,7 @@ sealed-secrets:
   fullnameOverride: "sealed-secrets-controller"
 
   ingress:
-    enabled: true
-    hostname: sealed-secrets.mobrockers.com
-    extraTls:
-    - hosts:
-      - sealed-secrets.mobrockers.com
+    enabled: false
 
   metrics:
     serviceMonitor:

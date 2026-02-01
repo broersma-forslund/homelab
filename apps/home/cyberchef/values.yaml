@@ -1,10 +1,6 @@
 cyberchef:
   ingress:
-    enabled: true
-    domain: tools.mobrockers.com
-    class: nginx
-    tls:
-      enabled: true
+    enabled: false
   route:
     enabled: true
     hostnames:

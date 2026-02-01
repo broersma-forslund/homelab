@@ -22,11 +22,7 @@ home-assistant:
         namespace: envoy-gateway
         sectionName: web-https
   ingress:
-    enabled: true
-    class: nginx
-    domain: home.mobrockers.com
-    tls:
-      enabled: true
+    enabled: false
 
   config:
     securityContext:
