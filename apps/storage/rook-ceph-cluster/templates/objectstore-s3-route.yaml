@@ -15,10 +15,6 @@ spec:
   - backendRefs:
     - name: rook-ceph-rgw-ceph-objectstore
       port: 80
-    # matches:
-    # - path:
-    #     type: PathPrefix
-    #     value: /
     timeouts:
       request: 0s
       backendRequest: 0s

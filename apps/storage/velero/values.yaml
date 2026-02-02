@@ -4,8 +4,8 @@ velero:
 
   kubectl:
     image:
-      repository: public.ecr.aws/bitnami/kubectl
-      tag: 1.35.0
+      repository: registry.k8s.io/kubectl
+      tag: v1.35.0
 
   initContainers:
    - name: velero-plugin-for-microsoft-azure
