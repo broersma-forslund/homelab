@@ -17,6 +17,8 @@ spec:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             runAsNonRoot: true
+            runAsUser: 65532
+            runAsGroup: 65532
           command:
             - "sh"
             - "-c"
@@ -47,6 +49,12 @@ spec:
               kubectl exec "${TOOLBOX_POD}" -c "${TOOLBOX_CONTAINER}" -- ceph dashboard sso status
               
               echo "OAuth2 SSO enabled successfully!"
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir: {}
       restartPolicy: Never
   backoffLimit: 3
 {{- end }}
