@@ -21,12 +21,11 @@ adguard:
         namespace: envoy-gateway
         sectionName: web-https
       filters:
-      - type: RequestHeaderModifier
-        requestHeaderModifier:
-          set:
-          - name: Authorization
-            value: "Basic YWRtaW46bm5ZZWtDWkQybWtNUmRtbjV5ZTljOG8rbUVjdm1vQ1dEUHBGR3dyc3Nlcz0="
-
+      - type: ExtensionRef
+        extensionRef:
+          group: gateway.envoyproxy.io
+          kind: HTTPRouteFilter
+          name: basic-auth-credential-injection
   secondary:
     replicas: 3
 

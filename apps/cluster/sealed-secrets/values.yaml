@@ -1,7 +1,6 @@
 sealed-secrets:
 
   keyrenewperiod: "0"
-
   fullnameOverride: "sealed-secrets-controller"
 
   ingress:
@@ -12,3 +11,19 @@ sealed-secrets:
       enabled: true
     dashboards:
       create: true
+
+route:
+  enabled: true
+  hostnames:
+    - sealed-secrets.mobrockers.com
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: private
+      namespace: envoy-gateway
+      sectionName: web-https
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: public
+      namespace: envoy-gateway
+      sectionName: web-https

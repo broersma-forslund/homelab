@@ -1,0 +1,10 @@
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: dashboard-authorization-header
+  namespace: emqx
+spec:
+  encryptedData:
+    # basicAuth="admin:password" | base64 -w0
+    # echo -n "Basic $basicAuth" | kubeseal --cert https://sealed-secrets.mobrockers.com/v1/cert.pem --raw --name="dashboard-authorization-header" -n emqx | clip.exe
+    credential: AgCcNMtcW7b3uQDKOxUmhyvAb50Ksw6rShVK0ObqeSBWo26wr+uHFexbbqZ1hvHmpBL2ZSF1XLBIq8aoV7oug2EMlemMf3HX+yZ2gwkUamWyBFmX/CrIDtF32+/6zdIcY3diRS4H3quQMlNSffgWLLuVhoDxalgNxne+GOY/2tNr/Nw4oko2kfyFpFnxjH6HpF+Toh77VPfTDSJ5WmTgpagwpFVhUTr+8ZO3w1jvLHg4kM492i9tN7F451liJwMqOmMPSDUT9u62agF+NKPgrVyZ12xBslArsoJgdzpUwemYhNp23N22bOt37I7MgjkBTfYW7PsNpUN508tGqLUvioXH9PDyG+UWYCZiyOxP9FaahabaKLxKfDmGULbgmPggP5JIu7xcbSkM2vM7JAjRjDGYK1TKoOO12C/FsjgCAGzq57c12z6nISmWQetZPDk9sE1RedPqw8swVmI5dTvVHI7xG73eIwb+Yk2jOjsQ5VxT9M2TB3D1n/v8oQ/9PI1gskuGflAo02+87MSK9BLtseMytX5JPZBnVF6b8IpFy9dJrgddqAyN96dhwKLDBkgAU23LLEnrJMStBvjGs6Iu3qF29e4cLUgp6N0NDshbMYCeLtZeZ1aspZLYwYQbRiAtmVchUuqeaDd2r4vZSBEUkBUWVMa494NcVp9PNsMyqwAst1m+v9RlFZwxBeV0rVgI/RN3mW8hvhn2WIobPMCn7+LlyqiDc7q4MfHO+P/X2tiPWiIdG778O2RbzZYeyOUyLpHqlg+0OyMvGLNn8HZLkFH6oqNU3CeO6lXRrhKXcIn/IJwd
