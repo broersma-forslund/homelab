@@ -1,15 +1,4 @@
-# SecurityPolicy to enable OIDC authentication for Ceph Dashboard
-# 
-# Prerequisites:
-# 1. Create an OIDC application in Authentik:
-#    - Application name: ceph-dashboard
-#    - Redirect URI: https://ceph.mobrockers.com/oauth2/callback
-#    - Logout URL: https://ceph.mobrockers.com/oauth2/sign_out
-# 2. Update the clientID below with the actual client ID from Authentik
-# 3. Generate and encrypt the client secret using kubeseal (see ceph-dashboard-route-oidc-secret.yaml)
-#
-# Note: This SecurityPolicy targets the HTTPRoute named 'rook-ceph-dashboard' 
-# which is created by the rook-ceph-cluster helm chart when route.dashboard.host is configured
+{{- if .Values.cephDashboardSSO.enabled }}
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
 metadata:
@@ -24,7 +13,8 @@ spec:
       issuer: https://authentik.mobrockers.com/application/o/ceph-dashboard/
     redirectURL: https://ceph.mobrockers.com/oauth2/callback
     logoutPath: /oauth2/logout
-    clientID: ceph-dashboard-client-id-placeholder
+    clientID: svvg6wwDZin7rfZc38nywdGk2ePtUu9YGuoCvyvo
     clientSecret: 
       name: ceph-dashboard-route-oidc-secret
     forwardAccessToken: true
+{{- end }}
