@@ -1,10 +1,4 @@
-# Post-install/upgrade job to enable OAuth2 SSO on Ceph Dashboard
-#
-# This job runs the 'ceph dashboard sso enable oauth2' command after the cluster is deployed
-# to enable OAuth2 authentication on the Ceph dashboard.
-#
-# The job uses the rook-ceph toolbox image and mounts the necessary credentials to communicate
-# with the Ceph cluster.
+{{- if .Values.cephDashboardSSO.enabled }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -12,76 +6,48 @@ metadata:
   namespace: rook-ceph
   annotations:
     "helm.sh/hook": post-install,post-upgrade
-    "helm.sh/hook-weight": "10"
-    "helm.sh/hook-delete-policy": before-hook-creation
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
 spec:
   template:
     spec:
-      serviceAccountName: rook-ceph-system
-      initContainers:
-        - name: config-init
-          image: docker.io/rook/ceph:v1.18.9
-          command: ["/usr/local/bin/toolbox.sh"]
-          args: ["--skip-watch"]
-          imagePullPolicy: IfNotPresent
-          env:
-            - name: ROOK_CEPH_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: rook-ceph-mon
-                  key: ceph-username
-          volumeMounts:
-            - mountPath: /etc/ceph
-              name: ceph-config
-            - name: mon-endpoint-volume
-              mountPath: /etc/rook
-            - name: ceph-admin-secret
-              mountPath: /var/lib/rook-ceph-mon
-            - name: rook-config-override
-              mountPath: /etc/rook-config-override
-              readOnly: true
+      serviceAccountName: ceph-dashboard-enable-oauth2
       containers:
         - name: enable-oauth2
-          image: docker.io/rook/ceph:v1.18.9
-          volumeMounts:
-            - mountPath: /etc/ceph
-              name: ceph-config
-              readOnly: true
+          image: {{ .Values.cephDashboardSSO.kubectl.image.repository }}:{{ .Values.cephDashboardSSO.kubectl.image.tag }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
           command:
-            - "bash"
+            - "sh"
             - "-c"
             - |
-              set -e
+              set -eu
+
+              TOOLBOX_SELECTOR="app=rook-ceph-tools"
+              TOOLBOX_CONTAINER="rook-ceph-tools"
+
+              echo "Waiting for toolbox pod (selector: ${TOOLBOX_SELECTOR})..."
+              kubectl wait --for=condition=Ready pod -l "${TOOLBOX_SELECTOR}" --timeout=120s
+
+              TOOLBOX_POD="$(kubectl get pod -l "${TOOLBOX_SELECTOR}" -o jsonpath='{.items[0].metadata.name}')"
+              if [ -z "${TOOLBOX_POD}" ]; then
+                echo "No toolbox pod found for selector ${TOOLBOX_SELECTOR}"
+                exit 1
+              fi
+
+              echo "Using toolbox pod: ${TOOLBOX_POD}"
               
               echo "Checking current SSO status..."
-              ceph dashboard sso status || true
+              kubectl exec "${TOOLBOX_POD}" -c "${TOOLBOX_CONTAINER}" -- ceph dashboard sso status || true
               
               echo "Enabling OAuth2 SSO on Ceph Dashboard..."
-              ceph dashboard sso enable oauth2
+              kubectl exec "${TOOLBOX_POD}" -c "${TOOLBOX_CONTAINER}" -- ceph dashboard sso enable oauth2 || true
               
               echo "Verifying SSO is enabled..."
-              ceph dashboard sso status
+              kubectl exec "${TOOLBOX_POD}" -c "${TOOLBOX_CONTAINER}" -- ceph dashboard sso status
               
               echo "OAuth2 SSO enabled successfully!"
-      volumes:
-        - name: ceph-admin-secret
-          secret:
-            secretName: rook-ceph-mon
-            optional: false
-            items:
-              - key: ceph-secret
-                path: secret.keyring
-        - name: mon-endpoint-volume
-          configMap:
-            name: rook-ceph-mon-endpoints
-            items:
-              - key: data
-                path: mon-endpoints
-        - name: rook-config-override
-          configMap:
-            name: rook-config-override
-            optional: true
-        - name: ceph-config
-          emptyDir: {}
       restartPolicy: Never
   backoffLimit: 3
+{{- end }}
