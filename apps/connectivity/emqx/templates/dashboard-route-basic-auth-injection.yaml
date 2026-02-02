@@ -1,0 +1,10 @@
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: HTTPRouteFilter
+metadata:
+  name: basic-auth-credential-injection
+spec:
+  credentialInjection:
+    overwrite: true
+    credential:
+      valueRef:
+        name: dashboard-authorization-header

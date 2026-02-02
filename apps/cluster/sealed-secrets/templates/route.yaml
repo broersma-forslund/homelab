@@ -1,0 +1,23 @@
+{{- if .Values.route.enabled -}}
+apiVersion: {{ .Values.route.apiVersion | default "gateway.networking.k8s.io/v1" }}
+kind: {{ .Values.route.kind | default "HTTPRoute" }}
+metadata:
+  name: sealed-secrets
+spec:
+  {{- with .Values.route.parentRefs }}
+  parentRefs:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.route.hostnames }}
+  hostnames:
+    {{- tpl (toYaml .) $ | nindent 4 }}
+  {{- end }}
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /v1/cert.pem
+      backendRefs:
+        - name: sealed-secrets-controller
+          port: 8080
+{{- end }}

@@ -1,0 +1,25 @@
+{{- if .Values.route.enabled -}}
+apiVersion: {{ .Values.route.apiVersion | default "gateway.networking.k8s.io/v1" }}
+kind: {{ .Values.route.kind | default "HTTPRoute" }}
+metadata:
+  name: emqx-dashboard
+spec:
+  {{- with .Values.route.parentRefs }}
+  parentRefs:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.route.hostnames }}
+  hostnames:
+    {{- tpl (toYaml .) $ | nindent 4 }}
+  {{- end }}
+  rules:
+    - backendRefs:
+        - name: emqx-dashboard
+          port: 18083
+      # filters:
+      # - type: ExtensionRef
+      #   extensionRef:
+      #     group: gateway.envoyproxy.io
+      #     kind: HTTPRouteFilter
+      #     name: basic-auth-credential-injection
+{{- end }}
