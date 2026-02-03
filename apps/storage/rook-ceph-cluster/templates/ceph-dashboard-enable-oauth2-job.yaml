@@ -1,0 +1,60 @@
+{{- if .Values.cephDashboardSSO.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ceph-dashboard-enable-oauth2
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  template:
+    spec:
+      serviceAccountName: ceph-dashboard-enable-oauth2
+      containers:
+        - name: enable-oauth2
+          image: {{ .Values.cephDashboardSSO.kubectl.image.repository }}:{{ .Values.cephDashboardSSO.kubectl.image.tag }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 65532
+            runAsGroup: 65532
+          command:
+            - "sh"
+            - "-c"
+            - |
+              set -eu
+
+              TOOLBOX_SELECTOR="app=rook-ceph-tools"
+              TOOLBOX_CONTAINER="rook-ceph-tools"
+
+              echo "Waiting for toolbox pod (selector: ${TOOLBOX_SELECTOR})..."
+              kubectl wait --for=condition=Ready pod -l "${TOOLBOX_SELECTOR}" --timeout=120s
+
+              TOOLBOX_POD="$(kubectl get pod -l "${TOOLBOX_SELECTOR}" -o jsonpath='{.items[0].metadata.name}')"
+              if [ -z "${TOOLBOX_POD}" ]; then
+                echo "No toolbox pod found for selector ${TOOLBOX_SELECTOR}"
+                exit 1
+              fi
+
+              echo "Using toolbox pod: ${TOOLBOX_POD}"
+              
+              echo "Checking current SSO status..."
+              kubectl exec "${TOOLBOX_POD}" -c "${TOOLBOX_CONTAINER}" -- ceph dashboard sso status || true
+              
+              echo "Enabling OAuth2 SSO on Ceph Dashboard..."
+              kubectl exec "${TOOLBOX_POD}" -c "${TOOLBOX_CONTAINER}" -- ceph dashboard sso enable oauth2 || true
+              
+              echo "Verifying SSO is enabled..."
+              kubectl exec "${TOOLBOX_POD}" -c "${TOOLBOX_CONTAINER}" -- ceph dashboard sso status
+              
+              echo "OAuth2 SSO enabled successfully!"
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir: {}
+      restartPolicy: Never
+  backoffLimit: 3
+{{- end }}
