@@ -3,5 +3,5 @@ cephDashboardSSO:
 
   kubectl:
     image:
-      repository: registry.k8s.io/kubectl
+      repository: alpine/kubectl
       tag: v1.33.7
