@@ -25,10 +25,11 @@ rook-ceph-cluster:
           namespace: envoy-gateway
           sectionName: web-https
 
-  cephClusterSpec:
-    cephVersion:
-      image: quay.io/ceph/ceph:v19.2.3
+  cephImage:
+    repository: quay.io/ceph/ceph
+    tag: v19.2.3
 
+  cephClusterSpec:
     network:
       connections:
         encryption:
