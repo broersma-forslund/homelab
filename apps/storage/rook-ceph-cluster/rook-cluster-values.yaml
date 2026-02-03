@@ -46,17 +46,13 @@ rook-ceph-cluster:
     cephConfig:
       osd:
         osd_mclock_profile: "high_recovery_ops"
+        osd_op_complaint_time: "60"
+        osd_op_log_threshold: "60"
       mgr:
         mgr/dashboard/standby_behaviour: 'error'
         mgr/dashboard/FEATURE_TOGGLE_NFS: 'false'
         mgr/dashboard/FEATURE_TOGGLE_ISCSI: 'false'
         mgr/dashboard/FEATURE_TOGGLE_MIRRORING: 'false'
-
-    # cephConfigFromSecret:
-    #   mgr:
-    #     mgr/dashboard/GRAFANA_API_PASSWORD:
-    #       name: grafana-api-credential # name of the Kubernetes secret
-    #       key: password
 
     dashboard:
       ssl: false
@@ -64,7 +60,7 @@ rook-ceph-cluster:
 
     csi:
       readAffinity:
-        enabled: true
+        enabled: false
 
     placement:
       mon:
