@@ -97,8 +97,6 @@ rook-ceph-cluster:
       nodes:
       - name: njord-1-cp1
         devices:
-        - name: /dev/disk/by-id/nvme-Samsung_SSD_990_PRO_1TB_S6Z1NU0X447710H_1
-        - name: /dev/disk/by-id/nvme-Samsung_SSD_990_PRO_1TB_S6Z1NU0X447684W_1
         - name: /dev/disk/by-id/ata-ST20000NM007D-3DJ103_ZVT6HLMR
         - name: /dev/disk/by-id/ata-ST20000NM007D-3DJ103_ZVT6YKCK
       - name: njord-2-cp1
