@@ -21,8 +21,6 @@ kyverno:
     labels:
       app.kubernetes.io/part-of: kyverno
   crds:
-    annotations:
-      argocd.argoproj.io/sync-options: ServerSideApply=true
     # groups:
     #   wgpolicyk8s:
     #     clusterpolicyreports: false
