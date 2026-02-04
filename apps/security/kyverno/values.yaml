@@ -15,6 +15,11 @@ route:
     sectionName: web-https
 
 kyverno:
+  kyverno-api:
+    annotations:
+      argocd.argoproj.io/sync-options: ServerSideApply=true
+    labels:
+      app.kubernetes.io/part-of: kyverno
   crds:
     annotations:
       argocd.argoproj.io/sync-options: ServerSideApply=true
