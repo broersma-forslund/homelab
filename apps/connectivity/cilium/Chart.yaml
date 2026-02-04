@@ -5,4 +5,4 @@ version: 0.0.0
 dependencies:
   - name: cilium
     version: 1.19.0
-    repository: oci://quay.io/cilium/charts/cilium
+    repository: oci://quay.io/cilium/charts
