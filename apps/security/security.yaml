@@ -2,7 +2,7 @@ apps:
   security:
     kyverno:
       deploy: true
-      ServerSideApply: true
+      serverSideApply: true
     trivy-operator:
       deploy: true
       autoSync: false
