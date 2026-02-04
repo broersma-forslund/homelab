@@ -1,8 +1,8 @@
 apiVersion: v2
 name: cilium
-version: 1.0.0
+version: 0.0.0
 
 dependencies:
   - name: cilium
-    version: 1.18.6
-    repository: https://helm.cilium.io
+    version: 1.19.0
+    repository: oci://quay.io/cilium/charts

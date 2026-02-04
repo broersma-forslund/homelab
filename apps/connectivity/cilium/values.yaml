@@ -79,10 +79,7 @@ cilium:
   cgroup:
     autoMount:
       enabled: false                        
-    hostRoot: /sys/fs/cgroup     
-
-  certgen:
-    ttlSecondsAfterFinished: null
+    hostRoot: /sys/fs/cgroup
 
   prometheus:
     serviceMonitor:
