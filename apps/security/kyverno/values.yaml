@@ -20,7 +20,7 @@ kyverno:
       argocd.argoproj.io/sync-options: ServerSideApply=true
     labels:
       app.kubernetes.io/part-of: kyverno
-  crds:
+  # crds:
     # groups:
     #   wgpolicyk8s:
     #     clusterpolicyreports: false
