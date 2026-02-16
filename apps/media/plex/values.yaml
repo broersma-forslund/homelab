@@ -5,7 +5,7 @@ image:
 tautulli:
   image:
     repository: ghcr.io/linuxserver/tautulli
-    tag: 2.16.0
+    tag: 2.16.1
 
 route:
   parentRefs:
