@@ -8,9 +8,6 @@ rook-ceph-cluster:
         failureDomain: zone
         replicated:
           size: 2
-          hybridStorage:
-            primaryDeviceClass: nvme
-            secondaryDeviceClass: hdd
       dataPools:
       - name: data0
         enableCrushUpdates: true
@@ -18,9 +15,6 @@ rook-ceph-cluster:
         failureDomain: zone
         replicated:
           size: 2
-          hybridStorage:
-            primaryDeviceClass: nvme
-            secondaryDeviceClass: hdd
       metadataServer:
         activeCount: 1
         activeStandby: true
