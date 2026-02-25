@@ -10,6 +10,7 @@ authentication:
     clientID: $authentik-credentials:client_id
     clientSecret: $authentik-credentials:client_secret
     requestedScopes: ['openid', 'profile', 'email', 'groups', 'offline_access']
+    refreshTokenThreshold: 5m
 
 argo-cd:
   global:
