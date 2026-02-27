@@ -2,9 +2,9 @@ param(
     [Parameter(Mandatory)][string]$NodeName,
     [string]$NodeIp = "",
     [string]$NodeType = "",
-    [boolean]$Apply = $false,
-    [boolean]$Insecure = $false,
-    [boolean]$Init = $False,
+    [switch]$Apply = $false,
+    [switch]$Insecure = $false,
+    [switch]$Init = $False,
     [string]$RepoPath = "/home/mobrockers/git/homelab"
 )
 
