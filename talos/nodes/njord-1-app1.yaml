@@ -1,0 +1,23 @@
+machine:
+  network:
+    hostname: njord-1-app1
+    interfaces:
+    - interface: enp1s0 # onboard - kubernetes
+      dhcp: true
+      addresses:
+       - fdf9:dc00:d0eb:66::27/64
+      routes:
+      - network: ::/0
+        gateway: fdf9:dc00:d0eb:0066::1
+        metric: 2048
+    - interface: enp0s20f0u3 # usb - ceph
+      dhcp: false
+      addresses:
+      - 10.0.104.27/24
+      routes:
+      - network: 10.0.104.0/24
+        gateway: 10.0.104.1
+      mtu: 9000
+
+  nodeLabels:
+    topology.kubernetes.io/zone: '1'

@@ -104,6 +104,9 @@ rook-ceph-cluster:
       - name: njord-3-cp1
         devices:
         - name: /dev/disk/by-id/nvme-Lexar_SSD_NM710_2TB_PM40364101942P2703
+      - name: njord-1-app1
+        devices:
+        - name: /dev/disk/by-id/nvme-Lexar_SSD_NM790_2TB_QJF305R003814P2202
       - name: njord-2-app1
         devices:
         - name: /dev/disk/by-id/nvme-Lexar_SSD_NM710_2TB_PM40364102031P2703
