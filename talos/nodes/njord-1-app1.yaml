@@ -10,7 +10,7 @@ machine:
       - network: ::/0
         gateway: fdf9:dc00:d0eb:0066::1
         metric: 2048
-    - interface: enp0s20f0u3 # usb - ceph
+    - interface: enp0s20f0u4 # usb - ceph
       dhcp: false
       addresses:
       - 10.0.104.27/24
