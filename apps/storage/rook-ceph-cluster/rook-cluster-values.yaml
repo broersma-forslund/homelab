@@ -11,8 +11,8 @@ rook-ceph-cluster:
     dashboard:
       host:
         name: ceph.mobrockers.com
-        path: /
         pathType: PathPrefix
+        path: /
       parentRefs:
         - group: gateway.networking.k8s.io
           kind: Gateway
@@ -31,16 +31,16 @@ rook-ceph-cluster:
 
   cephClusterSpec:
     network:
-      connections:
-        encryption:
-          enabled: true
-        compression:
-          enabled: true
-        requireMsgr2: true
       provider: host
       addressRanges:
         public: ['10.0.102.0/24']
         cluster: ['10.0.104.0/24']
+      connections:
+        requireMsgr2: true
+        encryption:
+          enabled: true
+        compression:
+          enabled: true
       
     cephConfig:
       osd:
@@ -63,15 +63,44 @@ rook-ceph-cluster:
 
     placement:
       mon:
+        tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
         topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app: rook-ceph-mon
         - maxSkew: 1
           topologyKey: topology.kubernetes.io/zone
           whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: rook-ceph-mon
       mgr:
+        tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
         topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app: rook-ceph-mgr
         - maxSkew: 1
           topologyKey: topology.kubernetes.io/zone
           whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: rook-ceph-mgr
+    healthCheck:
+      daemonHealth:
+        mon:
+          timeout: 2m
+
     mon:
       count: 3
 
