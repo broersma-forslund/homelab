@@ -1,6 +1,6 @@
 rook-ceph:
 
-  scaleDownOperator: false
+  scaleDownOperator: true
   revisionHistoryLimit: '0'
   resources:
     requests:
