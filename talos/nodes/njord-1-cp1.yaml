@@ -2,20 +2,20 @@ machine:
   network:
     hostname: njord-1-cp1
     interfaces:
-    - interface: enp3s0 # onboard - kubernetes
+    - interface: enp1s0 # onboard - kubernetes
       dhcp: true
       vip:
         ip: 10.0.102.10
       addresses:
-       - fdf9:dc00:d0eb:66::21/64
+       - fdf9:dc00:d0eb:66::149/64
       routes:
       - network: ::/0
         gateway: fdf9:dc00:d0eb:0066::1
         metric: 2048
-    - interface: enp0s20f0u3u3 # usb - ceph
+    - interface: enp0s20f0u4 # usb - ceph
       dhcp: false
       addresses:
-      - 10.0.104.51/24
+      - 10.0.104.149/24
       routes:
       - network: 10.0.104.0/24
         gateway: 10.0.104.1

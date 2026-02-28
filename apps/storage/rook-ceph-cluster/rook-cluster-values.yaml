@@ -94,22 +94,21 @@ rook-ceph-cluster:
       config:
         enableCrushUpdates: 'true'
       nodes:
-      # - name: njord-1-cp1
-      #   devices:
-      #   - name: /dev/disk/by-id/ata-ST20000NM007D-3DJ103_ZVT6HLMR
-      #   - name: /dev/disk/by-id/ata-ST20000NM007D-3DJ103_ZVT6YKCK
-      - name: njord-2-cp1
+      - name: njord-1-cp1
         devices:
-        - name: /dev/disk/by-id/nvme-Lexar_SSD_NM710_2TB_PMT466R005385P2703
-      - name: njord-3-cp1
-        devices:
-        - name: /dev/disk/by-id/nvme-Lexar_SSD_NM710_2TB_PM40364101942P2703
+        - name: /dev/disk/by-id/nvme-Lexar_SSD_NM790_2TB_QJF305R002804P2202
       - name: njord-1-app1
         devices:
         - name: /dev/disk/by-id/nvme-Lexar_SSD_NM790_2TB_QJF305R003814P2202
+      - name: njord-2-cp1
+        devices:
+        - name: /dev/disk/by-id/nvme-Lexar_SSD_NM710_2TB_PMT466R005385P2703
       - name: njord-2-app1
         devices:
         - name: /dev/disk/by-id/nvme-Lexar_SSD_NM710_2TB_PM40364102031P2703
+      - name: njord-3-cp1
+        devices:
+        - name: /dev/disk/by-id/nvme-Lexar_SSD_NM710_2TB_PM40364101942P2703
       - name: njord-3-app1
         devices:
         - name: /dev/disk/by-id/nvme-Lexar_SSD_NM710_2TB_PMT466R009894P2703
