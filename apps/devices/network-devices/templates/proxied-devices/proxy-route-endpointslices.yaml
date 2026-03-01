@@ -13,4 +13,5 @@ endpoints:
 - addresses:
   - {{ $route.ip }}
   conditions: {}
+---
 {{- end }}
