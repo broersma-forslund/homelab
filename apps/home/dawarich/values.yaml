@@ -36,6 +36,7 @@ dawarich:
 
   photon:
     config:
+      fileUrl: https://download1.graphhopper.com/public/photon-db-planet-reverse-only.tar.bz2
       country: nl
       updateInterval: '168h'
       logLevel: DEBUG
