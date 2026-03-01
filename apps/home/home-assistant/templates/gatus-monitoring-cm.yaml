@@ -5,7 +5,7 @@ metadata:
   labels:
     gatus-configfile: "1"   
 data:
-  overseerr.yaml: |
+  seerr.yaml: |
     endpoints:
     - name: home-assistant
       url: https://home.mobrockers.com

@@ -1,10 +1,11 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: overseerr-data
+  name: seerr-data
 spec:
   accessModes:
     - ReadWriteOnce
+  volumeName: pvc-9812ed02-5d78-4871-b82b-5dd9c3a503fe
   resources:
     requests:
       storage: 200Mi

@@ -10,8 +10,9 @@ apps:
       deploy: true
     radarr:
       deploy: true
-    overseerr:
+    seerr:
       deploy: true
+      autoSync: false
     maintainerr:
       deploy: true
     bazarr:

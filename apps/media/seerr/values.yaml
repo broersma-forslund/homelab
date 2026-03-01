@@ -1,11 +1,12 @@
-overseerr:
+seerr:
   image:
-    repository: sctx/overseerr
-    tag: 1.35.0
+    repository: ghcr.io/seerr-team/seerr
+    tag: v3.1.0
 
 route:
   enabled: true
   hostnames:
+  - seerr.mobrockers.com
   - overseerr.mobrockers.com
   parentRefs:
   - name: private
