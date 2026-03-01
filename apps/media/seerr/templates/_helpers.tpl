@@ -18,7 +18,7 @@
 app.kubernetes.io/name: {{ template "common.name" . }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 app.kubernetes.io/instance: {{ .Release.Name }}
-app.kubernetes.io/part-of: "overseerr"
+app.kubernetes.io/part-of: "seerr"
 {{- end -}}
 
 {{- define "common.labels" -}}
@@ -26,6 +26,6 @@ app.kubernetes.io/name: {{ template "common.name" . }}
 helm.sh/chart: {{ include "chartName" . }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 app.kubernetes.io/instance: {{ .Release.Name }}
-app.kubernetes.io/version: {{ .Values.overseerr.image.tag | quote }}
-app.kubernetes.io/part-of: "overseerr"
+app.kubernetes.io/version: {{ .Values.seerr.image.tag | quote }}
+app.kubernetes.io/part-of: "seerr"
 {{- end -}}

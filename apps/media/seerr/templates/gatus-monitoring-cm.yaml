@@ -5,15 +5,15 @@ metadata:
   labels:
     gatus-configfile: "1"   
 data:
-  overseerr.yaml: |
+  seerr.yaml: |
     endpoints:
-    - name: overseerr
-      url: https://overseerr.mobrockers.com
+    - name: seerr
+      url: https://seerr.mobrockers.com
       group: internal
       conditions:
       - '[STATUS] == 200'
-    - name: overseerr  
-      url: https://overseerr.mobrockers.com
+    - name: seerr  
+      url: https://seerr.mobrockers.com
       group: external
       conditions:
       - '[STATUS] == 200'

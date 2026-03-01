@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: seerr
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: seerr
+      app.kubernetes.io/name: seerr
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: seerr
+        app.kubernetes.io/name: seerr
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        fsGroup: 1000
+      containers:
+        - name: seerr
+          image: '{{ .Values.seerr.image.repository }}:{{ .Values.seerr.image.tag }}'
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: false
+            runAsNonRoot: true
+            privileged: false
+            runAsUser: 1000
+            runAsGroup: 1000
+            seccompProfile:
+              type: RuntimeDefault
+          ports:
+            - containerPort: 5055
+              name: http
+              protocol: TCP
+          volumeMounts:
+            - name: data
+              mountPath: /app/config
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: seerr-data
