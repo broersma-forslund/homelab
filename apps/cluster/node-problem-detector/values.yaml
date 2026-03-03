@@ -1,8 +1,6 @@
  node-problem-detector:
 
   tolerations:
-  - key: node-role.kubernetes.io/control-plane
-    operator: Exists
   - key: node.cilium.io/agent-not-ready
     operator: Exists
   - key: node.kubernetes.io/unreachable
