@@ -1,7 +1,7 @@
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: ClientTrafficPolicy
 metadata:
-  name: default-private-client-traffic-policy
+  name: default-client-traffic-policy
 spec:
   headers:
     lateResponseHeaders:
@@ -16,5 +16,8 @@ spec:
     - group: gateway.networking.k8s.io
       kind: Gateway
       name: private
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: public
   tls:
-    minVersion: '1.3'
+    minVersion: '1.2'
