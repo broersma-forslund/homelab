@@ -2,11 +2,6 @@ velero:
   revisionHistoryLimit: 0
   resources: { }
 
-  kubectl:
-    image:
-      repository: registry.k8s.io/kubectl
-      tag: v1.35.2
-
   initContainers:
    - name: velero-plugin-for-microsoft-azure
      image: velero/velero-plugin-for-microsoft-azure:v1.14.0
