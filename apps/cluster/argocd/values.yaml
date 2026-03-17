@@ -16,9 +16,6 @@ argo-cd:
   global:
     revisionHistoryLimit: 0
     domain: argocd.mobrockers.com
-  crds:
-    annotations:
-      argocd.argoproj.io/sync-options: ServerSideApply=true
 
   dex:
     enabled: false
