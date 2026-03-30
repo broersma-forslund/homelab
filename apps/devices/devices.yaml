@@ -3,7 +3,7 @@ apps:
     intel-gpu-resource-driver:
       deploy: true
     generic-device-operator:
-      deploy: true
+      deploy: false
     network-devices:
       deploy: true
     node-feature-discovery:
