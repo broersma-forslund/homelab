@@ -4,5 +4,5 @@ version: 0.0.0
 
 dependencies:
 - name: exporter
-  version: v1.0.95
+  version: v1.0.96
   repository: https://perfectscale-io.github.io
