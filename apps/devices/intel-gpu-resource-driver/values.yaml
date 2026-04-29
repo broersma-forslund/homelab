@@ -7,3 +7,9 @@ intel-gpu-resource-driver-chart:
 
   nodeFeatureRules:
     enabled: true
+
+kubeletPlugin:
+  # Health monitoring configuration
+  healthMonitoring:
+    # Provide -m flag to kubelet-plugin to actively monitor GPU health via xpumd.
+    enabled: false
