@@ -13,6 +13,7 @@ spec:
     {{- tpl (toYaml .) $ | nindent 4 }}
   {{- end }}
   rules:
+    # Keep the /api match before / so API traffic is routed to the backend service.
     - matches:
         - path:
             type: PathPrefix

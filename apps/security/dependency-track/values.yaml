@@ -18,7 +18,7 @@ dependency-track:
     persistentVolume:
       enabled: true
       size: 8Gi
-      # Empty string uses the cluster default StorageClass.
+      # Empty string uses the cluster default StorageClass (see storage stack config).
       storageClass: ""
     env:
       - name: ALPINE_OIDC_ENABLED
