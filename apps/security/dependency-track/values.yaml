@@ -14,7 +14,7 @@ route:
   enabled: true
   hostnames:
     - dependency-track.mobrockers.com
-  apiBackendServiceName: '{{ .Release.Name }}-apiserver'
+  apiBackendServiceName: '{{ .Release.Name }}-api-server'
   frontendBackendServiceName: '{{ .Release.Name }}-frontend'
   parentRefs:
     - name: private
@@ -25,18 +25,15 @@ route:
       sectionName: web-https
 
 dependency-track:
-  postgresql:
-    enabled: false
-
   ingress:
     enabled: false
 
-  apiserver:
+  apiServer:
     persistentVolume:
       enabled: true
       size: 8Gi
-      storageClass: ""
-    env:
+      className: ""
+    extraEnv:
       - name: ALPINE_OIDC_ENABLED
         value: "true"
       - name: ALPINE_DATABASE_MODE
@@ -77,9 +74,8 @@ dependency-track:
             key: client-secret
 
   frontend:
-    env:
-      - name: API_BASE_URL
-        value: /api
+    apiBaseUrl: /api
+    extraEnv:
       - name: OIDC_ISSUER
         value: *oidcIssuer
       - name: OIDC_CLIENT_ID
