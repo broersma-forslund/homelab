@@ -20,7 +20,11 @@ spec:
       backendRefs:
         - name: {{ .Release.Name }}-apiserver
           port: 80
-    - backendRefs:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
         - name: {{ .Release.Name }}-frontend
           port: 80
 {{- end }}
