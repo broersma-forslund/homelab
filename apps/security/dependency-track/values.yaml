@@ -1,0 +1,58 @@
+route:
+  enabled: true
+  hostnames:
+    - dependency-track.mobrockers.com
+  parentRefs:
+    - name: private
+      namespace: envoy-gateway
+      sectionName: web-https
+    - name: public
+      namespace: envoy-gateway
+      sectionName: web-https
+
+dependency-track:
+  ingress:
+    enabled: false
+
+  apiserver:
+    persistentVolume:
+      enabled: true
+      size: 8Gi
+      storageClass: ""
+    env:
+      - name: ALPINE_OIDC_ENABLED
+        value: "true"
+      - name: ALPINE_OIDC_ISSUER
+        value: https://authentik.mobrockers.com/application/o/dependency-track/
+      - name: ALPINE_OIDC_CLIENT_ID
+        valueFrom:
+          secretKeyRef:
+            name: dependency-track-oidc-secret
+            key: client-id
+      - name: ALPINE_OIDC_USERNAME_CLAIM
+        value: preferred_username
+      - name: ALPINE_OIDC_TEAMS_CLAIM
+        value: groups
+      - name: ALPINE_OIDC_USER_PROVISIONING
+        value: "true"
+      - name: ALPINE_OIDC_TEAM_SYNCHRONIZATION
+        value: "true"
+      - name: ALPINE_OIDC_CLIENT_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: dependency-track-oidc-secret
+            key: client-secret
+
+  frontend:
+    env:
+      - name: API_BASE_URL
+        value: /api
+      - name: OIDC_ISSUER
+        value: https://authentik.mobrockers.com/application/o/dependency-track/
+      - name: OIDC_CLIENT_ID
+        valueFrom:
+          secretKeyRef:
+            name: dependency-track-oidc-secret
+            key: client-id
+      - name: OIDC_SCOPE
+        value: openid profile email
