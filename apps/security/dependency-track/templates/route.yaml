@@ -19,13 +19,13 @@ spec:
             type: PathPrefix
             value: /api
       backendRefs:
-        - name: {{ .Release.Name }}-apiserver
+        - name: {{ tpl (.Values.route.apiBackendServiceName | default (printf "%s-apiserver" .Release.Name)) $ }}
           port: 80
     - matches:
         - path:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: {{ .Release.Name }}-frontend
+        - name: {{ tpl (.Values.route.frontendBackendServiceName | default (printf "%s-frontend" .Release.Name)) $ }}
           port: 80
 {{- end }}

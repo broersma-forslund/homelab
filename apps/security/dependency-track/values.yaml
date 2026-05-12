@@ -1,7 +1,12 @@
+oidc:
+  issuer: &oidcIssuer https://authentik.mobrockers.com/application/o/dependency-track/
+
 route:
   enabled: true
   hostnames:
     - dependency-track.mobrockers.com
+  apiBackendServiceName: '{{ .Release.Name }}-apiserver'
+  frontendBackendServiceName: '{{ .Release.Name }}-frontend'
   parentRefs:
     - name: private
       namespace: envoy-gateway
@@ -11,6 +16,9 @@ route:
       sectionName: web-https
 
 dependency-track:
+  postgresql:
+    enabled: false
+
   ingress:
     enabled: false
 
@@ -23,8 +31,24 @@ dependency-track:
     env:
       - name: ALPINE_OIDC_ENABLED
         value: "true"
+      - name: ALPINE_DATABASE_MODE
+        value: external
+      - name: ALPINE_DATABASE_DRIVER
+        value: org.postgresql.Driver
+      - name: ALPINE_DATABASE_URL
+        value: jdbc:postgresql://dependency-track-db-rw/deptrack
+      - name: ALPINE_DATABASE_USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: dependency-track-db-app
+            key: username
+      - name: ALPINE_DATABASE_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: dependency-track-db-app
+            key: password
       - name: ALPINE_OIDC_ISSUER
-        value: https://authentik.mobrockers.com/application/o/dependency-track/
+        value: *oidcIssuer
       - name: ALPINE_OIDC_CLIENT_ID
         valueFrom:
           secretKeyRef:
@@ -49,7 +73,7 @@ dependency-track:
       - name: API_BASE_URL
         value: /api
       - name: OIDC_ISSUER
-        value: https://authentik.mobrockers.com/application/o/dependency-track/
+        value: *oidcIssuer
       - name: OIDC_CLIENT_ID
         valueFrom:
           secretKeyRef:
