@@ -1,6 +1,15 @@
 oidc:
   issuer: &oidcIssuer https://authentik.mobrockers.com/application/o/dependency-track/
 
+database:
+  clusterName: &dbClusterName dependency-track-db
+  appSecretName: &dbAppSecretName dependency-track-db-app
+  name: &dbName deptrack
+  owner: deptrack
+  jdbcUrl: &dbJdbcUrl jdbc:postgresql://dependency-track-db-rw/deptrack
+  instances: 2
+  storageSize: 8Gi
+
 route:
   enabled: true
   hostnames:
@@ -26,7 +35,6 @@ dependency-track:
     persistentVolume:
       enabled: true
       size: 8Gi
-      # Empty string uses the cluster default StorageClass (see storage stack config).
       storageClass: ""
     env:
       - name: ALPINE_OIDC_ENABLED
@@ -36,16 +44,16 @@ dependency-track:
       - name: ALPINE_DATABASE_DRIVER
         value: org.postgresql.Driver
       - name: ALPINE_DATABASE_URL
-        value: jdbc:postgresql://dependency-track-db-rw/deptrack
+        value: *dbJdbcUrl
       - name: ALPINE_DATABASE_USERNAME
         valueFrom:
           secretKeyRef:
-            name: dependency-track-db-app
+            name: *dbAppSecretName
             key: username
       - name: ALPINE_DATABASE_PASSWORD
         valueFrom:
           secretKeyRef:
-            name: dependency-track-db-app
+            name: *dbAppSecretName
             key: password
       - name: ALPINE_OIDC_ISSUER
         value: *oidcIssuer

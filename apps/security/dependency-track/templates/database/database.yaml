@@ -1,12 +1,12 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: dependency-track-db
+  name: {{ .Values.database.clusterName }}
 spec:
-  instances: 1
+  instances: {{ .Values.database.instances }}
   bootstrap:
     initdb:
-      database: deptrack
-      owner: deptrack
+      database: {{ .Values.database.name }}
+      owner: {{ .Values.database.owner }}
   storage:
-    size: 8Gi
+    size: {{ .Values.database.storageSize }}
