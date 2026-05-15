@@ -17,7 +17,6 @@ spec:
    - name: web-https
      protocol: HTTPS
      port: 443
-     hostname: '*.mobrockers.com'
      allowedRoutes:
        namespaces:
          from: All
