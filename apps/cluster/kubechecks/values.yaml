@@ -39,7 +39,7 @@ kubechecks:
 
     image:
       name: ghcr.io/zapier/kubechecks
-      tag: v2.6.0
+      tag: v3.1.1
 
     podSecurityContext:
 #       runAsNonRoot: true
