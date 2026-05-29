@@ -2,7 +2,20 @@
 machine:
   nodeLabels:
     topology.kubernetes.io/zone: '3'
-
+---
+apiVersion: v1alpha1
+kind: HostnameConfig
+auto: off
+hostname: njord-3-cp1
+---
+apiVersion: v1alpha1
+kind: Layer2VIPConfig
+name: 10.0.102.10
+link: enp1s0
+---
+apiVersion: v1alpha1
+kind: DHCPv4Config
+name: enp1s0
 ---
 apiVersion: v1alpha1
 kind: LinkConfig
@@ -13,18 +26,6 @@ routes:
   - destination: ::/0
     gateway: fdf9:dc00:d0eb:0066::1
     metric: 2048
-
----
-apiVersion: v1alpha1
-kind: DHCPv4Config
-name: enp1s0
-
----
-apiVersion: v1alpha1
-kind: Layer2VIPConfig
-name: 10.0.102.10
-link: enp1s0
-
 ---
 apiVersion: v1alpha1
 kind: LinkConfig
@@ -35,9 +36,3 @@ routes:
   - destination: 10.0.104.0/24
     gateway: 10.0.104.1
 mtu: 9000
-
----
-apiVersion: v1alpha1
-kind: HostnameConfig
-auto: off
-hostname: njord-3-cp1
