@@ -5,12 +5,13 @@ param(
     [switch]$Apply = $false,
     [switch]$Insecure = $false,
     [switch]$Init = $False,
-    [switch]$Dev = $False,
-    [string]$RepoPath = "/workspaces/homelab"
+    [switch]$Dev = $False
 )
 
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
+
+$RepoPath = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 
 if(-not (Get-Module powershell-yaml -ListAvailable)) {
     Install-Module powershell-yaml -Scope CurrentUser -Force
