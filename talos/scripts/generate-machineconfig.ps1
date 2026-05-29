@@ -5,7 +5,8 @@ param(
     [switch]$Apply = $false,
     [switch]$Insecure = $false,
     [switch]$Init = $False,
-    [string]$RepoPath = "/home/mobrockers/git/homelab"
+    [switch]$Dev = $False,
+    [string]$RepoPath = "/workspaces/homelab"
 )
 
 $ErrorActionPreference = "Stop"
@@ -30,20 +31,22 @@ function New-NodeConfig ($NodeName, $NodeType) {
     Write-Host "⚙️ Node $NodeName is a $NodeType"
 
     if(-not $Init) {
-        $nodeIp =  ((kubectl get node $NodeName -o yaml | ConvertFrom-Yaml).status.addresses | Where-Object { $_.type -eq "InternalIP" } | Select-Object address).address
+        $nodeIp = $Dev ? "127.0.0.1" : ((kubectl get node $NodeName -o yaml | ConvertFrom-Yaml).status.addresses | Where-Object { $_.type -eq "InternalIP" } | Select-Object address).address
     }
 
     Write-Host "⚙️ Generating $NodeName machineconfig for $nodeIp"
 
     $endpoint = "https://$($nodeIp):6443"
+    $outputPath = $Dev ? "-" : "$RepoPath/talos/rendered/$NodeName.yaml"
+    $secretsPath = $Dev ? "$RepoPath/talos/devsecrets.yaml" : "$HOME/.talos/secrets.yaml"
 
     $genArgList = @(
         "gen", "config", "njord", $endpoint,
-        "--output=$RepoPath/talos/rendered/$NodeName.yaml",
+        "--output=$outputPath",
         "--output-types=$NodeType",
         "--with-examples=false",
         "--with-docs=false",
-        "--with-secrets=$RepoPath/secrets.yaml",
+        "--with-secrets=$secretsPath",
         "--config-patch-control-plane=@$RepoPath/talos/patches/talos-api-access.yaml",
         "--config-patch=@$RepoPath/talos/patches/cluster.yaml",
         "--config-patch=@$RepoPath/talos/patches/feature-gates.yaml",
@@ -75,7 +78,7 @@ function Write-NodeConfig ($NodeName, $NodeIp) {
     &talosctl $applyArgList
 }
 
-$kubernetesVersion = (kubectl version -o yaml | ConvertFrom-Yaml).serverVersion.gitVersion.Replace("v", "")
+$kubernetesVersion = $Dev ? "1.35.3" : (kubectl version -o yaml | ConvertFrom-Yaml).serverVersion.gitVersion.Replace("v", "")
 
 if($NodeName -eq "ALL") {
     $nodeNames = (kubectl get nodes -o yaml | ConvertFrom-Yaml).items.metadata.name
