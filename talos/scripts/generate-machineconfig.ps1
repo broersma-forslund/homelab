@@ -64,6 +64,7 @@ function New-NodeConfig ($NodeName, $NodeType) {
 
 function Write-NodeConfig ($NodeName, $NodeIp) {
 
+    if($Dev) { Write-Host "⚙️ Apply is not allowed in dev mode" ; return }
     Write-Host "⚙️ Applying $NodeName machineconfig to $NodeIp"
 
     $applyArgList = @(
