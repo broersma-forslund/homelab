@@ -18,9 +18,7 @@ name: enp1s0
 addresses:
   - address: fdf9:dc00:d0eb:66::24/64
 routes:
-  - destination: ::/0
-    gateway: fdf9:dc00:d0eb:0066::1
-    metric: 2048
+  - gateway: fdf9:dc00:d0eb:66::1
 ---
 apiVersion: v1alpha1
 kind: LinkConfig
