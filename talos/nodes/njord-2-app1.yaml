@@ -23,9 +23,7 @@ routes:
 apiVersion: v1alpha1
 kind: LinkConfig
 name: enp0s20f0u4
+up: true
 addresses:
   - address: 10.0.104.54/24
-routes:
-  - destination: 10.0.104.0/24
-    gateway: 10.0.104.1
 mtu: 9000
