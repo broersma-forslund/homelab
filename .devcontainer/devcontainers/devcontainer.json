@@ -2,11 +2,25 @@
   "name": "copilot",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
   "remoteUser": "vscode",
-  "features": {		
+  "features": {
+    "ghcr.io/devcontainers/features/powershell:2": {},
     "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
-			"minikube": "none"
-		},
-		"ghcr.io/larsnieuwenhuizen/features/jqyq:0": {},
-		"ghcr.io/devcontainers-extra/features/talosctl:1": {}
+      "minikube": "none"
+    },
+    "ghcr.io/larsnieuwenhuizen/features/jqyq:0": {},
+    "ghcr.io/devcontainers-extra/features/talosctl:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "github.copilot.chat.advancedChatCommandExecutionAllowList": [
+          "pwsh",
+          "talosctl"
+        ],
+        "github.copilot.chat.advancedChatUriAllowList": [
+          "https://docs.siderolabs.com"
+        ]
+      }
+    }
   }
 }
