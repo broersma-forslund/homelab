@@ -1,10 +1,11 @@
 param(
-    [Parameter(Mandatory)][string]$NodeName,
-    [string]$NodeIp = "",
+    [Parameter(Mandatory)]
+    [string]$NodeName,
+    [ValidateSet("", "worker", "controlplane")]
     [string]$NodeType = "",
-    [switch]$Apply = $false,
-    [switch]$Insecure = $false,
+    [switch]$Apply = $False,
     [switch]$Init = $False,
+    [string]$InitialNodeIp = "",
     [switch]$Dev = $False
 )
 
@@ -31,8 +32,13 @@ function New-NodeConfig ($NodeName, $NodeType) {
 
     Write-Host "⚙️ Node $NodeName is a $NodeType"
 
-    if(-not $Init) {
-        $nodeIp = $Dev ? "127.0.0.1" : ((kubectl get node $NodeName -o yaml | ConvertFrom-Yaml).status.addresses | Where-Object { $_.type -eq "InternalIP" } | Select-Object address).address
+    if($Dev) {
+        $nodeIp = "127.0.0.1"
+    }
+    else if($Init) {
+        $nodeIp = $InitialNodeIp
+    } else {
+        $nodeIp = ((kubectl get node $NodeName -o yaml | ConvertFrom-Yaml).status.addresses | Where-Object { $_.type -eq "InternalIP" } | Select-Object address).address
     }
 
     Write-Host "⚙️ Generating $NodeName machineconfig for $nodeIp"
@@ -73,7 +79,7 @@ function Write-NodeConfig ($NodeName, $NodeIp) {
         "--file=$RepoPath/talos/rendered/$NodeName.yaml"
     )
 
-    if($Insecure) {
+    if($Init) {
         $applyArgList += "--insecure"
     }
 
