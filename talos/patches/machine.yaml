@@ -1,7 +1,7 @@
 machine:
 
   install:
-    image: factory.talos.dev/metal-installer/ee827ee541fb06e742e6d183f4e3c1a62a2d63d945cbbd0b1e76da9221af9d27:v1.12.0
+    image: factory.talos.dev/metal-installer/ee827ee541fb06e742e6d183f4e3c1a62a2d63d945cbbd0b1e76da9221af9d27:v1.13.3
     disk: /dev/sda
 
   kubelet:
@@ -34,9 +34,6 @@ machine:
       # Spegel needs unpacked layers
       [plugins."io.containerd.cri.v1.images"]
         discard_unpacked_layers = false
-      # Set cdi dirs to /var/ because default locations are not writeable in talos
-      [plugins."io.containerd.cri.v1.runtime"]
-        cdi_spec_dirs = ["/var/cdi/static", "/var/cdi/dynamic"]
 # # Enables NRI api in containerd, used by network dra device drivers, potentially insecure
 # [plugins."io.containerd.nri.v1.nri"]
 #   disable = false
