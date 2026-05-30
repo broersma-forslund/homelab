@@ -5,6 +5,7 @@ machine:
     disk: /dev/sda
 
   kubelet:
+    clusterDNS: [10.96.0.10]
     nodeIP:
       validSubnets: ['10.0.102.0/24'] # Make sure nodes subnet IP is picked
     extraArgs:

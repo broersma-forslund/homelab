@@ -1,6 +1,9 @@
 cluster:
   proxy:
     disabled: true
+  coreDNS:
+    disabled: true
+
   clusterName: njord
   allowSchedulingOnControlPlanes: true
 

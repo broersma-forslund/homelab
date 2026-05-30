@@ -13,7 +13,6 @@ coredns:
       memory: 64Mi
 
   k8sAppLabelOverride: "kube-dns"
-  terminationGracePeriodSeconds: 30
   prometheus:
     service:
       enabled: true
@@ -21,12 +20,11 @@ coredns:
       enabled: true
 
   service:
+    clusterIP: 10.96.0.10
     trafficDistribution: PreferSameNode
 
   serviceAccount:
     create: true
-
-  isClusterService: true
 
   priorityClassName: "system-cluster-critical"
 
@@ -61,9 +59,6 @@ coredns:
             max_concurrent 1000
         - name: cache
           parameters: 30
-          configBlock: |-
-            disable success cluster.local
-            disable denial cluster.local
         - name: loop
         - name: reload
         - name: loadbalance
