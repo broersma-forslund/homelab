@@ -1,3 +1,8 @@
+---
+applyTo: '**'
+description: 'Repository context for GitHub Copilot.'
+---
+
 # Kubernetes Homelab Infrastructure Repository
 
 This repository contains Kubernetes infrastructure-as-code for a homelab running Talos Kubernetes OS. It includes Helm charts organized by category and uses ArgoCD for GitOps deployment with kubeseal for secret management.
