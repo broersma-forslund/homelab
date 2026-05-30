@@ -1,9 +1,6 @@
 intel-gpu-resource-driver-chart:
 
   tolerations: []
-  cdi:
-    staticPath: /var/cdi/static
-    dynamicPath: /var/cdi/dynamic
 
   nodeFeatureRules:
     enabled: true

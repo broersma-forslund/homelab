@@ -35,7 +35,7 @@ function New-NodeConfig ($NodeName, $NodeType) {
     if($Dev) {
         $nodeIp = "127.0.0.1"
     }
-    else if($Init) {
+    elseif($Init) {
         $nodeIp = $InitialNodeIp
     } else {
         $nodeIp = ((kubectl get node $NodeName -o yaml | ConvertFrom-Yaml).status.addresses | Where-Object { $_.type -eq "InternalIP" } | Select-Object address).address
