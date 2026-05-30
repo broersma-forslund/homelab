@@ -1,15 +1,18 @@
 param(
-    [Parameter(Mandatory)][string]$NodeName,
-    [string]$NodeIp = "",
+    [Parameter(Mandatory)]
+    [string]$NodeName,
+    [ValidateSet("", "worker", "controlplane")]
     [string]$NodeType = "",
-    [switch]$Apply = $false,
-    [switch]$Insecure = $false,
+    [switch]$Apply = $False,
     [switch]$Init = $False,
-    [string]$RepoPath = "/home/mobrockers/git/homelab"
+    [string]$InitialNodeIp = "",
+    [switch]$Dev = $False
 )
 
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
+
+$RepoPath = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 
 if(-not (Get-Module powershell-yaml -ListAvailable)) {
     Install-Module powershell-yaml -Scope CurrentUser -Force
@@ -29,21 +32,28 @@ function New-NodeConfig ($NodeName, $NodeType) {
 
     Write-Host "⚙️ Node $NodeName is a $NodeType"
 
-    if(-not $Init) {
-        $nodeIp =  ((kubectl get node $NodeName -o yaml | ConvertFrom-Yaml).status.addresses | Where-Object { $_.type -eq "InternalIP" } | Select-Object address).address
+    if($Dev) {
+        $nodeIp = "127.0.0.1"
+    }
+    else if($Init) {
+        $nodeIp = $InitialNodeIp
+    } else {
+        $nodeIp = ((kubectl get node $NodeName -o yaml | ConvertFrom-Yaml).status.addresses | Where-Object { $_.type -eq "InternalIP" } | Select-Object address).address
     }
 
     Write-Host "⚙️ Generating $NodeName machineconfig for $nodeIp"
 
     $endpoint = "https://$($nodeIp):6443"
+    $outputPath = $Dev ? "-" : "$RepoPath/talos/rendered/$NodeName.yaml"
+    $secretsPath = $Dev ? "$RepoPath/talos/devsecrets.yaml" : "$HOME/.talos/secrets.yaml"
 
     $genArgList = @(
         "gen", "config", "njord", $endpoint,
-        "--output=$RepoPath/talos/rendered/$NodeName.yaml",
+        "--output=$outputPath",
         "--output-types=$NodeType",
         "--with-examples=false",
         "--with-docs=false",
-        "--with-secrets=$RepoPath/secrets.yaml",
+        "--with-secrets=$secretsPath",
         "--config-patch-control-plane=@$RepoPath/talos/patches/talos-api-access.yaml",
         "--config-patch=@$RepoPath/talos/patches/cluster.yaml",
         "--config-patch=@$RepoPath/talos/patches/feature-gates.yaml",
@@ -60,6 +70,7 @@ function New-NodeConfig ($NodeName, $NodeType) {
 
 function Write-NodeConfig ($NodeName, $NodeIp) {
 
+    if($Dev) { Write-Host "⚙️ Apply is not allowed in dev mode" ; return }
     Write-Host "⚙️ Applying $NodeName machineconfig to $NodeIp"
 
     $applyArgList = @(
@@ -68,14 +79,14 @@ function Write-NodeConfig ($NodeName, $NodeIp) {
         "--file=$RepoPath/talos/rendered/$NodeName.yaml"
     )
 
-    if($Insecure) {
+    if($Init) {
         $applyArgList += "--insecure"
     }
 
     &talosctl $applyArgList
 }
 
-$kubernetesVersion = (kubectl version -o yaml | ConvertFrom-Yaml).serverVersion.gitVersion.Replace("v", "")
+$kubernetesVersion = $Dev ? "1.35.3" : (kubectl version -o yaml | ConvertFrom-Yaml).serverVersion.gitVersion.Replace("v", "")
 
 if($NodeName -eq "ALL") {
     $nodeNames = (kubectl get nodes -o yaml | ConvertFrom-Yaml).items.metadata.name
