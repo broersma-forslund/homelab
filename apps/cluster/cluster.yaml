@@ -1,5 +1,9 @@
 apps:
   cluster:
+    coredns:
+      deploy: true
+      namespace: kube-system
+      autoSync: false
     talos-cloud-controller-manager:
       deploy: true
       namespace: kube-system
