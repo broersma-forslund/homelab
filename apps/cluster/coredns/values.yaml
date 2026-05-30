@@ -21,7 +21,7 @@ coredns:
       enabled: true
 
   service:
-   trafficDistribution: PreferSameNode
+    trafficDistribution: PreferSameNode
 
   serviceAccount:
     create: true
