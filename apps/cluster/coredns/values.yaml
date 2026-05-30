@@ -61,9 +61,9 @@ coredns:
             max_concurrent 1000
         - name: cache
           parameters: 30
-          # configBlock: |-
-          #   disable success cluster.local
-          #   disable denial cluster.local
+          configBlock: |-
+            disable success cluster.local
+            disable denial cluster.local
         - name: loop
         - name: reload
         - name: loadbalance
