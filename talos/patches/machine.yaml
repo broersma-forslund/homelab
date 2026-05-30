@@ -34,6 +34,3 @@ machine:
       # Spegel needs unpacked layers
       [plugins."io.containerd.cri.v1.images"]
         discard_unpacked_layers = false
-# # Enables NRI api in containerd, used by network dra device drivers, potentially insecure
-# [plugins."io.containerd.nri.v1.nri"]
-#   disable = false
