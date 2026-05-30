@@ -19,7 +19,14 @@
         ],
         "github.copilot.chat.advancedChatUriAllowList": [
           "https://docs.siderolabs.com"
-        ]
+        ],
+        "terminal.integrated.defaultProfile.linux": "pwsh",
+        "terminal.integrated.profiles.linux": {
+          "pwsh": {
+            "path": "/usr/bin/pwsh",
+            "args": []
+          }
+        }
       }
     }
   },
