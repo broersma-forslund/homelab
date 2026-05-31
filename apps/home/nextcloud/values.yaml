@@ -96,3 +96,6 @@ nextcloud:
       apps: true
     serviceMonitor:
       enabled: true
+
+  startupProbe:
+    enabled: true
