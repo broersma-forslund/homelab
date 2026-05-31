@@ -18,3 +18,6 @@ route:
   - name: public
     namespace: envoy-gateway
     sectionName: web-https
+  additionalRules:
+    - timeouts:
+        request: "300s"

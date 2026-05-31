@@ -22,6 +22,9 @@ nextcloud:
       - name: public
         namespace: envoy-gateway
         sectionName: web-https
+    rules:
+      - timeouts:
+          request: "300s"
   nextcloud:
     host: nextcloud.mobrockers.com
 
