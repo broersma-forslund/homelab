@@ -75,6 +75,7 @@ nextcloud:
 
   cronjob:
     enabled: true
+    type: cronjob
 
   persistence:
     enabled: true
