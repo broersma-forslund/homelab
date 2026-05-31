@@ -76,15 +76,16 @@ nextcloud:
   cronjob:
     enabled: true
     type: cronjob
-    successfulJobsHistoryLimit: 1
-    failedJobsHistoryLimit: 1
-    securityContext:
-      capabilities:
-        drop:
-          - ALL
-      readOnlyRootFilesystem: true
-      runAsNonRoot: true
-      runAsUser: 33
+    cronjob:
+      successfulJobsHistoryLimit: 1
+      failedJobsHistoryLimit: 1
+      securityContext:
+        capabilities:
+          drop:
+            - ALL
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
+        runAsUser: 33
 
   persistence:
     enabled: true
