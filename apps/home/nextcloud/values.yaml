@@ -25,6 +25,9 @@ nextcloud:
     rules:
       - timeouts:
           request: "300s"
+        sessionPersistence:
+          sessionName: Nextcloud-User
+          type: Cookie
   nextcloud:
     host: nextcloud.mobrockers.com
 
