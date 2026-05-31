@@ -1,9 +1,0 @@
-apiVersion: postgresql.cnpg.io/v1
-kind: Cluster
-metadata:
-  name: mealie-data
-spec:
-  instances: 2
-
-  storage:
-    size: 1Gi

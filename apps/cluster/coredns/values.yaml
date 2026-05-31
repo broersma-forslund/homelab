@@ -1,0 +1,89 @@
+coredns:
+  image:
+    repository: coredns/coredns
+    tag: 1.14.3
+
+  replicaCount: 3
+  resources:
+    limits:
+      cpu: null
+      memory: 128Mi
+    requests:
+      cpu: 50m
+      memory: 64Mi
+
+  k8sAppLabelOverride: "kube-dns"
+  prometheus:
+    service:
+      enabled: true
+    monitor:
+      enabled: true
+
+  service:
+    clusterIP: 10.96.0.10
+    trafficDistribution: PreferSameNode
+
+  serviceAccount:
+    create: true
+
+  priorityClassName: "system-cluster-critical"
+
+  # Default zone is what Kubernetes recommends:
+  # https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#coredns-configmap-options
+  servers:
+    - zones:
+        - zone: .
+          use_tcp: true
+      port: 53
+      plugins:
+        - name: errors
+        - name: health
+          configBlock: |-
+            lameduck 5s
+        - name: ready
+        - name: log
+          parameters: .
+          configBlock: |-
+            class error
+        - name: prometheus
+          parameters: 0.0.0.0:9153
+        - name: kubernetes
+          parameters: cluster.local in-addr.arpa ip6.arpa
+          configBlock: |-
+            pods verified
+            fallthrough in-addr.arpa ip6.arpa
+            ttl 30
+        - name: forward
+          parameters: . /etc/resolv.conf
+          configBlock: |-
+            max_concurrent 1000
+        - name: cache
+          parameters: 30
+        - name: loop
+        - name: reload
+        - name: loadbalance
+
+  tolerations:
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/control-plane
+      operator: Exists
+    - effect: NoSchedule
+      key: node.cloudprovider.kubernetes.io/uninitialized
+      operator: Exists
+
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: topology.kubernetes.io/zone
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          k8s-app: kube-dns
+    - maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          k8s-app: kube-dns
+
+  podDisruptionBudget:
+    minAvailable: 2
