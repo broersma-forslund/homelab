@@ -90,7 +90,7 @@ nextcloud:
   #     cpu: 90m
   #     memory: 128Mi
 
-  metrics:
+  prometheus:
     enabled: true
     info:
       apps: true
