@@ -29,6 +29,14 @@ spec:
             - containerPort: 6246
               name: http
               protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /api/health/live
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /api/health/ready
+              port: http
           volumeMounts:
             - name: data
               mountPath: /opt/data
