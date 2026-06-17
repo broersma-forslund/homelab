@@ -40,6 +40,7 @@ ceph-csi-drivers:
     rbd:
       enabled: true
       name: rook-ceph.rbd.csi.ceph.com
+      snapshotPolicy: volumeGroupSnapshot
       nodePlugin:
         resources:
           registrar:
@@ -77,6 +78,7 @@ ceph-csi-drivers:
             limits:
               memory: 100Mi
       controllerPlugin:
+        replicas: 2
         resources:
           provisioner:
             requests:
@@ -137,6 +139,7 @@ ceph-csi-drivers:
     cephfs:
       enabled: true
       name: rook-ceph.cephfs.csi.ceph.com
+      snapshotPolicy: volumeGroupSnapshot
       nodePlugin:
         resources:
           plugin:
@@ -172,6 +175,7 @@ ceph-csi-drivers:
             limits:
               memory: 100Mi
       controllerPlugin:
+        replicas: 2
         resources:
           plugin:
             requests:
