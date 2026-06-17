@@ -33,8 +33,8 @@ trust-manager:
   revisionHistoryLimit: 0
 
   defaultPackageImage:
-    repository: quay.io/jetstack/trust-pkg-debian-bookworm
-    tag: 20230311-deb12u1.0
+    repository: quay.io/jetstack/trust-pkg-debian-trixie
+    tag: 20250419.1
   app:
     metrics:
       service:
