@@ -2,8 +2,6 @@ apiVersion: resource.k8s.io/v1
 kind: ResourceClaimTemplate
 metadata:
   name: i915
-  annotations:
-    argocd.argoproj.io/sync-options: ServerSideApply=true
 spec:
   spec:
     devices:

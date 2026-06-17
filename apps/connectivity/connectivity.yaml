@@ -7,7 +7,6 @@ apps:
       autoSync: false
     cilium:
       deploy: true
-      serverSideApply: true
       autoSync: false
       ignoreDifferences:
       - group: apps
@@ -16,7 +15,6 @@ apps:
         - .spec.template.spec.containers[].volumeMounts[].readOnly? | select(. == false)
     envoy-gateway:
       deploy: true
-      serverSideApply: true
     emqx:
       deploy: true
     private-external-dns:

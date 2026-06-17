@@ -12,4 +12,3 @@
 #       - /spec/resourceManager
 #     autoSync: false
 #     finalize: false
-#     serverSideApply: true
