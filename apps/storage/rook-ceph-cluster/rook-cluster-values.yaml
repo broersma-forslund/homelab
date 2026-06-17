@@ -59,7 +59,7 @@ rook-ceph-cluster:
 
     csi:
       readAffinity:
-        enabled: false
+        enabled: true
 
     placement:
       mon:

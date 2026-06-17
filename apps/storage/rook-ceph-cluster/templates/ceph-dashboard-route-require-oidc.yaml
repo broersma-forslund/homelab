@@ -12,9 +12,18 @@ spec:
     provider:
       issuer: https://authentik.mobrockers.com/application/o/ceph-dashboard/
     redirectURL: https://ceph.mobrockers.com/oauth2/callback
-    logoutPath: /oauth2/logout
+    logoutPath: /oauth2/sign_out
     clientID: svvg6wwDZin7rfZc38nywdGk2ePtUu9YGuoCvyvo
-    clientSecret: 
+    clientSecret:
       name: ceph-dashboard-route-oidc-secret
+    scopes:
+      - email
+      - profile
+      - roles
+    # The Ceph dashboard reads and decodes the (unencrypted) ID token from a
+    # cookie named "token" to extract the username (sub) and roles claim.
+    cookieNames:
+      idToken: token
+    disableTokenEncryption: true
     forwardAccessToken: true
 {{- end }}

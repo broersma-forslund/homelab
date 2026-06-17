@@ -1,5 +1,5 @@
 cephDashboardSSO:
-  enabled: false # can't enable until upgrade to ceph 20
+  enabled: true
 
   kubectl:
     image:

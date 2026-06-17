@@ -1,7 +1,3 @@
-prometheus-operator-crds:
-  crds:
-    annotations:
-      argocd.argoproj.io/sync-options: ServerSideApply=true 
 kube-prometheus-stack:
   crds:
     enabled: false
