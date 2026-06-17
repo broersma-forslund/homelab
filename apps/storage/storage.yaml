@@ -2,12 +2,10 @@ apps:
   storage:
     rook-ceph:
       deploy: true
-      serverSideApply: true
       autoSync: false
       finalize: false
     rook-ceph-cluster:
       deploy: true
-      serverSideApply: true
       autoSync: false
       finalize: false
       namespace: rook-ceph
@@ -21,5 +19,4 @@ apps:
       autoSync: false
     cloudnative-postgres:
       deploy: true
-      serverSideApply: true
       autoSync: false
