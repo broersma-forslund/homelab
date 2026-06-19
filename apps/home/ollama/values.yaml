@@ -1,26 +1,103 @@
 # Local LLM runtime for the Home Assistant voice assistant.
 # The IPEX-LLM image runs Ollama on an Intel iGPU (SYCL backend).
-image:
-  repository: intelanalytics/ipex-llm-inference-cpp-xpu
-  tag: "2.3.0-SNAPSHOT"
 
-# Model pulled on first start and persisted on the PVC. Qwen3 8B per the
-# requirements; switch to a smaller model (e.g. qwen3:4b) if it is too slow.
-model: qwen3:8b
-
-persistence:
-  size: 30Gi
-
+# GPU CEL selectors for the Intel DRA ResourceClaimTemplate.
+# Without xpumd the GPU resource driver only exposes pci attributes, so we match
+# on pciId. Default matches the Raptor Lake-S UHD Graphics 770 (0xa780); adjust
+# to the pciId of the iGPU on your 13th gen node (`kubectl get resourceslices -o yaml`).
 gpu:
-  # CEL selectors that pin the LLM to the 13th gen (Raptor Lake) Intel iGPU, which
-  # has the most memory/performance for the model. The other nodes are 8th gen.
-  # Without xpumd the GPU resource driver only exposes pci attributes, so we match
-  # on pciId. Default matches the Raptor Lake-S UHD Graphics 770 (0xa780); adjust
-  # to the pciId of the iGPU on your 13th gen node (`kubectl get resourceslices -o yaml`).
   selectors:
   - 'device.attributes["gpu.intel.com"].pciId == "0xa780"'
 
-# Optional pod scheduling overrides to further constrain the LLM to the 13th gen node.
-nodeSelector: {}
-affinity: {}
-tolerations: []
+ollama-chart:
+  nameOverride: ollama
+  fullnameOverride: ollama
+
+  image:
+    repository: intelanalytics/ipex-llm-inference-cpp-xpu
+    tag: "2.3.0-SNAPSHOT"
+
+  # The IPEX-LLM image has no entrypoint; args run the startup script staged by
+  # the init container.
+  extraArgs:
+  - /bin/bash
+  - /scripts/start-ollama.sh
+
+  extraEnv:
+  - name: TZ
+    value: Europe/Amsterdam
+  # Intel SYCL/oneAPI GPU runtime settings
+  - name: ZES_ENABLE_SYSMAN
+    value: "1"
+  - name: SYCL_CACHE_PERSISTENT
+    value: "1"
+  - name: OLLAMA_NUM_GPU
+    value: "999"
+  - name: OLLAMA_KEEP_ALIVE
+    value: "-1"
+  # Model to serve; pulled on startup and cached on the PVC (subsequent starts are no-ops).
+  - name: OLLAMA_MODEL
+    value: qwen3:8b
+
+  ollama:
+    gpu:
+      enabled: true
+      draEnabled: true
+      # gpu.type must be non-nvidia to suppress the automatic nvidia.com/gpu toleration.
+      type: intel
+      draDriverClass: gpu.intel.com
+      draExistingClaimTemplate: ollama-i915
+    # Model pull is handled by the startup script via $OLLAMA_MODEL; the built-in
+    # lifecycle hook uses a hardcoded /bin/ollama path absent in the IPEX-LLM image.
+    models:
+      pull: []
+
+  # Disable the chart's built-in postStart model-pull lifecycle hook.
+  lifecycle: {}
+
+  persistentVolume:
+    enabled: true
+    # Reference the PVC created by templates/pvc.yaml; the chart will not create its own.
+    existingClaim: ollama-models
+    storageClass: ceph-block
+    size: 30Gi
+
+  resources:
+    requests:
+      cpu: 500m
+      memory: 4Gi
+    limits:
+      memory: 16Gi
+
+  # Stage the startup script from the ConfigMap onto a shared emptyDir so the main
+  # container can exec it (the ConfigMap volume is read-only and non-executable).
+  initContainers:
+  - name: init-script
+    image: busybox:1.36
+    command:
+    - sh
+    - -c
+    - cp /config/start-ollama.sh /scripts/start-ollama.sh && chmod +x /scripts/start-ollama.sh
+    volumeMounts:
+    - name: scripts
+      mountPath: /scripts
+    - name: startup-script
+      mountPath: /config
+
+  volumes:
+  - name: scripts
+    emptyDir: {}
+  - name: startup-script
+    configMap:
+      name: ollama-startup-script
+
+  volumeMounts:
+  - name: scripts
+    mountPath: /scripts
+
+  updateStrategy:
+    type: Recreate
+
+  nodeSelector: {}
+  affinity: {}
+  tolerations: []
