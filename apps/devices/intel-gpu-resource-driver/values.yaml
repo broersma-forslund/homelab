@@ -34,5 +34,4 @@ intel-gpu-resource-driver-chart:
   kubeletPlugin:
     # Health monitoring configuration
     healthMonitoring:
-      # Provide -m flag to kubelet-plugin to actively monitor GPU health via xpumd.
       enabled: true
