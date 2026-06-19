@@ -10,7 +10,9 @@ gpu:
   - 'device.attributes["gpu.intel.com"].pciId == "0xa780"'
 
 ollama:
-  nameOverride: ollama
+  # fullnameOverride is not strictly needed here because the release name ("ollama")
+  # already contains the chart name ("ollama"), so the chart's fullname helper would
+  # produce "ollama" anyway — but it is kept as an explicit contract.
   fullnameOverride: ollama
 
   image:
@@ -26,18 +28,18 @@ ollama:
   extraEnv:
   - name: TZ
     value: Europe/Amsterdam
-  # Intel SYCL/oneAPI GPU runtime settings
+  # Required for Intel Level Zero / GPU management via oneAPI System Resource Management
   - name: ZES_ENABLE_SYSMAN
     value: "1"
+  # Cache compiled SYCL kernels across restarts to avoid recompilation overhead
   - name: SYCL_CACHE_PERSISTENT
     value: "1"
+  # Tell Ollama to offload all layers to GPU (999 = "as many as possible")
   - name: OLLAMA_NUM_GPU
     value: "999"
+  # Keep the model loaded in GPU memory indefinitely (-1 = never unload)
   - name: OLLAMA_KEEP_ALIVE
     value: "-1"
-  # Model to serve; pulled on startup and cached on the PVC (subsequent starts are no-ops).
-  - name: OLLAMA_MODEL
-    value: qwen3:8b
 
   ollama:
     gpu:
@@ -47,13 +49,12 @@ ollama:
       type: intel
       draDriverClass: gpu.intel.com
       draExistingClaimTemplate: ollama-i915
-    # Model pull is handled by the startup script via $OLLAMA_MODEL; the built-in
-    # lifecycle hook uses a hardcoded /bin/ollama path absent in the IPEX-LLM image.
+    # Model to pull on startup (cached on the PVC; subsequent starts are no-ops).
+    # Update this value and restart the pod to switch models. Set models.clean: true
+    # to automatically remove models that are no longer listed here.
     models:
-      pull: []
-
-  # Disable the chart's built-in postStart model-pull lifecycle hook.
-  lifecycle: {}
+      pull:
+      - qwen3:8b
 
   persistentVolume:
     enabled: true
@@ -97,7 +98,3 @@ ollama:
 
   updateStrategy:
     type: Recreate
-
-  nodeSelector: {}
-  affinity: {}
-  tolerations: []
