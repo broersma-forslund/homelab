@@ -10,10 +10,6 @@ gpu:
   - 'device.attributes["gpu.intel.com"].pciId == "0xa780"'
 
 ollama:
-  # fullnameOverride is not strictly needed here because the release name ("ollama")
-  # already contains the chart name ("ollama"), so the chart's fullname helper would
-  # produce "ollama" anyway — but it is kept as an explicit contract.
-  fullnameOverride: ollama
 
   image:
     repository: intelanalytics/ipex-llm-inference-cpp-xpu
