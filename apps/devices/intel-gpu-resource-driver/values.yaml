@@ -17,7 +17,6 @@ xpumd:
     intel.feature.node.kubernetes.io/gpu: "true"
   prometheus:
     monitor: true
-    release: ~
   grafana:
     dashboards: true
     namespace: ~
