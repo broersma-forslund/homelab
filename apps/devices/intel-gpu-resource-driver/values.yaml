@@ -7,6 +7,10 @@ intel-gpu-resource-driver-chart:
 
   nodeFeatureRules:
     enabled: true
+  kubeletPlugin:
+    privileged: true
+    healthMonitoring:
+      enabled: false
 
 xpumd:
   image:
