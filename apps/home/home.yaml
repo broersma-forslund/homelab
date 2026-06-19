@@ -11,3 +11,9 @@ apps:
       autoSync: false
     dawarich:
       deploy: true
+    ollama:
+      deploy: true
+    wyoming-whisper:
+      deploy: true
+    wyoming-piper:
+      deploy: true

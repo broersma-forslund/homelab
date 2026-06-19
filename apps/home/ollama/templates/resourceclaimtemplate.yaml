@@ -1,0 +1,20 @@
+apiVersion: resource.k8s.io/v1
+kind: ResourceClaimTemplate
+metadata:
+  name: ollama-i915
+spec:
+  spec:
+    devices:
+      requests:
+      - name: i915
+        exactly:
+          deviceClassName: gpu.intel.com
+          allocationMode: ExactCount
+          count: 1
+          {{- with .Values.gpu.selectors }}
+          selectors:
+          {{- range . }}
+          - cel:
+              expression: {{ . | quote }}
+          {{- end }}
+          {{- end }}

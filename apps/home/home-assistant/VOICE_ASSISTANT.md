@@ -15,23 +15,26 @@ voice satellite / phone input
 
 ## Deployed components
 
-All components run in the `home-assistant` namespace and are reachable from Home
-Assistant via in-cluster DNS. They are configured under the `voice` key in
-[`values.yaml`](./values.yaml).
+The voice components are deployed as their own Helm charts / ArgoCD applications
+(they are independent services that only *integrate* with Home Assistant), each in
+its own namespace. They are reachable from Home Assistant over in-cluster DNS.
 
-| Component | Workload | Service (in-cluster) | Protocol |
+| Component | Chart / namespace | Service (in-cluster) | Protocol |
 | --- | --- | --- | --- |
-| Speech-to-text | `wyoming-whisper` (faster-whisper) | `wyoming-whisper:10300` | Wyoming |
-| Text-to-speech | `wyoming-piper` (piper) | `wyoming-piper:10200` | Wyoming |
-| Local LLM | `ollama` (IPEX-LLM / Intel iGPU) | `ollama:11434` | Ollama HTTP API |
+| Speech-to-text | `apps/home/wyoming-whisper` | `wyoming-whisper.wyoming-whisper:10300` | Wyoming |
+| Text-to-speech | `apps/home/wyoming-piper` | `wyoming-piper.wyoming-piper:10200` | Wyoming |
+| Local LLM | `apps/home/ollama` | `ollama.ollama:11434` | Ollama HTTP API |
 
 The Whisper and Piper services speak the [Wyoming protocol](https://www.home-assistant.io/integrations/wyoming/),
 so the same services can later be shared by ESPHome / Wyoming voice satellites.
 
-Ollama runs on the 13th gen Intel iGPU through the IPEX-LLM runtime (it requests an
-`i915` device via the cluster's Intel GPU resource driver). On first start it
-automatically pulls the model configured in `voice.ollama.model` (Qwen3 8B by
-default); the model is stored on a persistent volume so it survives restarts.
+Ollama runs on the 13th gen Intel iGPU through the IPEX-LLM runtime. Its
+`ResourceClaimTemplate` uses a CEL selector (`gpu.selectors` in
+[`../ollama/values.yaml`](../ollama/values.yaml)) to pin allocation to the 13th gen
+iGPU (matched by pciId, since that node has the most memory/performance); the other
+nodes are 8th gen. On first start it automatically pulls the configured model
+(Qwen3 8B by default); the model is stored on a persistent volume so it survives
+restarts.
 
 ## Home Assistant configuration (manual)
 
@@ -43,13 +46,13 @@ is stored in Home Assistant's own database and persists across restarts.
 ### 1. Add the Wyoming speech-to-text service (Whisper)
 
 1. Go to **Settings → Devices & services → Add integration → Wyoming Protocol**.
-2. Host: `wyoming-whisper`
+2. Host: `wyoming-whisper.wyoming-whisper`
 3. Port: `10300`
 
 ### 2. Add the Wyoming text-to-speech service (Piper)
 
 1. **Settings → Devices & services → Add integration → Wyoming Protocol**.
-2. Host: `wyoming-piper`
+2. Host: `wyoming-piper.wyoming-piper`
 3. Port: `10200`
 
 Piper downloads voices on demand into its config volume, so any of the voices below
@@ -62,12 +65,12 @@ available, plus optional Dutch and Swedish voices:
 | Dutch | `nl_NL-mls-medium` | `nl_BE-nathalie-medium` |
 | Swedish | `sv_SE-nst-medium` | `sv_SE-nst-medium` |
 
-Change the default voice with `voice.piper.voice` in `values.yaml`.
+Change the default voice with `voice` in [`../wyoming-piper/values.yaml`](../wyoming-piper/values.yaml).
 
 ### 3. Add the local LLM (Ollama)
 
 1. **Settings → Devices & services → Add integration → Ollama**.
-2. URL: `http://ollama:11434`
+2. URL: `http://ollama.ollama:11434`
 3. Select the model (e.g. `qwen3:8b`). It is pulled automatically by the workload,
    so it should already be available in the model list.
 
@@ -92,11 +95,12 @@ Change the default voice with `voice.piper.voice` in `values.yaml`.
 
 ## Notes & tuning
 
-- **Whisper accuracy vs. speed:** increase `voice.whisper.model` (e.g. `medium`)
-  for better accuracy, or keep `small` for faster CPU transcription.
-- **LLM speed:** if Qwen3 8B is too slow on the iGPU, set `voice.ollama.model` to a
-  smaller model such as `qwen3:4b`.
+- **Whisper accuracy vs. speed:** increase `model` (e.g. `medium`) in
+  [`../wyoming-whisper/values.yaml`](../wyoming-whisper/values.yaml) for better
+  accuracy, or keep `small` for faster CPU transcription.
+- **LLM speed:** if Qwen3 8B is too slow on the iGPU, set `model` to a smaller model
+  such as `qwen3:4b` in [`../ollama/values.yaml`](../ollama/values.yaml).
 - **OpenVINO / iGPU for Whisper:** the standard Wyoming faster-whisper image runs on
   CPU. Intel iGPU/OpenVINO acceleration for STT can be added later by swapping the
-  `voice.whisper.image` for an OpenVINO-enabled build and adding an `i915` resource
-  claim (see `templates/voice/ollama.yaml` for the claim pattern).
+  whisper `image` for an OpenVINO-enabled build and adding an `i915` resource claim
+  (see `../ollama/templates/resourceclaimtemplate.yaml` for the claim pattern).

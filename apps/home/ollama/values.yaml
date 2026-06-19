@@ -1,0 +1,26 @@
+# Local LLM runtime for the Home Assistant voice assistant.
+# The IPEX-LLM image runs Ollama on an Intel iGPU (SYCL backend).
+image:
+  repository: intelanalytics/ipex-llm-inference-cpp-xpu
+  tag: "2.3.0-SNAPSHOT"
+
+# Model pulled on first start and persisted on the PVC. Qwen3 8B per the
+# requirements; switch to a smaller model (e.g. qwen3:4b) if it is too slow.
+model: qwen3:8b
+
+persistence:
+  size: 30Gi
+
+gpu:
+  # CEL selectors that pin the LLM to the 13th gen (Raptor Lake) Intel iGPU, which
+  # has the most memory/performance for the model. The other nodes are 8th gen.
+  # Without xpumd the GPU resource driver only exposes pci attributes, so we match
+  # on pciId. Default matches the Raptor Lake-S UHD Graphics 770 (0xa780); adjust
+  # to the pciId of the iGPU on your 13th gen node (`kubectl get resourceslices -o yaml`).
+  selectors:
+  - 'device.attributes["gpu.intel.com"].pciId == "0xa780"'
+
+# Optional pod scheduling overrides to further constrain the LLM to the 13th gen node.
+nodeSelector: {}
+affinity: {}
+tolerations: []
