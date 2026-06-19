@@ -9,7 +9,7 @@ gpu:
   selectors:
   - 'device.attributes["gpu.intel.com"].pciId == "0xa780"'
 
-ollama-chart:
+ollama:
   nameOverride: ollama
   fullnameOverride: ollama
 
