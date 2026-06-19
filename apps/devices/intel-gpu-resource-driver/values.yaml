@@ -8,30 +8,31 @@ intel-gpu-resource-driver-chart:
   nodeFeatureRules:
     enabled: true
 
-  xpumdEnabled: true
+xpumd:
+  image:
+    repository: ghcr.io/intel/xpumanager/xpumd
+    tag: 2.0.0
+  gpuAccess: dra
+  nodeSelector:
+    intel.feature.node.kubernetes.io/gpu: "true"
+  prometheus:
+    monitor: true
+    release: prometheus
+  grafana:
+    dashboards: true
+    namespace: prometheus
+  tolerations:
+    - key: node-role.kubernetes.io/master
+      operator: Exists
+      effect: NoSchedule
+    - key: node-role.kubernetes.io/control-plane
+      operator: Exists
+      effect: NoSchedule
+    - key: node.kubernetes.io/gpu
+      operator: Exists
+      effect: NoSchedule
 
-  xpumd:
-    gpuAccess: dra
-    nodeSelector:
-      intel.feature.node.kubernetes.io/gpu: "true"
-    prometheus:
-      monitor: true
-      release: prometheus
-    grafana:
-      dashboards: true
-      namespace: prometheus
-    tolerations:
-      - key: node-role.kubernetes.io/master
-        operator: Exists
-        effect: NoSchedule
-      - key: node-role.kubernetes.io/control-plane
-        operator: Exists
-        effect: NoSchedule
-      - key: node.kubernetes.io/gpu
-        operator: Exists
-        effect: NoSchedule
-
-  kubeletPlugin:
-    # Health monitoring configuration
-    healthMonitoring:
-      enabled: true
+kubeletPlugin:
+  # Health monitoring configuration
+  healthMonitoring:
+    enabled: true
