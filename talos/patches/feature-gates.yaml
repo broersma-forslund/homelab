@@ -2,9 +2,6 @@ cluster:
   apiServer:
     extraArgs:
       feature-gates: DRAExtendedResource=true,DRAPartitionableDevices=true,ResourceHealthStatus=true
-  # controllerManager:
-  #   extraArgs:
-  #     feature-gates: DRADeviceTaints=true
   scheduler:
     extraArgs:
       feature-gates: DRAExtendedResource=true,DRAPartitionableDevices=true
