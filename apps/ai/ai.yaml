@@ -1,0 +1,4 @@
+apps:
+  ai:
+    ollama:
+      deploy: true
