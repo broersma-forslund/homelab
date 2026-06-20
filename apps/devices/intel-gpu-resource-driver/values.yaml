@@ -7,9 +7,21 @@ intel-gpu-resource-driver-chart:
 
   nodeFeatureRules:
     enabled: true
-
   kubeletPlugin:
-    # Health monitoring configuration
+    privileged: true
     healthMonitoring:
-      # Provide -m flag to kubelet-plugin to actively monitor GPU health via xpumd.
       enabled: false
+
+xpumd:
+  image:
+    repository: ghcr.io/intel/xpumanager/xpumd
+    tag: v2.0.0
+  gpuAccess: dra
+  nodeSelector:
+    intel.feature.node.kubernetes.io/gpu: "true"
+  prometheus:
+    monitor: true
+  grafana:
+    dashboards: true
+    namespace: ~
+  tolerations: []
