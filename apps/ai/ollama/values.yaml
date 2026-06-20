@@ -70,7 +70,7 @@ ollama:
   # container can exec it (the ConfigMap volume is read-only and non-executable).
   initContainers:
   - name: init-script
-    image: busybox:1.36
+    image: busybox:1.38
     command:
     - sh
     - -c
