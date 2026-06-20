@@ -5,8 +5,8 @@
 # Without xpumd the GPU resource driver only exposes pci attributes, so we match
 # on pciId. Default matches the Raptor Lake-S UHD Graphics 770 (0xa780); adjust
 # to the pciId of the iGPU on your 13th gen node (`kubectl get resourceslices -o yaml`).
-# gpu:
-#   selectors:
+gpu:
+  selectors: {}
 #   - 'device.attributes["gpu.intel.com"].pciId == "0xa780"'
 
 ollama:
