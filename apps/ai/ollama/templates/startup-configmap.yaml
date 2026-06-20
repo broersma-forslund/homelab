@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ollama-startup-script
+data:
+  start-ollama.sh: |
+{{ .Files.Get "files/start-ollama.sh" | indent 4 }}

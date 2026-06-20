@@ -1,0 +1,11 @@
+# Wyoming text-to-speech (piper) for the Home Assistant voice assistant.
+image:
+  repository: ghcr.io/linuxserver/piper
+  tag: "2.2.2"
+
+# Default voice. Additional voices (male/female, nl, sv) are downloaded on demand
+# into the config volume when selected in the Home Assistant pipeline.
+voice: en_US-lessac-medium
+
+persistence:
+  size: 2Gi

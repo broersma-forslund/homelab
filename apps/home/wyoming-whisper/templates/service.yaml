@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: wyoming-whisper
+spec:
+  type: ClusterIP
+  ports:
+  - name: wyoming
+    port: 10300
+    targetPort: 10300
+    protocol: TCP
+  selector:
+    app.kubernetes.io/instance: wyoming-whisper
+    app.kubernetes.io/name: wyoming-whisper

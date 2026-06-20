@@ -10,6 +10,7 @@ spec:
     targetRevision: HEAD
     helm:
       valueFiles:
+      - ../ai/ai.yaml
       - ../cluster/cluster.yaml
       - ../connectivity/connectivity.yaml
       - ../devices/devices.yaml

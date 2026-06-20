@@ -1,0 +1,96 @@
+# Local LLM runtime for the Home Assistant voice assistant.
+# The IPEX-LLM image runs Ollama on an Intel iGPU (SYCL backend).
+
+# GPU CEL selectors for the Intel DRA ResourceClaimTemplate.
+# Without xpumd the GPU resource driver only exposes pci attributes, so we match
+# on pciId. Default matches the Raptor Lake-S UHD Graphics 770 (0xa780); adjust
+# to the pciId of the iGPU on your 13th gen node (`kubectl get resourceslices -o yaml`).
+# gpu:
+#   selectors:
+#   - 'device.attributes["gpu.intel.com"].pciId == "0xa780"'
+
+ollama:
+
+  image:
+    repository: intelanalytics/ipex-llm-inference-cpp-xpu
+    tag: "2.3.0-SNAPSHOT"
+
+  # The IPEX-LLM image has no entrypoint; args run the startup script staged by
+  # the init container.
+  extraArgs:
+  - /bin/bash
+  - /scripts/start-ollama.sh
+
+  extraEnv:
+  - name: TZ
+    value: Europe/Amsterdam
+  # Required for Intel Level Zero / GPU management via oneAPI System Resource Management
+  - name: ZES_ENABLE_SYSMAN
+    value: "1"
+  # Cache compiled SYCL kernels across restarts to avoid recompilation overhead
+  - name: SYCL_CACHE_PERSISTENT
+    value: "1"
+  # Tell Ollama to offload all layers to GPU (999 = "as many as possible")
+  - name: OLLAMA_NUM_GPU
+    value: "999"
+  # Keep the model loaded in GPU memory indefinitely (-1 = never unload)
+  - name: OLLAMA_KEEP_ALIVE
+    value: "-1"
+
+  ollama:
+    gpu:
+      enabled: true
+      draEnabled: true
+      # gpu.type must be non-nvidia to suppress the automatic nvidia.com/gpu toleration.
+      type: intel
+      draDriverClass: gpu.intel.com
+      draExistingClaimTemplate: ollama-i915
+    # Model to pull on startup (cached on the PVC; subsequent starts are no-ops).
+    # Update this value and restart the pod to switch models. Set models.clean: true
+    # to automatically remove models that are no longer listed here.
+    models:
+      pull:
+      - qwen3:8b
+
+  persistentVolume:
+    enabled: true
+    # Reference the PVC created by templates/pvc.yaml; the chart will not create its own.
+    existingClaim: ollama-models
+    storageClass: ceph-block
+    size: 30Gi
+
+  resources:
+    requests:
+      cpu: 500m
+      memory: 4Gi
+    limits:
+      memory: 16Gi
+
+  # Stage the startup script from the ConfigMap onto a shared emptyDir so the main
+  # container can exec it (the ConfigMap volume is read-only and non-executable).
+  initContainers:
+  - name: init-script
+    image: busybox:1.36
+    command:
+    - sh
+    - -c
+    - cp /config/start-ollama.sh /scripts/start-ollama.sh && chmod +x /scripts/start-ollama.sh
+    volumeMounts:
+    - name: scripts
+      mountPath: /scripts
+    - name: startup-script
+      mountPath: /config
+
+  volumes:
+  - name: scripts
+    emptyDir: {}
+  - name: startup-script
+    configMap:
+      name: ollama-startup-script
+
+  volumeMounts:
+  - name: scripts
+    mountPath: /scripts
+
+  updateStrategy:
+    type: Recreate

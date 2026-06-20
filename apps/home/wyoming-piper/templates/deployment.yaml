@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wyoming-piper
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: wyoming-piper
+      app.kubernetes.io/name: wyoming-piper
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: wyoming-piper
+        app.kubernetes.io/name: wyoming-piper
+    spec:
+      containers:
+      - name: wyoming-piper
+        image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
+        ports:
+        - name: wyoming
+          containerPort: 10200
+        env:
+        - name: TZ
+          value: Europe/Amsterdam
+        - name: PUID
+          value: '1000'
+        - name: PGID
+          value: '5000'
+        - name: PIPER_VOICE
+          value: '{{ .Values.voice }}'
+        resources:
+          requests:
+            cpu: 50m
+            memory: 256Mi
+          limits:
+            memory: 1Gi
+        volumeMounts:
+        - name: config
+          mountPath: /config
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: wyoming-piper-config
