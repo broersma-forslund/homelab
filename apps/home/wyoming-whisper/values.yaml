@@ -1,7 +1,7 @@
 # Wyoming speech-to-text (faster-whisper) for the Home Assistant voice assistant.
 image:
   repository: ghcr.io/linuxserver/faster-whisper
-  tag: "3.2.0"
+  tag: "3.3.0"
 
 # faster-whisper is multilingual, so a single instance serves English plus the
 # optional Dutch (nl) and Swedish (sv) commands. Larger models are more accurate
