@@ -32,6 +32,7 @@ spec:
   syncPolicy:
     syncOptions:
       - FailOnSharedResource=true
+      - ServerSideApply=true
     automated:
       {{- if hasKey $app "autoSync" }}
       enabled: {{ $app.autoSync }}
