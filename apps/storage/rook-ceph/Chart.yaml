@@ -7,5 +7,5 @@ dependencies:
     version: v1.20.1
     repository: https://charts.rook.io/release
   - name: ceph-csi-drivers
-    version: 1.0.1
+    version: 1.0.3
     repository: https://ceph.github.io/ceph-csi-operator
