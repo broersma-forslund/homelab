@@ -67,16 +67,6 @@ ceph-csi-drivers:
               memory: 15Mi
             limits:
               memory: 100Mi
-          # Unused: the csi-addons sidecar is not deployed (deployCsiAddons: false).
-          # Values are set only because the v1.0.1 chart template emits every
-          # container key and rejects unset ones (renders `null`), which the Driver
-          # CRD refuses. https://github.com/ceph/ceph-csi-operator/issues/490
-          addons:
-            requests:
-              cpu: 10m
-              memory: 30Mi
-            limits:
-              memory: 100Mi
       controllerPlugin:
         replicas: 2
         resources:
@@ -127,14 +117,6 @@ ceph-csi-drivers:
               memory: 15Mi
             limits:
               memory: 100Mi
-          # Unused: csi-addons sidecar is not deployed (deployCsiAddons: false).
-          # Set only to satisfy the v1.0.1 chart bug (issue #490).
-          addons:
-            requests:
-              cpu: 10m
-              memory: 30Mi
-            limits:
-              memory: 100Mi
 
     cephfs:
       enabled: true
@@ -164,14 +146,6 @@ ceph-csi-drivers:
             requests:
               cpu: 10m
               memory: 15Mi
-            limits:
-              memory: 100Mi
-          # Unused: csi-addons sidecar is not deployed (deployCsiAddons: false).
-          # Set only to satisfy the v1.0.1 chart bug (issue #490).
-          addons:
-            requests:
-              cpu: 10m
-              memory: 30Mi
             limits:
               memory: 100Mi
       controllerPlugin:
@@ -217,21 +191,5 @@ ceph-csi-drivers:
             requests:
               cpu: 10m
               memory: 15Mi
-            limits:
-              memory: 100Mi
-          # Unused: csi-addons sidecar is not deployed (deployCsiAddons: false).
-          # Set only to satisfy the v1.0.1 chart bug (issue #490).
-          addons:
-            requests:
-              cpu: 10m
-              memory: 30Mi
-            limits:
-              memory: 100Mi
-          # Unused: CephFS has no omapGenerator sidecar, but the v1.0.1 chart
-          # template still emits the key (issue #490).
-          omapGenerator:
-            requests:
-              cpu: 10m
-              memory: 30Mi
             limits:
               memory: 100Mi
