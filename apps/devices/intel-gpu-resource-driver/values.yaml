@@ -15,7 +15,7 @@ intel-gpu-resource-driver-chart:
 xpumd:
   image:
     repository: ghcr.io/intel/xpumanager/xpumd
-    tag: v2.0.0
+    tag: v2.0.1
   gpuAccess: dra
   nodeSelector:
     intel.feature.node.kubernetes.io/gpu: "true"
