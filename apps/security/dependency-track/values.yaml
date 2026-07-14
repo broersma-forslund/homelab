@@ -1,0 +1,87 @@
+oidc:
+  issuer: &oidcIssuer https://authentik.mobrockers.com/application/o/dependency-track/
+
+database:
+  clusterName: &dbClusterName dependency-track-db
+  appSecretName: &dbAppSecretName dependency-track-db-app
+  name: &dbName deptrack
+  owner: deptrack
+  jdbcUrl: &dbJdbcUrl jdbc:postgresql://dependency-track-db-rw/deptrack
+  instances: 2
+  storageSize: 8Gi
+
+route:
+  enabled: true
+  hostnames:
+    - dependency-track.mobrockers.com
+  apiBackendServiceName: '{{ .Release.Name }}-api-server'
+  frontendBackendServiceName: '{{ .Release.Name }}-frontend'
+  parentRefs:
+    - name: private
+      namespace: envoy-gateway
+      sectionName: web-https
+    - name: public
+      namespace: envoy-gateway
+      sectionName: web-https
+
+dependency-track:
+  ingress:
+    enabled: false
+
+  apiServer:
+    persistentVolume:
+      enabled: true
+      size: 8Gi
+      className: ""
+    extraEnv:
+      - name: ALPINE_OIDC_ENABLED
+        value: "true"
+      - name: ALPINE_DATABASE_MODE
+        value: external
+      - name: ALPINE_DATABASE_DRIVER
+        value: org.postgresql.Driver
+      - name: ALPINE_DATABASE_URL
+        value: *dbJdbcUrl
+      - name: ALPINE_DATABASE_USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: *dbAppSecretName
+            key: username
+      - name: ALPINE_DATABASE_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: *dbAppSecretName
+            key: password
+      - name: ALPINE_OIDC_ISSUER
+        value: *oidcIssuer
+      - name: ALPINE_OIDC_CLIENT_ID
+        valueFrom:
+          secretKeyRef:
+            name: dependency-track-oidc-secret
+            key: client-id
+      - name: ALPINE_OIDC_USERNAME_CLAIM
+        value: preferred_username
+      - name: ALPINE_OIDC_TEAMS_CLAIM
+        value: groups
+      - name: ALPINE_OIDC_USER_PROVISIONING
+        value: "true"
+      - name: ALPINE_OIDC_TEAM_SYNCHRONIZATION
+        value: "true"
+      - name: ALPINE_OIDC_CLIENT_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: dependency-track-oidc-secret
+            key: client-secret
+
+  frontend:
+    apiBaseUrl: /api
+    extraEnv:
+      - name: OIDC_ISSUER
+        value: *oidcIssuer
+      - name: OIDC_CLIENT_ID
+        valueFrom:
+          secretKeyRef:
+            name: dependency-track-oidc-secret
+            key: client-id
+      - name: OIDC_SCOPE
+        value: openid profile email
