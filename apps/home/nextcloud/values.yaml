@@ -28,20 +28,6 @@ nextcloud:
           type: PathPrefix
           value: /
       timeout: 600s
-    - matches:
-        - path:
-            type: Exact
-            value: /.well-known/carddav
-        - path:
-            type: Exact
-            value: /.well-known/caldav
-      filters:
-        - type: RequestRedirect
-          requestRedirect:
-            statusCode: 301
-            path:
-              type: ReplaceFullPath
-              replaceFullPath: /remote.php/dav
 
   nextcloud:
     host: nextcloud.mobrockers.com
