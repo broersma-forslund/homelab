@@ -19,7 +19,9 @@ cert-manager:
       solverNameservers:
       - 1.1.1.1:53
       - 8.8.8.8:53
-    enableGatewayAPI: true
+    gatewayAPI:
+      enabled: true
+      enableListenerSet: true
 
   prometheus:
     enabled: true
