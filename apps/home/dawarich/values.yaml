@@ -36,10 +36,9 @@ dawarich:
 
   photon:
     config:
-      reverseOnly: true
-      #country: nl
-      #updateInterval: '168h'
       logLevel: DEBUG
+      reverseOnly: true
+      languages: [ 'en', 'nl', 'se' ]
     persistence:
       size: 100Gi
 
