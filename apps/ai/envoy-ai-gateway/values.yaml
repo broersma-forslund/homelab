@@ -19,7 +19,7 @@ gateway-helm:
         type: Kubernetes
         kubernetes:
           deploy:
-            type: GatewayNamespace
+            type: ProviderNamespace # GatewayNamespace # Until https://github.com/envoyproxy/ai-gateway/pull/2304 is fixed
       extensionApis:
         # Not strictly required, but recommended for backward/future compatibility.
         enableEnvoyPatchPolicy: true
@@ -60,13 +60,3 @@ ai-gateway-helm:
       enable: true
   envoyGateway:
     namespace : envoy-ai-gateway
-
-certificates:
-  - name: wildcard-mobrockers-com
-    dnsNames:
-      - 'mobrockers.com'
-      - '*.mobrockers.com'
-  - name: wildcard-s3-mobrockers-com
-    dnsNames:
-      - 's3.mobrockers.com'
-      - '*.s3.mobrockers.com'
