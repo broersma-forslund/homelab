@@ -4,9 +4,10 @@ metadata:
   name: ollama-ha
 spec:
   parentRefs:
-    - name: ai-gateway
+    - group: gateway.networking.k8s.io
       kind: Gateway
-      group: gateway.networking.k8s.io
+      namespace: envoy-ai-gateway
+      name: ai-gateway
   rules:
     - matches:
         - headers:
