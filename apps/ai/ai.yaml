@@ -2,3 +2,5 @@ apps:
   ai:
     ollama:
       deploy: true
+    envoy-ai-gateway:
+      deploy: true
