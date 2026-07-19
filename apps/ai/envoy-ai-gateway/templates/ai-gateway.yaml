@@ -15,4 +15,4 @@ spec:
      port: 80
      allowedRoutes:
        namespaces:
-         from: ALL
+         from: All
