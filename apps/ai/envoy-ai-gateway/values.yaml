@@ -1,4 +1,6 @@
 gateway-helm:
+  crds:
+    enabled: false
   deployment:
     envoyGateway:
       resources:
