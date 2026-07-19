@@ -1,0 +1,25 @@
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: ClientTrafficPolicy
+metadata:
+  name: default-client-traffic-policy
+spec:
+  headers:
+    lateResponseHeaders:
+      set:
+        # - name: Strict-Transport-Security
+        #   value: max-age=31536000; includeSubDomains
+        - name: "x-content-type-options"
+          value: "nosniff"
+  path:
+    escapedSlashesAction: KeepUnchanged
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: ai-gateway
+  tls:
+    minVersion: '1.2'
+  connection:
+    bufferLimit: 50Mi
+  http2:
+    initialStreamWindowSize: 16Mi
+    initialConnectionWindowSize: 24Mi
