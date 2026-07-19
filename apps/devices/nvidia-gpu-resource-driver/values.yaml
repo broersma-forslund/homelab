@@ -1,0 +1,16 @@
+dra-driver-nvidia-gpu:
+  nvidiaDriverRoot: /usr/local
+  # This is a doube configuration that the user has checked nvidia device plugin is not installed
+  # Chart refuses to install without this flag set to true
+  # Will be removed once ExtendedResourceRequest is GA
+  gpuResourcesEnabledOverride: true
+  resources:
+    computeDomains:
+      enabled: false
+
+  # admission validation
+  webhook:
+    enabled: true
+
+  featureGates:
+    TimeSlicingSettings: true

@@ -2,6 +2,8 @@ apps:
   devices:
     intel-gpu-resource-driver:
       deploy: true
+    nvidia-gpu-resource-driver:
+      deploy: true
     network-devices:
       deploy: true
     node-feature-discovery:
