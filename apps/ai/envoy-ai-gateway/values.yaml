@@ -46,10 +46,10 @@ gateway-helm:
             # IMPORTANT: AI Gateway extensions controller
             hostname: ai-gateway-controller
             port: 1063
-        backendResources:
-        - group: inference.networking.k8s.io
-          kind: InferencePool
-          version: v1
+        # backendResources:
+        # - group: inference.networking.k8s.io
+        #   kind: InferencePool
+        #   version: v1
 
 ai-gateway-helm:
   controller:
