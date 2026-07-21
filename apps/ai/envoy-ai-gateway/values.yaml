@@ -19,7 +19,7 @@ gateway-helm:
         type: Kubernetes
         kubernetes:
           deploy:
-            type: ProviderNamespace # GatewayNamespace # Until https://github.com/envoyproxy/ai-gateway/pull/2304 is fixed
+            type: GatewayNamespace
       extensionApis:
         # Not strictly required, but recommended for backward/future compatibility.
         enableEnvoyPatchPolicy: true
