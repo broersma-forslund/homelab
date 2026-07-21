@@ -1,0 +1,24 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: open-webui-db
+spec:
+  instances: 2
+  plugins:
+  - name: barman-cloud.cloudnative-pg.io
+    isWALArchiver: true
+    parameters:
+      barmanObjectName: open-webui-backup-provider
+  storage:
+    size: 10Gi
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: open-webui-db-monitor
+spec:
+  selector:
+    matchLabels:
+      "cnpg.io/cluster": open-webui-db
+  podMetricsEndpoints:
+  - port: metrics

@@ -1,0 +1,57 @@
+open-webui:
+  replicaCount: 2
+
+  persistence:
+    enabled: true
+    size: 50Gi
+    storageClass: ceph-filesystem
+    accessModes:
+      - ReadWriteMany
+
+  websocket:
+    enabled: true
+    manager: redis
+
+  # Apache Tika for improved document/content extraction (RAG uploads).
+  tika:
+    enabled: true
+
+  # Route chat completions through the local Envoy AI Gateway
+  enableOpenaiApi: true
+  openaiBaseApiUrl: http://ai-gateway.envoy-ai-gateway.svc.cluster.local/v1
+  openaiApiKey: ""
+
+  extraEnvVars:
+    - name: DATABASE_URL
+      valueFrom:
+        secretKeyRef:
+          name: open-webui-db-app
+          key: uri
+
+  sso:
+    enabled: true
+    enableSignup: true
+    oidc:
+      enabled: true
+      clientId: 2aL6rLRDHx1pN8epxCSVbG2CPvCunBRRxSSpetvz
+      clientExistingSecret: open-webui-oidc-credentials
+      clientExistingSecretKey: clientSecret
+      providerUrl: https://authentik.mobrockers.com/application/o/open-webui/.well-known/openid-configuration
+      providerName: Authentik
+
+  route:
+    enabled: true
+    hostnames:
+      - chat.mobrockers.com
+    parentRefs:
+      - name: private
+        namespace: envoy-gateway
+        sectionName: web-https
+
+  # Disable built-in ollama, open-webui pipelines, and terminals.
+  ollama:
+    enabled: false
+  pipelines:
+    enabled: false
+  terminals:
+    enabled: false
