@@ -16,3 +16,12 @@ spec:
               value: ollama-ha
       backendRefs:
         - name: ollama-ha
+    # Routes Open WebUI's RAG embedding requests (RAG_EMBEDDING_ENGINE=openai) through
+    # the gateway to the same Ollama instance, matching the embedding model name.
+    - matches:
+        - headers:
+            - type: Exact
+              name: x-ai-eg-model
+              value: nomic-embed-text
+      backendRefs:
+        - name: ollama-ha

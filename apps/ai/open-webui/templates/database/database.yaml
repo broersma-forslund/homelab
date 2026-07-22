@@ -4,6 +4,11 @@ metadata:
   name: open-webui-db
 spec:
   instances: 2
+  # VectorChord: a drop-in superset of pgvector
+  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:18.4-1.1.1
+  postgresql:
+    shared_preload_libraries:
+      - vchord
   plugins:
   - name: barman-cloud.cloudnative-pg.io
     isWALArchiver: true
@@ -11,6 +16,21 @@ spec:
       barmanObjectName: open-webui-backup-provider
   storage:
     size: 10Gi
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: open-webui-db-app
+spec:
+  name: app
+  owner: app
+  cluster:
+    name: open-webui-db
+  extensions:
+    - name: vector
+      ensure: present
+    - name: vchord
+      ensure: present
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
