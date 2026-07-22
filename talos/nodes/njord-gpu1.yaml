@@ -1,0 +1,29 @@
+machine:
+  install:
+    image: factory.talos.dev/metal-installer/e68b75b1d1128dd0b0b6ca434d44a2cdfd8ca0366d5f2bca73e07ee058085871:v1.13.6
+    disk: /dev/nvme0n1
+---
+apiVersion: v1alpha1
+kind: HostnameConfig
+auto: off
+hostname: njord-gpu1
+---
+apiVersion: v1alpha1
+kind: DHCPv4Config
+name: enp3s0
+---
+apiVersion: v1alpha1
+kind: LinkConfig
+name: enp3s0
+addresses:
+  - address: fdf9:dc00:d0eb:66::196/64
+routes:
+  - gateway: fdf9:dc00:d0eb:66::1
+---
+# apiVersion: v1alpha1
+# kind: LinkConfig
+# name: enp0s20f0u4
+# up: true
+# addresses:
+#   - address: 10.0.104.27/24
+# mtu: 9000

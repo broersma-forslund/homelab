@@ -25,3 +25,12 @@ talos-cloud-controller-manager:
         - .*-app\d+$
     labels:
       node-role.kubernetes.io/worker: ""
+  - name: gpu
+    nodeSelector:
+    - matchExpressions:
+      - key: hostname
+        operator: Regexp
+        values:
+        - .*-gpu\d+$
+    labels:
+      node-role.kubernetes.io/worker: "gpu"
