@@ -30,6 +30,8 @@ data:
   RAG_EMBEDDING_MODEL: nomic-embed-text
   RAG_EMBEDDING_CONTENT_PREFIX: "search_document: "
   RAG_EMBEDDING_QUERY_PREFIX: "search_query: "
+  RAG_SYSTEM_CONTEXT: "true"
+  RAG_EMBEDDING_BATCH_SIZE: "20"
 
   # --- Offline mode / model-download lockdown ---
   # Safe alongside the above: OFFLINE_MODE only blocks HuggingFace Hub downloads
@@ -78,3 +80,4 @@ data:
   DATABASE_POOL_MAX_OVERFLOW: "20"
   THREAD_POOL_SIZE: "2000"
   DATABASE_USER_ACTIVE_STATUS_UPDATE_INTERVAL: "300"
+  ENABLE_QUERIES_CACHE: "true"
