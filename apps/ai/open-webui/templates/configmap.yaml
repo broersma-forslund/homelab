@@ -11,6 +11,7 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
 data:
+  ENABLE_PERSISTENT_CONFIG: "false"
   # --- General ---
   # Derived from route.hostnames so it can't drift from the actual HTTPRoute address.
   WEBUI_URL: "https://{{ index $webui.route.hostnames 0 }}"
