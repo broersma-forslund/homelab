@@ -22,6 +22,8 @@ open-webui:
   openaiApiKey: ""
 
   extraEnvVars:
+    - name: WEBUI_URL    
+      value: https://chat.mobrockers.com
     # Database configuration
     - name: DATABASE_URL
       valueFrom:
