@@ -60,8 +60,18 @@ data:
   # --- Hardening: misc data/privacy ---
   ENABLE_PROFILE_IMAGE_URL_FORWARDING: "false"
   ENABLE_PIP_INSTALL_FRONTMATTER_REQUIREMENTS: "false"
+  ENABLE_CODE_INTERPRETER: "false"
+  CODE_INTERPRETER_ENGINE: "none"
+  # Enable at some point
+  # CODE_INTERPRETER_ENGINE: "jupyter"
+  # CODE_INTERPRETER_JUPYTER_URL: "http://open-webui-jupyter.open-webui.svc.cluster.local:8888"
   RAG_FILE_MAX_SIZE: "100"
   RAG_FILE_MAX_COUNT: "20"
+  ANONYMIZED_TELEMETRY: "false"
+  DO_NOT_TRACK: "true"
+
+  # Hide backend version numbers, build hashes, and diagnostic info from the UI footer for non-admins
+  SHOW_ADMIN_DETAILS: "false"
 
   # --- Scaling knobs (multi-replica + Redis already in place) ---
   DATABASE_POOL_SIZE: "15"
