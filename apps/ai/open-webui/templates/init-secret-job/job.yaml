@@ -1,0 +1,41 @@
+{{- if .Values.initSecretJob.enabled }}
+{{- $name := default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
+{{- $fullname := if .Values.fullnameOverride ((.Values.fullnameOverride | trunc 63) | trimSuffix "-") (if (contains $name .Release.Name) (.Release.Name | trunc 63 | trimSuffix "-") (printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-")) }}
+{{- $chartName := printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ $fullname }}-init-secret-job
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation
+  labels:
+    app.kubernetes.io/name: {{ $name }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/component: init-secret-job
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart: {{ $chartName }}
+spec:
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "open-webui.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/component: init-secret-job
+    spec:
+      containers:
+        - name: init-secret
+          image: "{{ .Values.initSecretJob.image.registry }}/{{ .Values.initSecretJob.image.repository }}:{{ .Values.initSecretJob.image.tag }}"
+          imagePullPolicy: {{ .Values.initSecretJob.image.pullPolicy }}
+          resources: {{ toYaml .Values.initSecretJob.resources | nindent 12 }}
+          command:
+            - sh
+            - "-c"
+            - |
+              kubectl get secret {{ $fullname }}-secret -n {{ .Release.Namespace }} >/dev/null 2>&1 || \
+              kubectl create secret generic {{ $fullname }}-secret -n {{ .Release.Namespace }} \
+                --from-literal=WEBUI_SECRET_KEY=$(head -c 32 /dev/urandom | base64)
+      restartPolicy: OnFailure
+      serviceAccountName: {{ $fullname }}-init-secret-job
+{{- end }}
