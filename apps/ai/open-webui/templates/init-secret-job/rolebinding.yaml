@@ -1,27 +1,24 @@
 {{- if .Values.initSecretJob.enabled }}
-{{- $name := default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
-{{- $fullname := if .Values.fullnameOverride ((.Values.fullnameOverride | trunc 63) | trimSuffix "-") (if (contains $name .Release.Name) (.Release.Name | trunc 63 | trimSuffix "-") (printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-")) }}
-{{- $chartName := printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: {{ $fullname }}-init-secret-job
+  name: {{ .Release.Name }}-init-secret-job
   namespace: {{ .Release.Namespace }}
   annotations:
     "helm.sh/hook": pre-install,pre-upgrade
     "helm.sh/hook-delete-policy": before-hook-creation
   labels:
-    app.kubernetes.io/name: {{ $name }}
+    app.kubernetes.io/name: open-webui
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/component: init-secret-job
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-    helm.sh/chart: {{ $chartName }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: {{ $fullname }}-init-secret-job
+  name: {{ .Release.Name }}-init-secret-job
 subjects:
   - kind: ServiceAccount
-    name: {{ $fullname }}-init-secret-job
+    name: {{ .Release.Name }}-init-secret-job
     namespace: {{ .Release.Namespace }}
 {{- end }}
