@@ -40,13 +40,19 @@ open-webui:
   sso:
     enabled: true
     enableSignup: true
+    enableRoleManagement: true
+    roleManagement:
+      rolesClaim: groups
+      adminRoles: Administrators
+      allowedRoles: Administrators,Users
     oidc:
       enabled: true
+      providerName: Authentik
+      providerUrl: https://authentik.mobrockers.com/application/o/open-webui/.well-known/openid-configuration
+      scopes: "openid profile email groups"
       clientId: 2aL6rLRDHx1pN8epxCSVbG2CPvCunBRRxSSpetvz
       clientExistingSecret: open-webui-oidc-credentials
       clientExistingSecretKey: clientSecret
-      providerUrl: https://authentik.mobrockers.com/application/o/open-webui/.well-known/openid-configuration
-      providerName: Authentik
 
   route:
     enabled: true
