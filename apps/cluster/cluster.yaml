@@ -22,5 +22,3 @@ apps:
       deploy: true
     spegel:
       deploy: true
-    kubechecks:
-      deploy: true

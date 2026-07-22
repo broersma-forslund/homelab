@@ -14,7 +14,6 @@ data:
 
   oidc.config: |
     {{ .Values.authentication.oidc | toYaml | nindent 4 }}
-  accounts.kubechecks: apiKey
 
   # -- Ignoring status for all resources. An update will still be sent if the status update causes the health to change.
   # @default -- See [values.yaml]
