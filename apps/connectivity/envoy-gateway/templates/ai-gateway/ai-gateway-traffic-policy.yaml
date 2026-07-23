@@ -1,7 +1,7 @@
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: ClientTrafficPolicy
 metadata:
-  name: default-client-traffic-policy
+  name: ai-gateway-traffic-policy
 spec:
   headers:
     lateResponseHeaders:
