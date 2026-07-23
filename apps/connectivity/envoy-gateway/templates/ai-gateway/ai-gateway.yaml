@@ -3,7 +3,6 @@ kind: Gateway
 metadata:
   name: ai-gateway
 spec:
-  gatewayClassName: envoy-ai-gateway
   infrastructure:
     parametersRef:
       group: gateway.envoyproxy.io
