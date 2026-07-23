@@ -34,3 +34,5 @@ talos-cloud-controller-manager:
         - .*-gpu\d+$
     labels:
       node-role.kubernetes.io/gpu: ""
+    taints:
+      node-role.kubernetes.io/gpu: "true:NoSchedule"

@@ -1,0 +1,19 @@
+local-path-provisioner:
+  nodeSelector:
+    node-role.kubernetes.io/gpu: ""
+  tolerations:
+    - key: node-role.kubernetes.io/gpu
+      operator: Exists
+
+  nodePathMap:
+    - node: njord-gpu1
+      paths:
+        - /var/mnt/local-nvme
+    - node: DEFAULT_PATH_FOR_NON_LISTED_NODES
+      paths: [] # Refuses to provision local volumes on any other host
+  storageClass:
+    name: local-nvme
+    provisionerName: rancher.io/local-path
+    defaultClass: false
+    reclaimPolicy: Delete
+    volumeBindingMode: WaitForFirstConsumer

@@ -1,5 +1,7 @@
 apps:
   storage:
+    local-path-provisioner:
+      deploy: true
     rook-ceph:
       deploy: true
       autoSync: false
@@ -16,7 +18,5 @@ apps:
       - rook-object-stores-values.yaml
     velero:
       deploy: true
-      autoSync: false
     cloudnative-postgres:
       deploy: true
-      autoSync: false

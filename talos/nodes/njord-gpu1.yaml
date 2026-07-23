@@ -1,7 +1,7 @@
 machine:
   install:
     image: factory.talos.dev/metal-installer/e68b75b1d1128dd0b0b6ca434d44a2cdfd8ca0366d5f2bca73e07ee058085871:v1.13.6
-    disk: /dev/nvme0n1
+    disk: /dev/disk/by-id/nvme-eui.0025384441a22f28
   kernel:
     modules:
       - name: nvidia
@@ -16,11 +16,11 @@ hostname: njord-gpu1
 ---
 apiVersion: v1alpha1
 kind: DHCPv4Config
-name: enp3s0
+name: enp4s0
 ---
 apiVersion: v1alpha1
 kind: LinkConfig
-name: enp3s0
+name: enp4s0
 addresses:
   - address: fdf9:dc00:d0eb:66::196/64
 routes:
@@ -33,3 +33,12 @@ routes:
 # addresses:
 #   - address: 10.0.104.27/24
 # mtu: 9000
+---
+apiVersion: v1alpha1
+kind: UserVolumeConfig
+name: local-nvme
+provisioning:
+  diskSelector:
+    match: "'/dev/disk/by-id/nvme-eui.0025384441a22f0e' in disk.symlinks"
+  minSize: 100Gi
+  grow: true
