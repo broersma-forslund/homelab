@@ -8,6 +8,7 @@ metadata:
 data:
   policy.csv: |
     g, Administrators, role:admin
-    g, Users, role:readonly
+    g, Users, role:admin
+    #g, Users, role:readonly
   policy.default: ''
   
