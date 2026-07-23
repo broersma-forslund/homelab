@@ -21,6 +21,10 @@ spec:
       - ../security/security.yaml
       - ../test/test.yaml
   syncPolicy:
+    automated:
+      enabled: false
+      prune: false
+      selfHeal: true
     syncOptions:
      - FailOnSharedResource=true
   destination:
