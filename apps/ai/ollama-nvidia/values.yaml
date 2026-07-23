@@ -1,0 +1,44 @@
+ollama:
+
+  extraEnv:
+  # Tell Ollama to offload all layers to GPU (999 = "as many as possible")
+  - name: OLLAMA_NUM_GPU
+    value: "999"
+  # Keep the model loaded in GPU memory indefinitely (-1 = never unload)
+  - name: OLLAMA_KEEP_ALIVE
+    value: "-1"
+
+  ollama:
+    gpu:
+      enabled: true
+      draEnabled: true
+      type: nvidia
+      draDriverClass: gpu.nvidia.com
+      draExistingClaimTemplate: ollama-nvidia
+    # Model to pull on startup (cached on the PVC; subsequent starts are no-ops).
+    # Update this value and restart the pod to switch models. Set models.clean: true
+    # to automatically remove models that are no longer listed here.
+    models:
+      clean: true
+      pull:
+      - qwen3:8b
+      # Placeholder embedding model for Open WebUI RAG; revisit once the dGPU lands
+      # (candidates: mxbai-embed-large, bge-m3).
+      - nomic-embed-text
+
+  persistentVolume:
+    enabled: true
+    # Reference the PVC created by templates/pvc.yaml; the chart will not create its own.
+    existingClaim: ollama-models
+    storageClass: ceph-block
+    size: 30Gi
+
+  resources:
+    requests:
+      cpu: 500m
+      memory: 4Gi
+    limits:
+      memory: 16Gi
+
+  updateStrategy:
+    type: Recreate

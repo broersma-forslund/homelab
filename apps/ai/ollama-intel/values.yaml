@@ -49,6 +49,7 @@ ollama:
     # Update this value and restart the pod to switch models. Set models.clean: true
     # to automatically remove models that are no longer listed here.
     models:
+      clean: true
       pull:
       - qwen3:8b
       # Placeholder embedding model for Open WebUI RAG; revisit once the dGPU lands

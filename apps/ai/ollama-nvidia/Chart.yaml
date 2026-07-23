@@ -1,0 +1,8 @@
+apiVersion: v2
+name: ollama-nvidia
+version: 0.0.0
+
+dependencies:
+  - name: ollama
+    version: 1.68.0
+    repository: https://otwld.github.io/ollama-helm/

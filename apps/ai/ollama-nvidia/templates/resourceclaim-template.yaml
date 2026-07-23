@@ -1,0 +1,13 @@
+apiVersion: resource.k8s.io/v1
+kind: ResourceClaimTemplate
+metadata:
+  name: ollama-nvidia
+spec:
+  spec:
+    devices:
+      requests:
+      - name: nvidia
+        exactly:
+          deviceClassName: gpu.nvidia.com
+          allocationMode: ExactCount
+          count: 1

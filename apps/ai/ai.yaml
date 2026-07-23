@@ -1,6 +1,8 @@
 apps:
   ai:
-    ollama:
+    ollama-intel:
+      deploy: true
+    ollama-nvidia:
       deploy: true
     envoy-ai-gateway:
       deploy: true

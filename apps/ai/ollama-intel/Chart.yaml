@@ -1,6 +1,6 @@
 apiVersion: v2
-name: ollama
-version: 1.0.0
+name: ollama-intel
+version: 0.0.0
 
 dependencies:
   - name: ollama
