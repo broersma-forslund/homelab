@@ -1,7 +1,7 @@
 apiVersion: aigateway.envoyproxy.io/v1beta1
 kind: AIGatewayRoute
 metadata:
-  name: ollama-ha
+  name: ollama-nvidia
 spec:
   parentRefs:
     - group: gateway.networking.k8s.io
@@ -13,9 +13,9 @@ spec:
         - headers:
             - type: Exact
               name: x-ai-eg-model
-              value: ollama-ha
+              value: ollama-nvidia
       backendRefs:
-        - name: ollama-ha
+        - name: ollama-nvidia
     # Routes Open WebUI's RAG embedding requests (RAG_EMBEDDING_ENGINE=openai) through
     # the gateway to the same Ollama instance, matching the embedding model name.
     - matches:
@@ -24,4 +24,4 @@ spec:
               name: x-ai-eg-model
               value: nomic-embed-text
       backendRefs:
-        - name: ollama-ha
+        - name: ollama-nvidia

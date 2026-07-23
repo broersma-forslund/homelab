@@ -1,9 +1,9 @@
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: Backend
 metadata:
-  name: ollama-ha
+  name: ollama-intel
 spec:
   endpoints:
     - fqdn:
-        hostname: ollama.ollama
+        hostname: ollama.ollama-intel
         port: 11434
