@@ -4,6 +4,8 @@ apps:
       deploy: true
     ollama-nvidia:
       deploy: true
+    envoy-ai-gateway-controller:
+      deploy: true
     envoy-ai-gateway:
       deploy: true
     open-webui:
