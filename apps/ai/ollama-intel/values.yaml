@@ -43,9 +43,8 @@ ollama:
     models:
       clean: true
       pull:
-      - qwen3:8b
-      # Placeholder embedding model for Open WebUI RAG; revisit once the dGPU lands
-      # (candidates: mxbai-embed-large, bge-m3).
+      - nomic-embed-text
+      run:
       - nomic-embed-text
 
   persistentVolume:

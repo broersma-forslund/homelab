@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 
 # Prepare the IPEX-LLM Ollama runtime: `init-ollama` symlinks the bundled
 # binary and libraries into the working directory.
