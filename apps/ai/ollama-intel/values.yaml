@@ -18,6 +18,8 @@ ollama:
   extraEnv:
   - name: TZ
     value: Europe/Amsterdam
+  - name: OLLAMA_INTEL_GPU
+    value: "1"
   # Required for Intel Level Zero / GPU management via oneAPI System Resource Management
   - name: ZES_ENABLE_SYSMAN
     value: "1"
