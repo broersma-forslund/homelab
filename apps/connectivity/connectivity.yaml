@@ -15,6 +15,7 @@ apps:
         - .spec.template.spec.containers[].volumeMounts[].readOnly? | select(. == false)
     envoy-gateway-controller:
       deploy: true
+      failOnSharedResources: false
     envoy-gateway:
       deploy: true
       autoSync: false
