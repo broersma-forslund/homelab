@@ -11,10 +11,3 @@ spec:
           deviceClassName: gpu.intel.com
           allocationMode: ExactCount
           count: 1
-          {{- with .Values.gpu.selectors }}
-          selectors:
-          {{- range . }}
-          - cel:
-              expression: {{ . | quote }}
-          {{- end }}
-          {{- end }}
