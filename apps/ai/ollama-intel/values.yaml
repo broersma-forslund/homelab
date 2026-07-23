@@ -1,5 +1,7 @@
 ollama:
 
+  nodeSelector:
+    node-role.kubernetes.io/gpu: ""
   tolerations:
     - key: node-role.kubernetes.io/gpu
       operator: Exists
