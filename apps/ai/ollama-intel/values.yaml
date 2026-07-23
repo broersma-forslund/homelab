@@ -1,16 +1,8 @@
-# Local LLM runtime for the Home Assistant voice assistant.
-# The IPEX-LLM image runs Ollama on an Intel iGPU (SYCL backend).
-
-# GPU CEL selectors for the Intel DRA ResourceClaimTemplate.
-# Without xpumd the GPU resource driver only exposes pci attributes, so we match
-# on pciId. Default matches the Raptor Lake-S UHD Graphics 770 (0xa780); adjust
-# to the pciId of the iGPU on your 13th gen node (`kubectl get resourceslices -o yaml`).
-gpu:
-  selectors: {}
-#   - 'device.attributes["gpu.intel.com"].pciId == "0xa780"'
-
 ollama:
 
+  tolerations:
+    - key: node-role.kubernetes.io/gpu
+      operator: Exists
   image:
     repository: intelanalytics/ipex-llm-inference-cpp-xpu
     tag: "2.3.0-SNAPSHOT"
@@ -45,9 +37,7 @@ ollama:
       type: intel
       draDriverClass: gpu.intel.com
       draExistingClaimTemplate: ollama-i915
-    # Model to pull on startup (cached on the PVC; subsequent starts are no-ops).
-    # Update this value and restart the pod to switch models. Set models.clean: true
-    # to automatically remove models that are no longer listed here.
+    # -- List of models to pull at container startup
     models:
       clean: true
       pull:
@@ -58,10 +48,8 @@ ollama:
 
   persistentVolume:
     enabled: true
-    # Reference the PVC created by templates/pvc.yaml; the chart will not create its own.
-    existingClaim: ollama-models
-    storageClass: ceph-block
-    size: 30Gi
+    storageClass: local-nvme
+    size: 10Gi
 
   resources:
     requests:

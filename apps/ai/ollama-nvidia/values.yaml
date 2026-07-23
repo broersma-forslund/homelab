@@ -1,5 +1,8 @@
 ollama:
 
+  tolerations:
+    - key: node-role.kubernetes.io/gpu
+      operator: Exists
   extraEnv:
   # Tell Ollama to offload all layers to GPU (999 = "as many as possible")
   - name: OLLAMA_NUM_GPU
@@ -15,9 +18,7 @@ ollama:
       type: nvidia
       draDriverClass: gpu.nvidia.com
       draExistingClaimTemplate: ollama-nvidia
-    # Model to pull on startup (cached on the PVC; subsequent starts are no-ops).
-    # Update this value and restart the pod to switch models. Set models.clean: true
-    # to automatically remove models that are no longer listed here.
+    # -- List of models to pull at container startup
     models:
       clean: true
       pull:
@@ -28,10 +29,8 @@ ollama:
 
   persistentVolume:
     enabled: true
-    # Reference the PVC created by templates/pvc.yaml; the chart will not create its own.
-    existingClaim: ollama-models
-    storageClass: ceph-block
-    size: 30Gi
+    storageClass: local-nvme
+    size: 10Gi
 
   resources:
     requests:
