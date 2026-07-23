@@ -33,4 +33,4 @@ talos-cloud-controller-manager:
         values:
         - .*-gpu\d+$
     labels:
-      node-role.kubernetes.io/worker: "gpu"
+      node-role.kubernetes.io/gpu: ""
