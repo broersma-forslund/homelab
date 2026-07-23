@@ -18,7 +18,7 @@ open-webui:
 
   # Route chat completions through the local Envoy AI Gateway
   enableOpenaiApi: true
-  openaiBaseApiUrl: http://ollama-nvidia.ollama-nvidia.svc.cluster.local/v1
+  openaiBaseApiUrl: http://ollama-nvidia.ollama-nvidia.svc.cluster.local:11434/v1
   openaiApiKey: ""
 
   extraEnvVars:
