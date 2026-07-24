@@ -13,9 +13,6 @@ apps:
         kind: DaemonSet
         jqPathExpressions:
         - .spec.template.spec.containers[].volumeMounts[].readOnly? | select(. == false)
-    envoy-gateway-controller:
-      deploy: true
-      autoSync: false
     envoy-gateway-system:
       deploy: true
       autoSync: false
