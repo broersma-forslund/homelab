@@ -5,4 +5,4 @@ ai-gateway-helm:
       certManager:
         enable: true
   envoyGateway:
-    namespace : envoy-gateway
+    namespace : envoy-gateway-controller
