@@ -19,6 +19,7 @@ apps:
     envoy-gateway-system:
       deploy: true
       autoSync: false
+      failOnSharedResources: false
     envoy-gateway:
       deploy: true
     emqx:
