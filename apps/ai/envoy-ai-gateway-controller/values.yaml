@@ -1,8 +1,0 @@
-ai-gateway-helm:
-  controller:
-    quotaRateLimitServiceAddr: envoy-ai-gateway-ratelimit.envoy-ai-gateway-controller
-    mutatingWebhook:
-      certManager:
-        enable: true
-  envoyGateway:
-    namespace : envoy-gateway-controller

@@ -6,8 +6,6 @@ spec:
   headers:
     lateResponseHeaders:
       set:
-        # - name: Strict-Transport-Security
-        #   value: max-age=31536000; includeSubDomains
         - name: "x-content-type-options"
           value: "nosniff"
   path:
