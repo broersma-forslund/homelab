@@ -1,11 +1,11 @@
 apiVersion: aigateway.envoyproxy.io/v1beta1
 kind: AIServiceBackend
 metadata:
-  name: ollama-nvidia
+  name: ollama
 spec:
   schema:
     name: OpenAI
   backendRef:
-    name: ollama-nvidia
+    name: ollama
     kind: Backend
     group: gateway.envoyproxy.io

@@ -1,22 +1,17 @@
 ollama:
 
+  nodeSelector:
+    node-role.kubernetes.io/gpu: ""
   tolerations:
     - key: node-role.kubernetes.io/gpu
       operator: Exists
 
   ollama:
-    gpu:
-      enabled: true
-      draEnabled: true
-      type: nvidia
-      draDriverClass: gpu.nvidia.com
-      draExistingClaimTemplate: ollama-nvidia
     # -- List of models to pull at container startup
     models:
       clean: true
       pull:
-      - qwen3:14b                   # chat
-      - qwen2.5-3b-instruct         # assistant
+      - bge-m3
 
   persistentVolume:
     enabled: true
@@ -31,11 +26,5 @@ ollama:
       memory: 16Gi
 
   extraEnv:
-  - name: OLLAMA_KEEP_ALIVE
-    value: "-1"
-  - name: OLLAMA_FLASH_ATTENTION
-    value: "1"
-  - name: OLLAMA_KV_CACHE_TYPE
-    value: "q8_0"
   - name: OLLAMA_CONTEXT_LENGTH
     value: "8192"

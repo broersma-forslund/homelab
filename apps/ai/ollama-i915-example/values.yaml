@@ -9,6 +9,32 @@ ollama:
     repository: intelanalytics/ipex-llm-inference-cpp-xpu
     tag: "2.3.0-SNAPSHOT"
 
+  ollama:
+    gpu:
+      enabled: true
+      draEnabled: true
+      # gpu.type must be non-nvidia to suppress the automatic nvidia.com/gpu toleration.
+      type: intel
+      draDriverClass: gpu.intel.com
+      draExistingClaimTemplate: ollama-i915
+    # -- List of models to pull at container startup
+    models:
+      clean: true
+      pull:
+      - bge-m3
+
+  persistentVolume:
+    enabled: true
+    storageClass: local-nvme
+    size: 10Gi
+
+  resources:
+    requests:
+      cpu: 500m
+      memory: 4Gi
+    limits:
+      memory: 16Gi
+
   # The IPEX-LLM image has no entrypoint; args run the startup script staged by
   # the init container.
   extraArgs:
@@ -40,32 +66,8 @@ ollama:
     value: "1"
   - name: OLLAMA_KV_CACHE_TYPE
     value: "q8_0"
-
-  ollama:
-    gpu:
-      enabled: true
-      draEnabled: true
-      # gpu.type must be non-nvidia to suppress the automatic nvidia.com/gpu toleration.
-      type: intel
-      draDriverClass: gpu.intel.com
-      draExistingClaimTemplate: ollama-i915
-    # -- List of models to pull at container startup
-    models:
-      clean: true
-      pull:
-      - nomic-embed-text
-
-  persistentVolume:
-    enabled: true
-    storageClass: local-nvme
-    size: 10Gi
-
-  resources:
-    requests:
-      cpu: 500m
-      memory: 4Gi
-    limits:
-      memory: 16Gi
+  - name: OLLAMA_CONTEXT_LENGTH
+    value: "8192"
 
   # Stage the startup script from the ConfigMap onto a shared emptyDir so the main
   # container can exec it (the ConfigMap volume is read-only and non-executable).

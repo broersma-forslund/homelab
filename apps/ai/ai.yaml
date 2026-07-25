@@ -1,6 +1,6 @@
 apps:
   ai:
-    ollama-intel:
+    ollama-embedding:
       deploy: true
     ollama-nvidia:
       deploy: true

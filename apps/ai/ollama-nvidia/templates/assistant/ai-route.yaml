@@ -1,0 +1,23 @@
+apiVersion: aigateway.envoyproxy.io/v1beta1
+kind: AIGatewayRoute
+metadata:
+  name: ollama-assistant
+spec:
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      namespace: envoy-ai-gateway
+      name: ai-gateway
+  hostnames:
+    - assistant.envoy-ai-gateway
+    - assistant.envoy-ai-gateway.svc
+    - assistant.envoy-ai-gateway.svc.cluster
+    - assistant.envoy-ai-gateway.svc.cluster.local
+  rules:
+    - backendRefs:
+        - name: ollama
+          modelNameOverride: qwen2.5-3b-instruct
+       matches:
+        - headers:
+            - name: x-ai-eg-model
+              value: assistant-default
