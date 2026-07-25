@@ -16,4 +16,3 @@ apps:
       deploy: true
     searxng:
       deploy: true
-      autoSync: false
