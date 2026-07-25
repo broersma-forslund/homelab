@@ -7,6 +7,9 @@ searxng:
         engines:
           remove:
             - brave
+            - brave images
+            - brave videos
+            - brave news
             - google
             - torch
             - ahmia
