@@ -1,0 +1,8 @@
+apiVersion: v2
+name: searxng
+version: 0.0.0
+
+dependencies:
+  - name: searxng
+    version: 0.1.8
+    repository: https://techpipe-io.github.io/searxng-helm-chart

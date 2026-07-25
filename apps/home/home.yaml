@@ -8,10 +8,12 @@ apps:
       deploy: true
     nextcloud:
       deploy: true
-      autoSync: false
     dawarich:
       deploy: true
     wyoming-whisper:
       deploy: true
     wyoming-piper:
       deploy: true
+    searxng:
+      deploy: true
+      autoSync: false

@@ -1,0 +1,13 @@
+searxng:
+  revisionHistoryLimit: 0
+  config:
+    useDefaultSettings: true
+    settings:
+      general:
+        enable_metrics: false
+      search:
+        safe_search: 0
+        autocomplete: ""
+        formats:
+          - html
+          - json  # Critical for Open WebUI integration
