@@ -26,13 +26,23 @@ data:
   RAG_EMBEDDING_ENGINE: openai
   RAG_OPENAI_API_BASE_URL: {{ $webui.embeddingOpenAIApiBaseUrl }}
   RAG_EMBEDDING_MODEL: {{ $webui.embeddingModel }}
-  ENABLE_RAG_WEB_SEARCH: "true"
-  RAG_WEB_SEARCH_ENGINE: "searxng"
-  SEARXNG_QUERY_URL: {{ $webui.searxngQueryUrl }}
-  RAG_EMBEDDING_CONTENT_PREFIX: "search_document: "
-  RAG_EMBEDDING_QUERY_PREFIX: "search_query: "
   RAG_SYSTEM_CONTEXT: "true"
+  RAG_QUERY_PREFIX: ""
+  RAG_CONTENT_PREFIX: ""
   RAG_EMBEDDING_BATCH_SIZE: "20"
+  CHUNK_SIZE: "4000"
+  CHUNK_OVERLAP: "600"
+  CHUNK_MIN_SIZE_TARGET: "200"
+  ENABLE_RAG_HYBRID_SEARCH: "true"
+  ENABLE_RAG_HYBRID_SEARCH_ENRICHED_TEXTS: "true"
+  RAG_RERANKING_ENGINE: "sentence_transformers"
+  RAG_RERANKING_MODEL: "BAAI/bge-reranker-v2-m3"
+  RAG_TOP_K: "25"
+  RAG_RERANKING_MODEL_TOP_K: "5"
+  ENABLE_WEB_SEARCH: "true"
+  WEB_SEARCH_ENGINE: "searxng"
+  SEARXNG_QUERY_URL: {{ $webui.searxngQueryUrl }}
+  RAG_WEB_SEARCH_CONCURRENT_REQUESTS: "5"
 
   # --- Offline mode / model-download lockdown ---
   # Safe alongside the above: OFFLINE_MODE only blocks HuggingFace Hub downloads

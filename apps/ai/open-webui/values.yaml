@@ -22,7 +22,7 @@ open-webui:
   openaiBaseApiUrl: http://chat.envoy-ai-gateway.svc.cluster.local/v1
   embeddingOpenAIApiBaseUrl: http://embed.envoy-ai-gateway.svc.cluster.local/v1
   embeddingModel: bge-m3
-  searxngQueryUrl: https://searxng.searxng.svc.cluster.local/search?q={query}
+  searxngQueryUrl: http://searxng.searxng.svc.cluster.local:8080/search?q={query}
 
   extraEnvVars:
     - name: DATABASE_URL
