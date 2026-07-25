@@ -26,6 +26,9 @@ data:
   RAG_EMBEDDING_ENGINE: openai
   RAG_OPENAI_API_BASE_URL: {{ $webui.embeddingOpenAIApiBaseUrl }}
   RAG_EMBEDDING_MODEL: {{ $webui.embeddingModel }}
+  ENABLE_RAG_WEB_SEARCH: "true"
+  RAG_WEB_SEARCH_ENGINE: "searxng"
+  SEARXNG_QUERY_URL: {{ $webui.searxngQueryUrl }}
   RAG_EMBEDDING_CONTENT_PREFIX: "search_document: "
   RAG_EMBEDDING_QUERY_PREFIX: "search_query: "
   RAG_SYSTEM_CONTEXT: "true"

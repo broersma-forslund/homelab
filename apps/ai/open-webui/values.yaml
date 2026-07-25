@@ -18,10 +18,11 @@ open-webui:
 
   # Route chat completions through the local Envoy AI Gateway
   enableOpenaiApi: true
+  openaiApiKey: ""
   openaiBaseApiUrl: http://chat.envoy-ai-gateway.svc.cluster.local/v1
   embeddingOpenAIApiBaseUrl: http://embed.envoy-ai-gateway.svc.cluster.local/v1
   embeddingModel: bge-m3
-  openaiApiKey: ""
+  searxngQueryUrl: https://searxng.searxng.svc.cluster.local/search?q={query}
 
   extraEnvVars:
     - name: DATABASE_URL
