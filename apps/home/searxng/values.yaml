@@ -1,10 +1,22 @@
 searxng:
   revisionHistoryLimit: 0
   config:
-    useDefaultSettings: true
+    useDefaultSettings: false
     settings:
+      use_default_settings:
+        engines:
+          remove:
+            - brave
+            - google
+            - torch
+            - ahmia
+            - wikidata
+            - bing
       general:
         enable_metrics: false
+      server:
+        base_url: http://searxng.searxng.svc.cluster.local:8080
+        limiter: false
       search:
         safe_search: 0
         autocomplete: ""
