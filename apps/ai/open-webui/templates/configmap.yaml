@@ -16,6 +16,9 @@ data:
   # Derived from route.hostnames so it can't drift from the actual HTTPRoute address.
   WEBUI_URL: "https://{{ index $webui.route.hostnames 0 }}"
 
+  # --- Memories ---
+  ENABLE_MEMORY_BACKGROUND_REVIEW: "true"
+
   # --- Vector DB: pgvector via the VectorChord Postgres image ---
   # Extension is created declaratively by CNPG's Database CR (see
   # templates/database/database.yaml), so the app DB role can stay non-superuser.
@@ -26,10 +29,13 @@ data:
   RAG_EMBEDDING_ENGINE: openai
   RAG_OPENAI_API_BASE_URL: {{ $webui.embeddingOpenAIApiBaseUrl }}
   RAG_EMBEDDING_MODEL: {{ $webui.embeddingModel }}
+  ENABLE_RAG_LOCAL_WEB_FETCH: "true"
   RAG_SYSTEM_CONTEXT: "true"
   RAG_QUERY_PREFIX: ""
   RAG_CONTENT_PREFIX: ""
   RAG_EMBEDDING_BATCH_SIZE: "20"
+  RAG_FILE_MAX_SIZE: "100"
+  RAG_FILE_MAX_COUNT: "10"
   CHUNK_SIZE: "4000"
   CHUNK_OVERLAP: "600"
   CHUNK_MIN_SIZE_TARGET: "200"
@@ -51,6 +57,7 @@ data:
   # (local sentence-transformers/whisper); OAuth, external LLM APIs, and web
   # search/RAG via external APIs remain functional.
   OFFLINE_MODE: "false"
+  ENABLE_VERSION_UPDATE_CHECK: "false"
   HF_HUB_OFFLINE: "0"
   RAG_EMBEDDING_MODEL_AUTO_UPDATE: "true"
   RAG_RERANKING_MODEL_AUTO_UPDATE: "true"
@@ -80,12 +87,8 @@ data:
   # Enable at some point
   # CODE_INTERPRETER_ENGINE: "jupyter"
   # CODE_INTERPRETER_JUPYTER_URL: "http://open-webui-jupyter.open-webui.svc.cluster.local:8888"
-  RAG_FILE_MAX_SIZE: "100"
-  RAG_FILE_MAX_COUNT: "20"
   ANONYMIZED_TELEMETRY: "false"
   DO_NOT_TRACK: "true"
-
-  # Hide backend version numbers, build hashes, and diagnostic info from the UI footer for non-admins
   SHOW_ADMIN_DETAILS: "false"
 
   # --- Scaling knobs (multi-replica + Redis already in place) ---
