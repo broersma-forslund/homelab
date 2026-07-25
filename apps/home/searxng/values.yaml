@@ -12,6 +12,7 @@ searxng:
           - html
           - json  # Critical for Open WebUI integration
   persistence:
-    config:
+    cache:
       storageClass: ceph-filesystem
-      accessMode: ReadWriteMany
+      accessModes:
+        - ReadWriteMany
