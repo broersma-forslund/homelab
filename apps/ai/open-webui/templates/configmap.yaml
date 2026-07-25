@@ -22,12 +22,10 @@ data:
   VECTOR_DB: pgvector
   PGVECTOR_CREATE_EXTENSION: "false"
 
-  # --- RAG embeddings: offload to Ollama through envoy-ai-gateway (consistent with chat) ---
-  # Base URL derived from openaiBaseApiUrl so both connections always point at the
-  # same gateway.
+  # --- RAG embeddings: offload to Ollama through envoy-ai-gateway ---
   RAG_EMBEDDING_ENGINE: openai
-  RAG_OPENAI_API_BASE_URL: {{ $webui.openaiBaseApiUrl }}
-  RAG_EMBEDDING_MODEL: nomic-embed-text
+  RAG_OPENAI_API_BASE_URL: {{ $webui.embeddingOpenAIApiBaseUrl }}
+  RAG_EMBEDDING_MODEL: {{ $webui.embeddingModel }}
   RAG_EMBEDDING_CONTENT_PREFIX: "search_document: "
   RAG_EMBEDDING_QUERY_PREFIX: "search_query: "
   RAG_SYSTEM_CONTEXT: "true"
