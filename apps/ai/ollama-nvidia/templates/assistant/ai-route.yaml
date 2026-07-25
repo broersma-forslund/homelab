@@ -20,4 +20,4 @@ spec:
               value: assistant
       backendRefs:
         - name: ollama-nvidia
-          modelNameOverride: qwen2.5-3b-instruct
+          modelNameOverride: qwen2.5:3b

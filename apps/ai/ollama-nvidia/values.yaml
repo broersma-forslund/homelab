@@ -15,11 +15,11 @@ ollama:
     models:
       clean: true
       pull:
-      - qwen3:14b                   # chat
-      - qwen2.5-3b-instruct         # assistant
+      - qwen3:14b          # chat
+      - qwen2.5:3b         # assistant
       run:
-      - qwen3:14b                   # chat
-      - qwen2.5-3b-instruct         # assistant
+      - qwen3:14b          # chat
+      - qwen2.5:3b         # assistant
 
   persistentVolume:
     enabled: true
