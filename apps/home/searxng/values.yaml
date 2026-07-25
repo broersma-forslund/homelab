@@ -23,6 +23,7 @@ searxng:
         formats:
           - html
           - json  # Critical for Open WebUI integration
+      engines: []
   persistence:
     cache:
       storageClass: ceph-filesystem
