@@ -85,6 +85,6 @@ initSecretJob:
   image:
     registry: docker.io
     repository: alpine/kubectl
-    tag: 1.36.2
+    tag: 1.36.3
     pullPolicy: IfNotPresent
   resources: {}
