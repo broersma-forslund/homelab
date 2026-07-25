@@ -14,5 +14,4 @@ searxng:
   persistence:
     cache:
       storageClass: ceph-filesystem
-      accessModes:
-        - ReadWriteMany
+      accessMode: ReadWriteMany
