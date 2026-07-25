@@ -20,11 +20,15 @@ ollama:
     value: Europe/Amsterdam
   - name: OLLAMA_INTEL_GPU
     value: "1"
+  - name: "OLLAMA_DEBUG"
+    value: "1"
   # Required for Intel Level Zero / GPU management via oneAPI System Resource Management
   - name: ZES_ENABLE_SYSMAN
     value: "1"
   # Cache compiled SYCL kernels across restarts to avoid recompilation overhead
   - name: SYCL_CACHE_PERSISTENT
+    value: "1"
+  - name: SYCL_PI_LEVEL_ZERO_USE_IMMEDIATE_COMMANDLISTS
     value: "1"
   # Tell Ollama to offload all layers to GPU (999 = "as many as possible")
   - name: OLLAMA_NUM_GPU
@@ -32,6 +36,10 @@ ollama:
   # Keep the model loaded in GPU memory indefinitely (-1 = never unload)
   - name: OLLAMA_KEEP_ALIVE
     value: "-1"
+  - name: OLLAMA_FLASH_ATTENTION
+    value: "1"
+  - name: OLLAMA_KV_CACHE_TYPE
+    value: "q8_0"
 
   ollama:
     gpu:
@@ -45,8 +53,6 @@ ollama:
     models:
       clean: true
       pull:
-      - nomic-embed-text
-      run:
       - nomic-embed-text
 
   persistentVolume:
