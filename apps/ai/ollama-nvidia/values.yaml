@@ -17,6 +17,9 @@ ollama:
       pull:
       - qwen3:14b                   # chat
       - qwen2.5-3b-instruct         # assistant
+      run:
+      - qwen3:14b                   # chat
+      - qwen2.5-3b-instruct         # assistant
 
   persistentVolume:
     enabled: true

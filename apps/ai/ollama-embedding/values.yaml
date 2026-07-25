@@ -12,6 +12,8 @@ ollama:
       clean: true
       pull:
       - bge-m3
+      run:
+      - bge-m3
 
   persistentVolume:
     enabled: true
