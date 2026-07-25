@@ -14,10 +14,10 @@ spec:
     - "embed.envoy-ai-gateway.svc.cluster"
     - "embed.envoy-ai-gateway.svc.cluster.local"
   rules:
-    - backendRefs:
-        - name: ollama
-          modelNameOverride: bge-m3
-       matches:
+    - matches:
         - headers:
             - name: x-ai-eg-model
               value: embedding-default
+      backendRefs:
+        - name: ollama
+          modelNameOverride: bge-m3

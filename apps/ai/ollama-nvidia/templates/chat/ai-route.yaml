@@ -14,10 +14,10 @@ spec:
     - chat.envoy-ai-gateway.svc.cluster
     - chat.envoy-ai-gateway.svc.cluster.local
   rules:
-    - backendRefs:
-        - name: ollama
-          modelNameOverride: qwen3:14b
-       matches:
+    - matches:
         - headers:
             - name: x-ai-eg-model
               value: chat-default
+      backendRefs:
+        - name: ollama
+          modelNameOverride: qwen3:14b
