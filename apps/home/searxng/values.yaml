@@ -6,15 +6,9 @@ searxng:
       use_default_settings:
         engines:
           remove:
-            - brave
-            - brave images
-            - brave videos
-            - brave news
-            - google
             - torch
             - ahmia
             - wikidata
-            - bing
       general:
         enable_metrics: false
       server:
