@@ -5,5 +5,5 @@ metadata:
 spec:
   endpoints:
     - fqdn:
-        hostname: ollama.ollama-nvidia
+        hostname: ollama-nvidia.ollama-nvidia.svc.cluster.local
         port: 11434
