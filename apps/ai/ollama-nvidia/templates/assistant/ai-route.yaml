@@ -17,7 +17,7 @@ spec:
     - matches:
         - headers:
             - name: x-ai-eg-model
-              value: qwen2.5-assistant
+              value: assistant
       backendRefs:
         - name: ollama-nvidia
           modelNameOverride: qwen2.5-3b-instruct
