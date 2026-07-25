@@ -17,7 +17,7 @@ spec:
     - matches:
         - headers:
             - name: x-ai-eg-model
-              value: chat-default
+              value: qwen3
       backendRefs:
         - name: ollama
           modelNameOverride: qwen3:14b

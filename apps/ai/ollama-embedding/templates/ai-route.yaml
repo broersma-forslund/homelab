@@ -17,7 +17,6 @@ spec:
     - matches:
         - headers:
             - name: x-ai-eg-model
-              value: embedding-default
+              value: bge-m3
       backendRefs:
         - name: ollama
-          modelNameOverride: bge-m3

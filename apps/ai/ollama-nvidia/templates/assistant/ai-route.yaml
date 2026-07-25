@@ -14,10 +14,10 @@ spec:
     - assistant.envoy-ai-gateway.svc.cluster
     - assistant.envoy-ai-gateway.svc.cluster.local
   rules:
-    - backendRefs:
-        - name: ollama
-          modelNameOverride: qwen2.5-3b-instruct
-       matches:
+    - matches:
         - headers:
             - name: x-ai-eg-model
-              value: assistant-default
+              value: qwen2.5-assistant
+      backendRefs:
+        - name: ollama
+          modelNameOverride: qwen2.5-3b-instruct
