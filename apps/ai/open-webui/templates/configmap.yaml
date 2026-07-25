@@ -48,11 +48,11 @@ data:
   # Safe alongside the above: OFFLINE_MODE only blocks HuggingFace Hub downloads
   # (local sentence-transformers/whisper); OAuth, external LLM APIs, and web
   # search/RAG via external APIs remain functional.
-  OFFLINE_MODE: "true"
-  HF_HUB_OFFLINE: "1"
-  RAG_EMBEDDING_MODEL_AUTO_UPDATE: "false"
-  RAG_RERANKING_MODEL_AUTO_UPDATE: "false"
-  WHISPER_MODEL_AUTO_UPDATE: "false"
+  OFFLINE_MODE: "false"
+  HF_HUB_OFFLINE: "0"
+  RAG_EMBEDDING_MODEL_AUTO_UPDATE: "true"
+  RAG_RERANKING_MODEL_AUTO_UPDATE: "true"
+  WHISPER_MODEL_AUTO_UPDATE: "true"
 
   # --- Hardening: auth/session (Authentik SSO is the only login path) ---
   ENABLE_LOGIN_FORM: "false"
