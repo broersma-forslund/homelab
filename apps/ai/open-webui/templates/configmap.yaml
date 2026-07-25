@@ -42,7 +42,9 @@ data:
   ENABLE_WEB_SEARCH: "true"
   WEB_SEARCH_ENGINE: "searxng"
   SEARXNG_QUERY_URL: {{ $webui.searxngQueryUrl }}
-  RAG_WEB_SEARCH_CONCURRENT_REQUESTS: "5"
+  WEB_LOADER_ENGINE: "playwright"
+  WEB_SEARCH_RESULT_COUNT: "10"
+  WEB_LOADER_CONCURRENT_REQUESTS: "10"
 
   # --- Offline mode / model-download lockdown ---
   # Safe alongside the above: OFFLINE_MODE only blocks HuggingFace Hub downloads
