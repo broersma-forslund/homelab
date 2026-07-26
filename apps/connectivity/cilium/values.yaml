@@ -64,7 +64,12 @@ cilium:
     enabled: true
     tls:
       auto:
-        method: cronJob
+        method: certmanager
+        certValidityDuration: 90
+        certManagerIssuerRef:
+          group: cert-manager.io
+          kind: Issuer
+          name: hubble-issuer
     relay:
       enabled: true
       rollOutPods: true

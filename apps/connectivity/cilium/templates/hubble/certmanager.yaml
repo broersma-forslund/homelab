@@ -1,0 +1,31 @@
+# hubble-ca-issuer.yaml
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: hubble-ca-issuer
+spec:
+  selfSigned: {}
+---
+# Create a CA certificate
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: hubble-ca
+spec:
+  isCA: true
+  commonName: hubble-ca
+  secretName: hubble-ca-secret
+  duration: 8760h  # 1 year
+  renewBefore: 720h  # 30 days before expiry
+  issuerRef:
+    name: hubble-ca-issuer
+    kind: Issuer
+---
+# Create a namespaced CA issuer using the CA certificate
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: hubble-issuer
+spec:
+  ca:
+    secretName: hubble-ca-secret
