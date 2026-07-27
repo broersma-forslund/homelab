@@ -66,6 +66,9 @@ argo-cd:
       - name: public
         namespace: envoy-gateway
         sectionName: web-https
+      rules:
+        - timeouts:
+            request: 60s
 
     grpcroute:
       enabled: false # grpcroute does not yet work: https://github.com/argoproj/argo-helm/pull/3585
