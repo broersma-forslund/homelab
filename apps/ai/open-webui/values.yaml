@@ -62,7 +62,7 @@ open-webui:
       clientExistingSecretKey: clientSecret
 
   route:
-    enabled: true
+    enabled: false
     hostnames:
       - chat.mobrockers.com
     parentRefs:
