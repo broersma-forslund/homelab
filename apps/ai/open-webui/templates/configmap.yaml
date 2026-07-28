@@ -25,9 +25,10 @@ data:
   VECTOR_DB: pgvector
   PGVECTOR_CREATE_EXTENSION: "false"
 
-  # --- RAG embeddings: offload to Ollama through envoy-ai-gateway ---
-  RAG_EMBEDDING_ENGINE: openai
+  # --- RAG embeddings: offload to Ollama ---
+  RAG_EMBEDDING_ENGINE: ollama
   RAG_OPENAI_API_BASE_URL: {{ $webui.embeddingOpenAIApiBaseUrl }}
+  RAG_OLLAMA_BASE_URL: {{ $webui.embeddingOllamaBaseUrl }}
   RAG_EMBEDDING_MODEL: {{ $webui.embeddingModel }}
   ENABLE_RAG_LOCAL_WEB_FETCH: "true"
   RAG_SYSTEM_CONTEXT: "true"

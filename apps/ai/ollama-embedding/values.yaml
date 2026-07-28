@@ -10,10 +10,10 @@ ollama:
     # -- List of models to pull at container startup
     models:
       clean: true
-      pull:
-      - bge-m3
-      run:
-      - bge-m3
+      pull: []
+      # - bge-m3
+      run: []
+      # - bge-m3
 
   persistentVolume:
     enabled: true

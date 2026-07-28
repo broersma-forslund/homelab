@@ -14,12 +14,12 @@ ollama:
     # -- List of models to pull at container startup
     models:
       clean: true
-      pull:
-      - qwen3:14b          # chat
-      - qwen2.5:3b         # assistant
-      run:
-      - qwen3:14b          # chat
-      - qwen2.5:3b         # assistant
+      pull: []
+      # - qwen3:14b          # chat
+      # - qwen2.5:3b         # assistant
+      run: []
+      # - qwen3:14b          # chat
+      # - qwen2.5:3b         # assistant
 
   persistentVolume:
     enabled: true
@@ -28,10 +28,10 @@ ollama:
 
   resources:
     requests:
-      cpu: 500m
+      cpu: '4'
       memory: 4Gi
     limits:
-      memory: 16Gi
+      memory: 64Gi
 
   extraEnv:
   - name: OLLAMA_KEEP_ALIVE
