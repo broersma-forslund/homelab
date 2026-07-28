@@ -16,6 +16,9 @@ data:
   # Derived from route.hostnames so it can't drift from the actual HTTPRoute address.
   WEBUI_URL: "https://{{ index $webui.route.hostnames 0 }}"
 
+  ENABLE_API_KEYS : "true"
+  USER_PERMISSIONS_FEATURES_API_KEYS: "true"
+  
   # --- Memories ---
   ENABLE_MEMORY_BACKGROUND_REVIEW: "true"
 
