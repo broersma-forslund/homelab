@@ -24,7 +24,7 @@ ollama:
   persistentVolume:
     enabled: true
     storageClass: local-nvme
-    size: 10Gi
+    size: 100Gi
 
   resources:
     requests:
