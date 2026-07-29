@@ -1,5 +1,0 @@
-ai-gateway-helm:
-  controller:
-    mutatingWebhook:
-      certManager:
-        enable: true
