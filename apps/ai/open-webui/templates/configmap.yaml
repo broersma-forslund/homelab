@@ -12,13 +12,18 @@ metadata:
     helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
 data:
   ENABLE_PERSISTENT_CONFIG: "false"
+  ENABLE_DIRECT_CONNECTIONS: "false"
+
   # --- General ---
   # Derived from route.hostnames so it can't drift from the actual HTTPRoute address.
   WEBUI_URL: "https://{{ index $webui.route.hostnames 0 }}"
 
   ENABLE_API_KEYS : "true"
   USER_PERMISSIONS_FEATURES_API_KEYS: "true"
-  
+
+  # --- Tasks ---
+  ENABLE_CONTEXT_COMPACTION: "true"
+
   # --- Memories ---
   ENABLE_MEMORY_BACKGROUND_REVIEW: "true"
 
@@ -27,6 +32,10 @@ data:
   # templates/database/database.yaml), so the app DB role can stay non-superuser.
   VECTOR_DB: pgvector
   PGVECTOR_CREATE_EXTENSION: "false"
+
+  # --- Code execution:  ---
+  ENABLE_CODE_EXECUTION: "false"
+  ENABLE_CODE_INTERPRETER: "false"
 
   # --- RAG embeddings: offload to Ollama ---
   ENABLE_RAG_LOCAL_WEB_FETCH: "true"
@@ -68,10 +77,6 @@ data:
   ENABLE_PASSWORD_AUTH: "false"
   ENABLE_PASSWORD_CHANGE_FORM: "false"
   WEBUI_SESSION_COOKIE_SECURE: "true"
-  # NOTE: docs warn "strict" can break the OAuth callback when ENABLE_OAUTH_SIGNUP
-  # is enabled (which it is here, via sso.enableSignup). Requested explicitly -
-  # verify login still works after rollout; fall back to "lax" if the OIDC
-  # callback fails (session cookie not sent back with the provider's redirect).
   WEBUI_SESSION_COOKIE_SAME_SITE: strict
   ENABLE_OAUTH_BACKCHANNEL_LOGOUT: "true"
 
@@ -82,14 +87,10 @@ data:
   # --- Hardening: misc data/privacy ---
   ENABLE_PROFILE_IMAGE_URL_FORWARDING: "false"
   ENABLE_PIP_INSTALL_FRONTMATTER_REQUIREMENTS: "false"
-  ENABLE_CODE_INTERPRETER: "false"
-  CODE_INTERPRETER_ENGINE: "none"
-  # Enable at some point
-  # CODE_INTERPRETER_ENGINE: "jupyter"
-  # CODE_INTERPRETER_JUPYTER_URL: "http://open-webui-jupyter.open-webui.svc.cluster.local:8888"
   ANONYMIZED_TELEMETRY: "false"
   DO_NOT_TRACK: "true"
   SHOW_ADMIN_DETAILS: "false"
+  ENABLE_COMMUNITY_SHARING: "false"
 
   # --- Scaling knobs (multi-replica + Redis already in place) ---
   DATABASE_POOL_SIZE: "15"
