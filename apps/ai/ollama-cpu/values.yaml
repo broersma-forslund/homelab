@@ -6,15 +6,6 @@ ollama:
     - key: node-role.kubernetes.io/gpu
       operator: Exists
 
-  ollama:
-    # -- List of models to pull at container startup
-    models:
-      clean: true
-      pull: []
-      # - bge-m3
-      run: []
-      # - bge-m3
-
   persistentVolume:
     enabled: true
     storageClass: local-nvme
@@ -28,5 +19,5 @@ ollama:
       memory: 16Gi
 
   extraEnv:
-  - name: OLLAMA_CONTEXT_LENGTH
-    value: "8192"
+  - name: OLLAMA_KEEP_ALIVE
+    value: "-1"

@@ -1,5 +1,5 @@
 apiVersion: v2
-name: ollama-intel
+name: ollama-cpu
 version: 0.0.0
 
 dependencies:

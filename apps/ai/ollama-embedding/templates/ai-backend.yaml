@@ -1,9 +1,0 @@
-apiVersion: gateway.envoyproxy.io/v1alpha1
-kind: Backend
-metadata:
-  name: ollama-embedding
-spec:
-  endpoints:
-    - fqdn:
-        hostname: ollama-embedding.ollama-embedding.svc.cluster.local
-        port: 11434
