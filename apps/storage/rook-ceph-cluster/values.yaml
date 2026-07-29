@@ -10,10 +10,10 @@ extended-ceph-exporter:
   replicaCount: 2
 
   rgw:
-    adminEndpoint: "http://rook-ceph-rgw-ceph-objectstore:80"
+    adminEndpoint: http://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc:80
     credentials:
       existingSecret:
-        name: "rook-ceph-object-user-ceph-objectstore-extended-ceph-exporter"
+        name: rook-ceph-object-user-ceph-objectstore-extended-ceph-exporter
         accessKeyKey: AccessKey
         secretKeyKey: SecretKey
 
