@@ -1,9 +1,0 @@
-apiVersion: gateway.envoyproxy.io/v1alpha1
-kind: Backend
-metadata:
-  name: ollama-nvidia
-spec:
-  endpoints:
-    - fqdn:
-        hostname: ollama-nvidia.ollama-nvidia.svc.cluster.local
-        port: 11434
