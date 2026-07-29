@@ -29,10 +29,6 @@ data:
   PGVECTOR_CREATE_EXTENSION: "false"
 
   # --- RAG embeddings: offload to Ollama ---
-  RAG_EMBEDDING_ENGINE: ollama
-  RAG_OPENAI_API_BASE_URL: {{ $webui.embeddingOpenAIApiBaseUrl }}
-  RAG_OLLAMA_BASE_URL: {{ $webui.embeddingOllamaBaseUrl }}
-  RAG_EMBEDDING_MODEL: {{ $webui.embeddingModel }}
   ENABLE_RAG_LOCAL_WEB_FETCH: "true"
   RAG_SYSTEM_CONTEXT: "true"
   RAG_QUERY_PREFIX: ""
@@ -53,8 +49,8 @@ data:
   WEB_SEARCH_ENGINE: "searxng"
   SEARXNG_QUERY_URL: {{ $webui.searxngQueryUrl }}
   WEB_LOADER_ENGINE: "playwright"
-  WEB_SEARCH_RESULT_COUNT: "10"
-  WEB_LOADER_CONCURRENT_REQUESTS: "10"
+  WEB_SEARCH_RESULT_COUNT: "3"
+  WEB_LOADER_CONCURRENT_REQUESTS: "3"
 
   # --- Offline mode / model-download lockdown ---
   # Safe alongside the above: OFFLINE_MODE only blocks HuggingFace Hub downloads

@@ -18,14 +18,7 @@ open-webui:
 
   ollamaUrls:
     - http://ollama-nvidia.ollama-nvidia.svc.cluster.local:11434
-    - http://ollama-embedding.ollama-embedding.svc.cluster.local:11434
-  embeddingOllamaBaseUrl: http://ollama-embedding.ollama-embedding.svc.cluster.local:11434
-  # Route chat completions through the local Envoy AI Gateway
-  enableOpenaiApi: false
-  # openaiApiKey: ""
-  # openaiBaseApiUrl: http://chat.envoy-ai-gateway.svc.cluster.local/v1
-  # embeddingOpenAIApiBaseUrl: http://embed.envoy-ai-gateway.svc.cluster.local/v1
-  embeddingModel: bge-m3
+    - http://ollama-cpu.ollama-cpu.svc.cluster.local:11434
   searxngQueryUrl: http://searxng.searxng.svc.cluster.local:8080/search?q=<query>
 
   extraEnvVars:
