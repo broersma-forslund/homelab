@@ -6,3 +6,6 @@ dependencies:
   - name: rook-ceph-cluster
     version: v1.20.3
     repository: https://charts.rook.io/release
+  - name: extended-ceph-exporter
+    version: 1.0.1
+    repository: oci://ghcr.io/florisfeddema/charts

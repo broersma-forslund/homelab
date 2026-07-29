@@ -5,3 +5,29 @@ cephDashboardSSO:
     image:
       repository: alpine/kubectl
       tag: 1.36.3
+
+extended-ceph-exporter:
+  replicaCount: 2
+
+  rgw:
+    adminEndpoint: "http://rook-ceph-rgw-ceph-objectstore:80"
+    credentials:
+      existingSecret:
+        name: "rook-ceph-object-user-ceph-objectstore-extended-ceph-exporter"
+        accessKeyKey: AccessKey
+        secretKeyKey: SecretKey
+
+  serviceMonitor:
+    enabled: true
+
+  grafanaDashboard:
+    enabled: true
+
+  rook:
+    clusterNamespace: rook-ceph
+    objectStoreUser:  
+      enabled: true
+      name: extended-ceph-exporter
+      store: ceph-objectstore
+      displayName: extended-ceph-exporter
+      secretName: extended-ceph-exporter-secret
