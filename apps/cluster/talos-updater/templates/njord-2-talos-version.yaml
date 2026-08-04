@@ -6,7 +6,7 @@ spec:
   parallelism: 2
   talos:
     # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
-    version: v1.13.3
+    version: v1.13.8
   nodeSelector:
     matchLabels:
       topology.kubernetes.io/zone: '2'
