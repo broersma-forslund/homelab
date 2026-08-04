@@ -2,6 +2,8 @@ apps:
   cluster:
     coredns:
       deploy: true
+    talos-updater:
+      deploy: true
     talos-cloud-controller-manager:
       deploy: true
       namespace: kube-system
