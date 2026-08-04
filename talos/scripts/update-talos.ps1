@@ -20,7 +20,7 @@ function Update-Node ($NodeName) {
 
     if(-not $UpdateImage) {
         $nodeSchematic = $node.metadata.annotations.'extensions.talos.dev/schematic'
-        $updateImage = "factory.talos.dev/installer/$($nodeSchematic):v$($Version)"
+        $updateImage = "factory.talos.dev/metal-installer/$($nodeSchematic):v$($Version)"
     } else {
         $updateImage = $UpdateImage
     }
