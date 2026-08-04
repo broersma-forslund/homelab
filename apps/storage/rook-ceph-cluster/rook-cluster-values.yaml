@@ -43,17 +43,19 @@ rook-ceph-cluster:
           enabled: true
       
     cephConfig:
+      mon:
+        mon_data_avail_warn: '10'
+      mgr:
+        mgr/dashboard/standby_behaviour: 'error'
+        mgr/dashboard/FEATURE_TOGGLE_NFS: 'false'
+        mgr/dashboard/FEATURE_TOGGLE_ISCSI: 'false'
+        mgr/dashboard/FEATURE_TOGGLE_MIRRORING: 'false'
       osd:
         osd_mclock_profile: "high_recovery_ops"
         osd_op_complaint_time: "60"
         osd_op_log_threshold: "60"
         bluestore_slow_ops_warn_lifetime: '0'
         bluestore_slow_ops_warn_threshold: '0'
-      mgr:
-        mgr/dashboard/standby_behaviour: 'error'
-        mgr/dashboard/FEATURE_TOGGLE_NFS: 'false'
-        mgr/dashboard/FEATURE_TOGGLE_ISCSI: 'false'
-        mgr/dashboard/FEATURE_TOGGLE_MIRRORING: 'false'
       "class:nvme":
         bdev_enable_discard: 'true'
         bdev_async_discard_threads: '1'
@@ -62,11 +64,6 @@ rook-ceph-cluster:
         bdev_async_discard_threads: '1'
       "class:hdd":
         bdev_enable_discard: 'false'
-
-    healthCheck:
-      muteHealthWarning:
-        MON_DISK_LOW:
-          policy: mute
 
     dashboard:
       ssl: false
