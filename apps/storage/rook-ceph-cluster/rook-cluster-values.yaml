@@ -63,6 +63,11 @@ rook-ceph-cluster:
       "class:hdd":
         bdev_enable_discard: 'false'
 
+    healthCheck:
+      muteHealthWarning:
+        MON_DISK_LOW:
+          policy: mute
+
     dashboard:
       ssl: false
       prometheusEndpoint: http://kube-prometheus-stack-prometheus.prometheus.svc:9090
