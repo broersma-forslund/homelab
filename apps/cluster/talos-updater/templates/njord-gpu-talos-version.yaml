@@ -1,0 +1,11 @@
+apiVersion: tuppr.home-operations.com/v1alpha1
+kind: TalosUpgrade
+metadata:
+  name: njord-gpu
+spec:
+  talos:
+    # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
+    version: v1.13.8
+  nodeSelector:
+    matchLabels:
+      node-role.kubernetes.io/gpu: ''
