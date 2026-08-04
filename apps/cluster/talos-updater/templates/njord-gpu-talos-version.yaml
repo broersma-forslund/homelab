@@ -3,9 +3,12 @@ kind: TalosUpgrade
 metadata:
   name: njord-gpu
 spec:
+  parallelism: 2
   talos:
     # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
     version: v1.13.8
   nodeSelector:
     matchLabels:
       node-role.kubernetes.io/gpu: ''
+  policy:
+    waitForVolumeDetach: true
