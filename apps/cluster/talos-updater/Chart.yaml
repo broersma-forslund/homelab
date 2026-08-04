@@ -1,0 +1,8 @@
+apiVersion: v2
+name: talos-updater
+version: 0.0.0
+
+dependencies:
+- name: tuppr 
+  version: 0.4.6
+  repository: oci://ghcr.io/home-operations/charts

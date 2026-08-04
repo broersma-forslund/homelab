@@ -4,5 +4,7 @@ machine:
       enabled: true
       allowedRoles:
         - os:reader
+        - os:admin
       allowedKubernetesNamespaces:
         - kube-system
+        - talos-updater 
