@@ -68,7 +68,7 @@ kube-prometheus-stack:
                     info:
                       labelsFromPath:
                         gatewayclass_name: [ spec, gatewayClassName ]
-                - name: "labels_info"
+                - name: "labels"
                   help: "Kubernetes labels converted to Prometheus labels."
                   each:
                     type: Info
@@ -146,7 +146,7 @@ kube-prometheus-stack:
                     info:
                       labelsFromPath:
                         controller_name: [ spec, controllerName ]
-                - name: "labels_info"
+                - name: "labels"
                   help: "Kubernetes labels converted to Prometheus labels."
                   each:
                     type: Info
@@ -197,7 +197,7 @@ kube-prometheus-stack:
                   - metadata
                   - namespace
               metrics:
-                - name: "labels_info"
+                - name: "labels"
                   help: "Kubernetes labels converted to Prometheus labels."
                   each:
                     type: Info
@@ -266,7 +266,7 @@ kube-prometheus-stack:
                   - metadata
                   - namespace
               metrics:
-                - name: "labels_info"
+                - name: "labels"
                   help: "Kubernetes labels converted to Prometheus labels."
                   each:
                     type: Info
@@ -325,7 +325,7 @@ kube-prometheus-stack:
             - groupVersionKind:
                 group: gateway.networking.k8s.io
                 kind: "TCPRoute"
-                version: "v1"
+                version: "v1alpha2"
               metricNamePrefix: gatewayapi_tcproute
               labelsFromPath:
                 name:
@@ -335,7 +335,7 @@ kube-prometheus-stack:
                   - metadata
                   - namespace
               metrics:
-                - name: "labels_info"
+                - name: "labels"
                   help: "Kubernetes labels converted to Prometheus labels."
                   each:
                     type: Info
@@ -396,7 +396,7 @@ kube-prometheus-stack:
                   - metadata
                   - namespace
               metrics:
-                - name: "labels_info"
+                - name: "labels"
                   help: "Kubernetes labels converted to Prometheus labels."
                   each:
                     type: Info
@@ -455,7 +455,7 @@ kube-prometheus-stack:
             - groupVersionKind:
                 group: gateway.networking.k8s.io
                 kind: "UDPRoute"
-                version: "v1"
+                version: "v1alpha2"
               metricNamePrefix: gatewayapi_udproute
               labelsFromPath:
                 name:
@@ -465,7 +465,7 @@ kube-prometheus-stack:
                   - metadata
                   - namespace
               metrics:
-                - name: "labels_info"
+                - name: "labels"
                   help: "Kubernetes labels converted to Prometheus labels."
                   each:
                     type: Info
@@ -526,7 +526,7 @@ kube-prometheus-stack:
                   - metadata
                   - namespace
               metrics:
-                - name: "labels_info"
+                - name: "labels"
                   help: "Kubernetes labels converted to Prometheus labels."
                   each:
                     type: Info
@@ -558,6 +558,77 @@ kube-prometheus-stack:
                         target_kind: [ "kind" ]
                         target_name: [ "name" ]
                         target_namespace: [ "namespace" ]
+            - groupVersionKind:
+                group: gateway.networking.k8s.io
+                kind: "ListenerSet"
+                version: "v1"
+              metricNamePrefix: gatewayapi_listenerset
+              labelsFromPath:
+                name:
+                  - metadata
+                  - name
+                namespace:
+                  - metadata
+                  - namespace
+              metrics:
+                - name: "labels"
+                  help: "Kubernetes labels converted to Prometheus labels."
+                  each:
+                    type: Info
+                    info:
+                      path: [ metadata ]
+                      labelsFromPath:
+                        "*": [ labels ]
+                - name: "created"
+                  help: "created timestamp"
+                  each:
+                    type: Gauge
+                    gauge:
+                      path: [ metadata, creationTimestamp ]
+                - name: "deleted"
+                  help: "deletion timestamp"
+                  each:
+                    type: Gauge
+                    gauge:
+                      path: [ metadata, deletionTimestamp ]
+                - name: "info"
+                  help: "ListenerSet information"
+                  each:
+                    type: Info
+                    info:
+                      labelsFromPath:
+                        parent_name: [ spec, parentRef, name ]
+                - name: "listener_info"
+                  help: "ListenerSet listener information"
+                  each:
+                    type: Info
+                    info:
+                      path: [ spec, listeners ]
+                      labelsFromPath:
+                        listener_name: [ "name" ]
+                        port: [ "port" ]
+                        protocol: [ "protocol" ]
+                        hostname: [ "hostname" ]
+                        tls_mode: [ "tls", "mode" ]
+                        allowed_routes_namespaces_from: [ "allowedRoutes", "namespaces", "from" ]
+                - name: "status"
+                  help: "status condition"
+                  each:
+                    type: Gauge
+                    gauge:
+                      path: [ status, conditions ]
+                      labelsFromPath:
+                        type: [ "type" ]
+                      valueFrom: [ "status" ]
+                - name: "status_listener_attached_routes"
+                  help: "Number of attached routes for a listener"
+                  each:
+                    type: Gauge
+                    gauge:
+                      path: [ status, listeners ]
+                      labelsFromPath:
+                        listener_name: [ "name" ]
+                      valueFrom: [ "attachedRoutes" ]
           ## Gateway API resources ##
     rbac:
       extraRules:
