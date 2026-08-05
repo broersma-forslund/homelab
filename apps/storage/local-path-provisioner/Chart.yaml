@@ -4,6 +4,6 @@ version: 0.0.0
 
 dependencies:
   - name: local-path-provisioner
-    version: 0.0.37
+    version: 0.0.38
     repository: https://charts.containeroo.ch
 
