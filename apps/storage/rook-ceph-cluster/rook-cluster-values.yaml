@@ -27,7 +27,7 @@ rook-ceph-cluster:
 
   cephImage:
     repository: quay.io/ceph/ceph
-    tag: v20.2.2
+    tag: v20.2.3
 
   cephClusterSpec:
     network:
