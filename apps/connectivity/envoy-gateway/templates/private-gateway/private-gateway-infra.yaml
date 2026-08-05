@@ -4,9 +4,18 @@ kind: EnvoyProxy
 metadata:
   name: private-gateway-infra
 spec:
+  telemetry:
+    accessLog:
+      settings:
+        - type: Route
+        - type: Listener
+  shutdown:
+    drainTimeout: 240s
   provider:
     type: Kubernetes
     kubernetes:
+      envoyPDB:
+        maxUnavailable: 1
       envoyDeployment:
         replicas: 2
         container:
@@ -16,6 +25,25 @@ spec:
               memory: 256Mi
             limits:
               memory: 1Gi
+        patch:
+          type: StrategicMerge
+          value:
+            spec:
+              template:
+                spec:
+                  # Run as nonroot
+                  volumes:
+                    - name: tmp
+                      emptyDir: {}
+                  containers:
+                    - name: envoy
+                      volumeMounts:
+                        - name: tmp
+                          mountPath: /tmp
+                    - name: shutdown-manager
+                      volumeMounts:
+                        - name: tmp
+                          mountPath: /tmp
       envoyService:
         annotations:
           'io.cilium/lb-ipam-ips': '{{ .Values.privateGateway.loadBalancerIP }}'
