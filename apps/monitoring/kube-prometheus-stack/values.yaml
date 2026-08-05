@@ -720,7 +720,7 @@ kube-prometheus-stack:
         client_id: $__file{/etc/secrets/auth_generic_oauth/client_id}
         client_secret: $__file{/etc/secrets/auth_generic_oauth/client_secret}
         allow_assign_grafana_admin: true
-        role_attribute_path: contains(groups[*], 'Grafana') && 'Admin' || contains(groups[*], 'Contributor') && 'Editor' || 'Viewer'
+        role_attribute_path: contains(groups[*], 'Administrators') && 'Admin' || contains(groups[*], 'Contributor') && 'Editor' || 'Viewer'
       server:
         domain: "https://grafana.mobrockers.com"
         root_url: "https://grafana.mobrockers.com"
