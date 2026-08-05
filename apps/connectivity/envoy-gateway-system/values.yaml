@@ -19,3 +19,20 @@ gateway-helm:
       logging:
         level:
           default: info # debug/info/error/warn
+
+gateway-addons-helm:
+  alloy:
+    enabled: false
+  loki:
+    enabled: false
+  tempo:
+    enabled: false
+  fluent-bit:
+    enabled: false
+  opentelemetry-collector:
+    enabled: false
+  grafana:
+    enabled: false
+  prometheus:
+    enabled: false
+  
