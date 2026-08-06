@@ -18,17 +18,19 @@ spec:
     spec:
       automountServiceAccountToken: false
       securityContext:
+        runAsUser: 1000
+        runAsGroup: 5000
         fsGroup: 5000
+        fsGroupChangePolicy: OnRootMismatch
       containers:
         - name: prowlarr
           image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
-          env:
-            - name: TZ
-              value: Europe/Amsterdam
-            - name: PUID
-              value: '1000'
-            - name: PGID
-              value: '5000'
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
           ports:
             - containerPort: 9696
               name: http
@@ -48,19 +50,6 @@ spec:
               port: http
             failureThreshold: 5
             periodSeconds: 10
-        - name: exportarr
-          image: '{{ .Values.metrics.image.repository }}:{{ .Values.metrics.image.tag }}'
-          args:
-            - prowlarr
-          env:
-            - name: PORT
-              value: "9707"
-            - name: URL
-              value: "http://localhost:9696"
-            - name: ENABLE_ADDITIONAL_METRICS
-              value: "true"
-            - name: CONFIG
-              value: /config/config.xml
           ports:
             - name: metrics
               containerPort: 9707
