@@ -1,7 +1,7 @@
 apiVersion: tuppr.home-operations.com/v1alpha1
 kind: TalosUpgrade
 metadata:
-  name: njord-gpu
+  name: njord-123
 spec:
   parallelism: 1
   talos:
@@ -9,6 +9,6 @@ spec:
     version: v1.13.8
   nodeSelector:
     matchLabels:
-      node-role.kubernetes.io/gpu: ''
+      topology.kubernetes.io/zone: 'njord-123'
   policy:
     waitForVolumeDetach: true
