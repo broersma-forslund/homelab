@@ -18,17 +18,19 @@ spec:
     spec:
       automountServiceAccountToken: false
       securityContext:
+        runAsUser: 1000
+        runAsGroup: 5000
         fsGroup: 5000
+        fsGroupChangePolicy: OnRootMismatch
       containers:
       - name: sonarr
         image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
-        env:
-        - name: TZ
-          value: Europe/Amsterdam
-        - name: PUID
-          value: '1000'
-        - name: PGID
-          value: '5000'
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          readOnlyRootFilesystem: true
         ports:
         - containerPort: 8989
           name: http
@@ -50,26 +52,6 @@ spec:
             port: http
           failureThreshold: 5
           periodSeconds: 10
-      - name: exportarr
-        image: '{{ .Values.metrics.image.repository }}:{{ .Values.metrics.image.tag }}'
-        args:
-        - sonarr
-        env:
-        - name: PORT
-          value: "9707"
-        - name: URL
-          value: "http://localhost:8989"
-        - name: ENABLE_ADDITIONAL_METRICS
-          value: "true"
-        - name: CONFIG
-          value: /config/config.xml
-        ports:
-        - name: metrics
-          containerPort: 9707
-        volumeMounts:
-        - name: data
-          mountPath: /config
-          readOnly: true
       volumes:
       - name: data
         persistentVolumeClaim:
