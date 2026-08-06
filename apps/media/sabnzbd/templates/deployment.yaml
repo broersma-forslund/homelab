@@ -35,12 +35,12 @@ spec:
       containers:
       - name: sabnzbd
         image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
-        securityContext:
-          allowPrivilegeEscalation: false
-          capabilities:
-            drop:
-              - ALL
-          readOnlyRootFilesystem: true
+        # securityContext:
+        #   allowPrivilegeEscalation: false
+        #   capabilities:
+        #     drop:
+        #       - ALL
+        #   readOnlyRootFilesystem: true
         resources:
           requests:
             cpu: 50m
