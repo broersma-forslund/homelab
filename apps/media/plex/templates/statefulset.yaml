@@ -15,9 +15,21 @@ spec:
         app.kubernetes.io/instance: plex
         app.kubernetes.io/name: plex
     spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 5000
+        fsGroup: 5000
+        fsGroupChangePolicy: OnRootMismatch
       containers:
       - name: plex
         image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          readOnlyRootFilesystem: true
         ports:
         - name: http
           containerPort: 32400
@@ -27,15 +39,6 @@ spec:
             memory: 1Gi
           claims:
           - name: i915
-        env:
-        - name: TZ
-          value: Europe/Amsterdam
-        - name: PUID
-          value: '1000'
-        - name: PGID
-          value: '5000'
-        - name: VERSION
-          value: docker
         volumeMounts:
         - name: pms-transcode
           mountPath: /transcode
@@ -45,6 +48,12 @@ spec:
           mountPath: /media
       - name: tautulli
         image: '{{ .Values.tautulli.image.repository }}:{{ .Values.tautulli.image.tag }}'
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          readOnlyRootFilesystem: true
         ports:
         - name: tautulli-http
           containerPort: 8181
@@ -52,13 +61,6 @@ spec:
           requests:
             cpu: 10m
             memory: 100Mi
-        env:
-        - name: TZ
-          value: Europe/Amsterdam
-        - name: PUID
-          value: '1000'
-        - name: PGID
-          value: '5000'
         volumeMounts:
         - name: tautulli-data
           mountPath: /config 
