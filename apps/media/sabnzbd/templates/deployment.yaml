@@ -35,17 +35,12 @@ spec:
       containers:
       - name: sabnzbd
         image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
-        env:
-        - name: PUID
-          value: '1000'
-        - name: PGID
-          value: '5000'
-        # securityContext:
-        #   allowPrivilegeEscalation: false
-        #   capabilities:
-        #     drop:
-        #       - ALL
-        #   readOnlyRootFilesystem: true
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          readOnlyRootFilesystem: true
         resources:
           requests:
             cpu: 50m
@@ -71,13 +66,6 @@ spec:
             port: http
           failureThreshold: 5
           periodSeconds: 10
-        ports:
-        - name: metrics
-          containerPort: 9707
-        volumeMounts:
-        - name: data
-          mountPath: /config
-          readOnly: true
       volumes:
       - name: data
         persistentVolumeClaim:
