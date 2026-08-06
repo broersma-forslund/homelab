@@ -35,6 +35,11 @@ spec:
       containers:
       - name: sabnzbd
         image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
+        env:
+        - name: PUID
+          value: '1000'
+        - name: PGID
+          value: '5000'
         # securityContext:
         #   allowPrivilegeEscalation: false
         #   capabilities:

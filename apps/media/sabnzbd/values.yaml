@@ -1,5 +1,6 @@
 image:
-  repository: ghcr.io/home-operations/sabnzbd
+  # repository: ghcr.io/home-operations/sabnzbd
+  repository: ghcr.io/linuxserver/sabnzbd
   tag: 5.0.4
 
 metrics:
