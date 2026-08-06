@@ -50,13 +50,6 @@ spec:
               port: http
             failureThreshold: 5
             periodSeconds: 10
-          ports:
-            - name: metrics
-              containerPort: 9707
-          volumeMounts:
-            - name: data
-              mountPath: /config
-              readOnly: true
       volumes:
         - name: data
           persistentVolumeClaim:
