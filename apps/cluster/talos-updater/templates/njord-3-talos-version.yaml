@@ -3,7 +3,7 @@ kind: TalosUpgrade
 metadata:
   name: njord-3
 spec:
-  parallelism: 2
+  parallelism: 1
   talos:
     # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
     version: v1.13.8
