@@ -2,6 +2,8 @@ machine:
   install:
     image: factory.talos.dev/metal-installer/e68b75b1d1128dd0b0b6ca434d44a2cdfd8ca0366d5f2bca73e07ee058085871:v1.13.6
     disk: /dev/disk/by-id/nvme-eui.0025384441a22f28
+  nodeLabels:
+    topology.kubernetes.io/zone: 'njord-123'
   kernel:
     modules:
       - name: nvidia
