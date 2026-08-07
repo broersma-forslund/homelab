@@ -50,6 +50,8 @@ spec:
           name: http
           protocol: TCP
         volumeMounts:
+        - name: tmp
+          mountPath: /tmp
         - name: data
           mountPath: /config
         - name: media
@@ -67,6 +69,8 @@ spec:
           failureThreshold: 5
           periodSeconds: 10
       volumes:
+      - name: tmp
+        emptyDir: {}
       - name: data
         persistentVolumeClaim:
           claimName: sabnzbd-data
