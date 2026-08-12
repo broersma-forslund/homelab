@@ -4,5 +4,5 @@ version: 0.0.0
 
 dependencies:
   - name: searxng
-    version: 0.1.9
+    version: 0.1.11
     repository: https://techpipe-io.github.io/searxng-helm-chart
