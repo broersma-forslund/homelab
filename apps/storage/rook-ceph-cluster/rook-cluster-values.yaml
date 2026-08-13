@@ -123,7 +123,7 @@ rook-ceph-cluster:
       - name: rgw
         enabled: true
       - name: rook
-        enabled: true
+        enabled: false
 
     storage:
       useAllNodes: false
