@@ -1,70 +1,65 @@
-# Welcome to Our Kubernetes Configuration Repository HomeLab
+# Kubernetes Homelab
 
 ## Overview
 
-This repository contains all the configuration files and resources for our Kubernetes cluster using Talos Kubernetes OS. We've integrated tools like ArgoCD and Kubeseal to manage and secure our configurations effectively.
+This repository contains the Kubernetes and Talos configuration for the homelab cluster. Applications are deployed with Argo CD and secrets are managed with Sealed Secrets.
 
-## Cluster Details
+## Talos machine configurations
 
-- **Operating System**: Talos Kubernetes OS
-- **Apps**: See /apps
-- **Tools Used**:
-  - talosctl
-  - kubectl
-  - kubeseal
+Machine configurations are generated from the patches in `talos/patches/` and the node-specific files in `talos/nodes/`. Use the repository scripts rather than running `talosctl gen config` manually.
 
-### Create talos nodes
+The scripts require PowerShell 7, `kubectl`, and `talosctl`. The current `kubectl` context must point to the cluster for normal operation. If the `powershell-yaml` module is missing, the scripts install it for the current user.
 
-Boot machine with custom talos ISO and perform the below steps
+### Generate a configuration
 
-Control plane nodes:
+Generate a configuration for one node:
 
-```
-export TALOSCONFIG=/path/to/talos/config
-CONTROLPLANE=0
-NODEIP=10.0.10.111
-talosctl gen config talos-broersma https://$NODEIP:6443             \
-    --output rendered/control-plane-$CONTROLPLANE.yaml                 \
-    --output-types controlplane                                         \
-    --with-cluster-discovery=false                                      \
-    --with-secrets secrets.yaml                                         \
-    --config-patch @talos/patches/cluster-name.yaml                     \
-    --config-patch @talos/patches/cluster-endpoint.yaml                 \
-    --config-patch @talos/patches/disable-cni-and-kube-proxy.yaml       \
-    --config-patch @talos/patches/enable-kubeprism.yaml                 \
-    --config-patch @talos/nodes/control-plane-$CONTROLPLANE.yaml       \
-    --config-patch @talos/nodes/control-plane-all.yaml
+```powershell
+pwsh -File ./talos/scripts/generate-machineconfig.ps1 -NodeName njord-1-cp1
 ```
 
-`talosctl apply-config --nodes $NODEIP --file rendered/control-plane-$CONTROLPLANE.yaml`
+The generated file is written to `talos/rendered/<NodeName>.yaml`. Pass `-NodeType controlplane` or `-NodeType worker` when the type cannot be inferred from the cluster.
 
-```
-export TALOSCONFIG=/path/to/talos/config
-WORKER=0
-NODEIP=10.0.10.12
-talosctl gen config talos-broersma https://$NODEIP:6443             \
-    --output rendered/worker-$WORKER.yaml                               \
-    --output-types worker                                               \
-    --with-cluster-discovery=false                                      \
-    --with-secrets secrets.yaml                                         \
-    --config-patch @talos/patches/cluster-name.yaml                     \
-    --config-patch @talos/patches/cluster-endpoint.yaml                 \
-    --config-patch @talos/patches/disable-cni-and-kube-proxy.yaml       \
-    --config-patch @talos/patches/enable-kubeprism.yaml                 \
-    --config-patch @talos/nodes/worker-$WORKER.yaml
+To generate configurations for every node, use `ALL`:
+
+```powershell
+pwsh -File ./talos/scripts/generate-machineconfig.ps1 -NodeName ALL
 ```
 
-`talosctl apply-config --nodes $NODEIP --file rendered/worker-$WORKER.yaml`
+### Apply a configuration
 
-### Upgrading talos
+Add `-Apply` to generate and apply the configuration:
 
-To update talos create a custom image with the [talos image factory](https://factory.talos.dev/).
-
-Select per host the required talos packages. You must also update new nodes immediately to install required packages.
-
+```powershell
+pwsh -File ./talos/scripts/generate-machineconfig.ps1 -NodeName njord-1-cp1 -Apply
 ```
-export TALOSCONFIG=/path/to/talos/config
-NODEIP=10.0.10.12
-TALOSIMAGE=factory.talos.dev/installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515:v1.6.4
-talosctl upgrade --nodes $NODEIP --image $TALOSIMAGE
+
+For a node that is not yet part of the cluster, provide its initial IP and use `-Init`:
+
+```powershell
+pwsh -File ./talos/scripts/generate-machineconfig.ps1 `
+  -NodeName njord-1-cp1 `
+  -Init `
+  -InitialNodeIp 10.0.10.111 `
+  -Apply
+```
+
+Use `-Dev` to render a configuration to standard output with the development secrets. It does not apply configurations.
+
+## Upgrade Talos
+
+Use the upgrade script for one node or every node. Without `-UpdateImage`, it derives the image from each node's Talos schematic annotation.
+
+```powershell
+pwsh -File ./talos/scripts/update-talos.ps1 -NodeName njord-1-cp1 -Version <target-version>
+pwsh -File ./talos/scripts/update-talos.ps1 -NodeName ALL -Version <target-version>
+```
+
+To use a specific image, pass `-UpdateImage`:
+
+```powershell
+pwsh -File ./talos/scripts/update-talos.ps1 `
+  -NodeName njord-1-cp1 `
+  -Version <target-version> `
+  -UpdateImage factory.talos.dev/metal-installer/<schematic>:v<target-version>
 ```
