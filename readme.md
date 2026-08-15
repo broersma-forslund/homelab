@@ -4,6 +4,12 @@
 
 This repository contains the Kubernetes and Talos configuration for the homelab cluster. Applications are deployed with Argo CD and secrets are managed with Sealed Secrets.
 
+## Agent-safe workflow
+
+Agents may prepare and validate repository changes, but must not apply Kubernetes or Talos changes, upgrade Talos, sync Argo CD, or use live-cluster credentials. Use `AGENTS.md` and the path-specific instructions under `.github/instructions/` for the complete workflow.
+
+Agents must never receive credentials or run `kubeseal`. They may prepare `SealedSecret` structure, placeholders, and handoff notes. A human operator must enter credentials and perform the final sealing outside the devcontainer. `talos/devsecrets.yaml` is synthetic development material only.
+
 ## Talos machine configurations
 
 Machine configurations are generated from the patches in `talos/patches/` and the node-specific files in `talos/nodes/`. Use the repository scripts rather than running `talosctl gen config` manually.
@@ -28,6 +34,8 @@ pwsh -File ./talos/scripts/generate-machineconfig.ps1 -NodeName ALL
 
 ### Apply a configuration
 
+The following is a human-operated procedure. Agents must not run it.
+
 Add `-Apply` to generate and apply the configuration:
 
 ```powershell
@@ -47,6 +55,8 @@ pwsh -File ./talos/scripts/generate-machineconfig.ps1 `
 Use `-Dev` to render a configuration to standard output with the development secrets. It does not apply configurations.
 
 ## Upgrade Talos
+
+The following is a human-operated procedure. Agents must not run it.
 
 Use the upgrade script for one node or every node. Without `-UpdateImage`, it derives the image from each node's Talos schematic annotation.
 
