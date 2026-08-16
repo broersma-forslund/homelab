@@ -3,7 +3,10 @@ llmkube:
     install: true
     keep: false
 
-    replicaCount: 2
+  controllerManager:
+    replicaCount: 1
+    leaderElection:
+      enabled: false
 
   modelCache:
     enabled: true
