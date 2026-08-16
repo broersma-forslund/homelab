@@ -3,16 +3,18 @@ kind: InferenceService
 metadata:
   name: cpu-task
 spec:
-  modelRef: qwen3-0.6b
-  runtime: llamacpp
-  mode: chat
-  contextSize: 4096
-  parallelSlots: 1
   nodeSelector:
     kubernetes.io/hostname: njord-gpu1
   tolerations:
     - key: node-role.kubernetes.io/gpu
       operator: Exists
+  modelRef: qwen3-0.6b
+  runtime: llamacpp
+  mode: chat
+  contextSize: 4096
+  batchSize: 4096
+  uBatchSize: 4096
+  parallelSlots: 1
   extraArgs:
     - "--alias"
     - "qwen3-0.6b"
