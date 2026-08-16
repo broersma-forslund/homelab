@@ -3,6 +3,7 @@ kind: InferenceService
 metadata:
   name: nvidia-chat
 spec:
+  image: ghcr.io/ggml-org/llama.cpp:server-cuda13-b10450
   modelRef: qwen3.5-9b
   runtime: llamacpp
   mode: chat
