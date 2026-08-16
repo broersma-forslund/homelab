@@ -8,7 +8,8 @@ spec:
   image: {{ .Values.llamacpp.intel.image.repository }}:{{ .Values.llamacpp.intel.image.tag }}
   mode: chat
   contextSize: 4096
-  parallelSlots: 1
+  jinja: true
+  parallelSlots: 2
   tolerations:
     - key: node-role.kubernetes.io/gpu
       operator: Exists

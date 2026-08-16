@@ -7,8 +7,12 @@ spec:
   runtime: llamacpp
   mode: chat
   contextSize: 16384
-  flashAttention: true
+  jinja: true
   parallelSlots: 2
+  cacheTypeK: q8_0
+  cacheTypeV: q8_0
+  flashAttention: true
+  speculativeDecoding: false
   tolerations:
     - key: node-role.kubernetes.io/gpu
       operator: Exists

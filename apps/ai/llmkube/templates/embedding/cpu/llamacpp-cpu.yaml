@@ -6,6 +6,7 @@ spec:
   modelRef: bge-m3
   runtime: llamacpp
   mode: embedding
+  parallelSlots: 1
   nodeSelector:
     kubernetes.io/hostname: njord-gpu1
   tolerations:
