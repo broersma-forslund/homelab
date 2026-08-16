@@ -6,16 +6,8 @@ spec:
   modelRef: bge-m3
   runtime: llamacpp
   mode: embedding
-  replicas: 1
-  endpoint:
-    type: ClusterIP
-    port: 8080
-    path: /v1/embeddings
   nodeSelector:
     kubernetes.io/hostname: njord-gpu1
   tolerations:
     - key: node-role.kubernetes.io/gpu
       operator: Exists
-  resources:
-    cpu: "4"
-    memory: 8Gi
