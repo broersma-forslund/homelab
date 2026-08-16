@@ -4,7 +4,9 @@ metadata:
   name: qwen2-1-5b
 spec:
   format: gguf
-  source: https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF/resolve/91cad51170dc346986eccefdc2dd33a9da36ead9/qwen2.5-1.5b-instruct-q4_k_m.gguf
+  source: hf://Qwen/Qwen2.5-1.5B-Instruct-GGUF
+  files:
+    - Qwen2.5-1.5B-Instruct-Q4_K_M.gguf
   quantization: Q4_K_M
   hardware:
     accelerator: intel

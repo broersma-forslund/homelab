@@ -4,7 +4,9 @@ metadata:
   name: bge-m3
 spec:
   format: gguf
-  source: https://huggingface.co/ggml-org/bge-m3-Q8_0-GGUF/resolve/9eba04c5d75ba5a1595e45de734d36bef4e5cb98/bge-m3-q8_0.gguf
+  source: hf://ggml-org/bge-m3-Q8_0-GGUF
+  files:
+    - bge-m3-Q8_0.gguf
   quantization: Q8_0
   hardware:
     accelerator: cpu

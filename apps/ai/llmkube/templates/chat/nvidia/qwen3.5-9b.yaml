@@ -4,7 +4,7 @@ metadata:
   name: qwen3.5-9b
 spec:
   format: gguf
-  source: https://huggingface.co/unsloth/Qwen3.5-9B-GGUF
+  source: hf://unsloth/Qwen3.5-9B-GGUF
   files:
     - Qwen3.5-9B-Q8_0.gguf
   mmproj: mmproj-BF16.gguf
