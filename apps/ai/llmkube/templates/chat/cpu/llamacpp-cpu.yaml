@@ -12,6 +12,7 @@ spec:
   runtime: llamacpp
   mode: chat
   parallelSlots: 1
+  contextSize: 4096
   extraArgs:
     - "--alias"
     - "qwen3-0.6b"

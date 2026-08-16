@@ -9,7 +9,7 @@ spec:
   mode: chat
   contextSize: 4096
   jinja: true
-  parallelSlots: 2
+  parallelSlots: 1
   tolerations:
     - key: node-role.kubernetes.io/gpu
       operator: Exists
