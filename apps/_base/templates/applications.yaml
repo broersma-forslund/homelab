@@ -19,9 +19,14 @@ spec:
     repoURL: https://github.com/broersma-forslund/homelab.git
     targetRevision: HEAD
     path: {{ $app.path | default (printf "apps/%s/%s" $group $name) }}
-    {{- with $app.valueFiles }}
+    {{- if or $app.valueFiles $app.skipSchemaValidation }}
     helm:
-      valueFiles: {{ . | toYaml | nindent 8 }}
+      {{- if $app.valueFiles }}
+      valueFiles: {{ $app.valueFiles | toYaml | nindent 8 }}
+      {{- end }}
+      {{- if $app.skipSchemaValidation }}
+      skipSchemaValidation: true
+      {{- end }}
     {{- end }}
   destination:
     name: in-cluster

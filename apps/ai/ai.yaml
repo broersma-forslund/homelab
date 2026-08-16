@@ -1,8 +1,7 @@
 apps:
   ai:
-    ollama-cpu:
+    llmkube:
       deploy: true
-    ollama-nvidia:
-      deploy: true
+      skipSchemaValidation: true
     open-webui:
       deploy: true
