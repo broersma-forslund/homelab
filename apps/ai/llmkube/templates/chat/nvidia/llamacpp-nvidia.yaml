@@ -12,7 +12,10 @@ spec:
   cacheTypeK: q8_0
   cacheTypeV: q8_0
   flashAttention: true
-  speculativeDecoding: false
+  speculativeDecoding:
+    type: disabled # mtp
+    draftmodelRef: ""
+    nDraftMax: 2
   tolerations:
     - key: node-role.kubernetes.io/gpu
       operator: Exists
