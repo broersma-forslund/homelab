@@ -14,8 +14,6 @@ spec:
   flashAttention: true
   speculativeDecoding:
     type: disabled # mtp
-    draftmodelRef: ""
-    nDraftMax: 2
   tolerations:
     - key: node-role.kubernetes.io/gpu
       operator: Exists
