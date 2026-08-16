@@ -10,9 +10,7 @@ spec:
     accelerator: cuda
     gpu:
       enabled: true
-      count: 1
       vendor: nvidia
-      memory: 12Gi
       resourceClaims:
         - name: nvidia
           resourceClaimTemplateName: nvidia

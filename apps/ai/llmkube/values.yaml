@@ -29,9 +29,3 @@ llmkube:
   grafana:
     dashboards:
       enabled: true
-
-llamacpp:
-  intel:
-    image:
-      repository: ghcr.io/ggml-org/llama.cpp
-      tag: server-intel-b10450

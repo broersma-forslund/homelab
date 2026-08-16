@@ -1,18 +1,13 @@
-# apiVersion: inference.llmkube.dev/v1alpha1
-# kind: InferenceService
-# metadata:
-#   name: intel-chat
-# spec:
-#   modelRef: qwen2-1-5b
-#   runtime: llamacpp
-#   image: {{ .Values.llamacpp.intel.image.repository }}:{{ .Values.llamacpp.intel.image.tag }}
-#   mode: chat
-#   contextSize: 4096
-#   parallelSlots: 1
-#   tolerations:
-#     - key: node-role.kubernetes.io/gpu
-#       operator: Exists
-#   resources:
-#     cpu: "4"
-#     memory: 8Gi
-#     gpu: 1
+apiVersion: inference.llmkube.dev/v1alpha1
+kind: InferenceService
+metadata:
+  name: intel-chat
+spec:
+  modelRef: qwen2-1-5b
+  runtime: llamacpp
+  mode: chat
+  contextSize: 4096
+  parallelSlots: 1
+  tolerations:
+    - key: node-role.kubernetes.io/gpu
+      operator: Exists
