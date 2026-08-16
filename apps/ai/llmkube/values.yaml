@@ -15,7 +15,7 @@ llmkube:
     accessMode: ReadWriteOnce
 
   networkPolicies:
-    enabled: true
+    enabled: false
 
   metrics:
     enabled: true
