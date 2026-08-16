@@ -5,6 +5,7 @@ metadata:
 spec:
   modelRef: qwen2-1-5b
   runtime: llamacpp
+  image: {{ .Values.llamacpp.intel.image.repository }}:{{ .Values.llamacpp.intel.image.tag }}
   mode: chat
   contextSize: 4096
   parallelSlots: 1
