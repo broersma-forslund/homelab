@@ -18,3 +18,4 @@ spec:
   extraArgs:
     - "--alias"
     - "bge-m3"
+    - "--kv-unified"

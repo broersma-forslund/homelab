@@ -16,3 +16,4 @@ spec:
   extraArgs:
     - "--alias"
     - "qwen2-1-5b"
+    - "--kv-unified"
