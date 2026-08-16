@@ -3,6 +3,8 @@ llmkube:
     install: true
     keep: false
 
+    replicaCount: 2
+
   modelCache:
     enabled: true
     size: 100Gi
