@@ -13,3 +13,6 @@ spec:
   tolerations:
     - key: node-role.kubernetes.io/gpu
       operator: Exists
+  extraArgs:
+    - "--alias"
+    - "qwen2-1-5b"
