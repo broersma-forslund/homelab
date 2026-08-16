@@ -4,6 +4,20 @@
 
 This repository contains the Kubernetes and Talos configuration for the homelab cluster. Applications are deployed with Argo CD and secrets are managed with Sealed Secrets.
 
+## Homelab hardware
+
+The cluster is organized as three replicated zones, with one control-plane node and one application node in each zone. Each zone contains a Dell OptiPlex 3060 with an Intel i5-8500T, 32 GiB DDR4 memory, and a 2 TB NVMe drive:
+
+| Zone | Control plane | Application node |
+| --- | --- | --- |
+| `njord-1` | `njord-1-cp1` | `njord-1-app1` |
+| `njord-2` | `njord-2-cp1` | `njord-2-app1` |
+| `njord-3` | `njord-3-cp1` | `njord-3-app1` |
+
+There is also a dedicated GPU node, `njord-gpu1`, outside those zone pairs. It has an NVIDIA RTX 5060 Ti with 16 GiB of VRAM, two 20 TB HDDs, and a local NVMe volume. Its Talos configuration loads the NVIDIA kernel modules and provisions the NVMe storage as a `local-nvme` user volume with at least 100 GiB. The node is tainted for GPU workloads.
+
+The node-specific Talos configurations are the authoritative source for node labels, disks, networking, kernel modules, and storage details. Hardware specifications not represented there should be treated as documented operational context rather than generated configuration.
+
 ## Agent-safe workflow
 
 Agents may prepare and validate repository changes, but must not apply Kubernetes or Talos changes, upgrade Talos, sync Argo CD, or use live-cluster credentials. Use `AGENTS.md` and the path-specific instructions under `.github/instructions/` for the complete workflow.

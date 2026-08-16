@@ -11,3 +11,9 @@ description: "Helm and Kubernetes workflow for this homelab repository"
 - For changes to `apps/_base/` or category wiring, render the parent chart and inspect generated Argo `Application` objects, paths, namespaces, sync options, pruning, and self-healing behavior.
 - Treat CRD-dependent resources as requiring inspection of the owning chart and dependency versions. Do not claim cluster compatibility from template rendering alone.
 - Preserve pinned image, chart, and dependency versions. Avoid introducing `latest` tags or unbounded ranges.
+
+## Local Chart Conventions
+
+- Namespace is supplied by Argo CD and Helm. Do not add `metadata.namespace` to namespaced resources in application templates unless a resource explicitly targets another namespace.
+- Keep templates small and organized by purpose, and put one Kubernetes resource type per file. Use subdirectories when they make the ownership or purpose clear.
+- Use filenames that describe the resource and its purpose or implementation, so a reader can understand a template's contents without opening a large aggregate file.
