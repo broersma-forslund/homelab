@@ -1,0 +1,32 @@
+llmkube:
+  crds:
+    install: true
+    keep: false
+
+  modelCache:
+    enabled: true
+    size: 100Gi
+    storageClass: local-nvme
+    accessMode: ReadWriteOnce
+
+  networkPolicies:
+    enabled: true
+
+  metrics:
+    enabled: true
+
+  prometheus:
+    serviceMonitor:
+      enabled: true
+    inferencePodMonitor:
+      enabled: true
+
+  grafana:
+    dashboards:
+      enabled: true
+
+llamacpp:
+  intel:
+    image:
+      repository: ghcr.io/ggml-org/llama.cpp
+      tag: server-intel-b10450

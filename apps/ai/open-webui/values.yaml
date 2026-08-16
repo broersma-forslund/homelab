@@ -16,9 +16,14 @@ open-webui:
   tika:
     enabled: true
 
-  ollamaUrls:
-    - http://ollama-nvidia.ollama-nvidia.svc.cluster.local:11434
-    - http://ollama-cpu.ollama-cpu.svc.cluster.local:11434
+  openaiBaseApiUrls:
+    - http://nvidia-chat.llmkube.svc.cluster.local:8080/v1
+    - http://intel-chat.llmkube.svc.cluster.local:8080/v1
+    - http://cpu-task.llmkube.svc.cluster.local:8080/v1
+  openaiApiKeys:
+    - ""
+    - ""
+    - ""
   searxngQueryUrl: http://searxng.searxng.svc.cluster.local:8080/search?q=<query>
 
   extraEnvVars:
@@ -69,7 +74,7 @@ open-webui:
       timeouts:
         request: 600s
 
-  # Disable built-in ollama, open-webui pipelines, and terminals.
+  # Disable built-in Ollama, Open WebUI pipelines, and terminals.
   ollama:
     enabled: false
   pipelines:

@@ -1,0 +1,18 @@
+apiVersion: inference.llmkube.dev/v1alpha1
+kind: Model
+metadata:
+  name: qwen3.5-9b
+spec:
+  format: gguf
+  source: https://huggingface.co/unsloth/Qwen3.5-9B-GGUF/resolve/main/Qwen3.5-9B-Q8_0.gguf
+  quantization: Q8_0
+  hardware:
+    accelerator: cuda
+    gpu:
+      enabled: true
+      count: 1
+      vendor: nvidia
+      memory: 12Gi
+      resourceClaims:
+        - name: nvidia
+          resourceClaimTemplateName: nvidia

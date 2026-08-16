@@ -1,0 +1,14 @@
+apiVersion: inference.llmkube.dev/v1alpha1
+kind: InferenceService
+metadata:
+  name: nvidia-chat
+spec:
+  modelRef: qwen3.5-9b
+  runtime: llamacpp
+  mode: chat
+  contextSize: 16384
+  flashAttention: true
+  parallelSlots: 2
+  tolerations:
+    - key: node-role.kubernetes.io/gpu
+      operator: Exists
