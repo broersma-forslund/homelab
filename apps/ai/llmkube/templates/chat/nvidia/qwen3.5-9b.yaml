@@ -5,7 +5,7 @@ metadata:
 spec:
   format: gguf
   source: https://huggingface.co/unsloth/Qwen3.5-9B-GGUF/resolve/main/Qwen3.5-9B-Q8_0.gguf
-  quantization: Q4_K_M
+  quantization: Q8_0
   hardware:
     accelerator: cuda
     gpu:

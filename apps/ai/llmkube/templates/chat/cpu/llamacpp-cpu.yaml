@@ -3,21 +3,13 @@ kind: InferenceService
 metadata:
   name: cpu-task
 spec:
-  modelRef: qwen3-0-6b
+  modelRef: qwen3-0.6b
   runtime: llamacpp
   mode: chat
-  replicas: 1
-  endpoint:
-    type: ClusterIP
-    port: 8080
-    path: /v1/chat/completions
   contextSize: 4096
-  parallelSlots: 2
+  parallelSlots: 1
   nodeSelector:
     kubernetes.io/hostname: njord-gpu1
   tolerations:
     - key: node-role.kubernetes.io/gpu
       operator: Exists
-  resources:
-    cpu: "4"
-    memory: 8Gi

@@ -6,7 +6,7 @@ spec:
   modelRef: qwen3.5-9b
   runtime: llamacpp
   mode: chat
-  contextSize: 8192
+  contextSize: 16384
   flashAttention: true
   parallelSlots: 2
   tolerations:
