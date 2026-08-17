@@ -16,11 +16,39 @@ dra-driver-nvidia-gpu:
     TimeSlicingSettings: true
 
 dcgm-exporter:
+  kubernetesDRA:
+    enabled: true
   serviceMonitor:
     enabled: true
     interval: 30s
     scrapeTimeout: 25s
-  tolerations:
-    - key: nvidia.com/gpu
-      operator: Exists
-      effect: NoSchedule
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: feature.node.kubernetes.io/pci-10de.present
+                operator: In
+                values:
+                  - "true"
+          - matchExpressions:
+              - key: feature.node.kubernetes.io/pci-0302_10de.present
+                operator: In
+                values:
+                  - "true"
+          - matchExpressions:
+              - key: feature.node.kubernetes.io/pci-0300_10de.present
+                operator: In
+                values:
+                  - "true"
+          - matchExpressions:
+              - key: feature.node.kubernetes.io/cpu-model.vendor_id
+                operator: In
+                values:
+                  - NVIDIA
+          - matchExpressions:
+              - key: nvidia.com/gpu.present
+                operator: In
+                values:
+                  - "true"
+  tolerations: []
