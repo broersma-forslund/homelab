@@ -10,12 +10,9 @@ intel-gpu-resource-driver-chart:
   kubeletPlugin:
     privileged: true
     healthMonitoring:
-      enabled: false
+      enabled: true
 
 xpumd:
-  image:
-    repository: ghcr.io/intel/xpumanager/xpumd
-    tag: v2.0.1
   gpuAccess: dra
   nodeSelector:
     intel.feature.node.kubernetes.io/gpu: "true"
@@ -24,4 +21,8 @@ xpumd:
   grafana:
     dashboards: true
     namespace: ~
+  config:
+    receivers:
+      intel_xpu:
+        fail_on_sysman_init_error: false
   tolerations: []
