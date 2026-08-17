@@ -8,21 +8,5 @@ intel-gpu-resource-driver-chart:
   nodeFeatureRules:
     enabled: true
   kubeletPlugin:
-    privileged: true
     healthMonitoring:
-      enabled: true
-
-xpumd:
-  gpuAccess: dra
-  nodeSelector:
-    intel.feature.node.kubernetes.io/gpu: "true"
-  prometheus:
-    monitor: true
-  grafana:
-    dashboards: false # dashboard is vendored since xpumd chart uses release name in uid which is too long
-    namespace: intel-gpu-resource-driver
-  config:
-    receivers:
-      intel_xpu:
-        fail_on_sysman_init_error: false
-  tolerations: []
+      enabled: false

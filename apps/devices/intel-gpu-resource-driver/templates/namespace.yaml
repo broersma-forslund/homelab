@@ -4,4 +4,3 @@ metadata:
   name: {{ .Release.Namespace }}
   labels:
     pod-security.kubernetes.io/enforce: privileged
-    resource.kubernetes.io/admin-access: "true"
