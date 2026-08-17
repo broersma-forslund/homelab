@@ -14,3 +14,13 @@ dra-driver-nvidia-gpu:
 
   featureGates:
     TimeSlicingSettings: true
+
+dcgm-exporter:
+  serviceMonitor:
+    enabled: true
+    interval: 30s
+    scrapeTimeout: 25s
+  tolerations:
+    - key: nvidia.com/gpu
+      operator: Exists
+      effect: NoSchedule
