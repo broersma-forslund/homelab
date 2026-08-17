@@ -20,7 +20,7 @@ xpumd:
     monitor: true
   grafana:
     dashboards: true
-    namespace: ~
+    namespace: intel-gpu-resource-driver
   config:
     receivers:
       intel_xpu:
