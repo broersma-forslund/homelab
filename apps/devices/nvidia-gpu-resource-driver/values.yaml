@@ -52,3 +52,6 @@ dcgm-exporter:
                 values:
                   - "true"
   tolerations: []
+
+  nfd:
+    nodefeaturerules: true
