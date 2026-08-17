@@ -1,6 +1,6 @@
 image:
   repository: ghcr.io/maintainerr/maintainerr
-  tag: 3.22.1
+  tag: 3.23.0
 
 route:
   enabled: true
