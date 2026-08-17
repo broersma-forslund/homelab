@@ -19,7 +19,7 @@ xpumd:
   prometheus:
     monitor: true
   grafana:
-    dashboards: true
+    dashboards: false # dashboard is vendored since xpumd chart uses release name in uid which is too long
     namespace: intel-gpu-resource-driver
   config:
     receivers:
