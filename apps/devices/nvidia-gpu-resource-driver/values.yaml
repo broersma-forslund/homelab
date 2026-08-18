@@ -14,56 +14,94 @@ dra-driver-nvidia-gpu:
   featureGates:
     TimeSlicingSettings: true
 
-dcgm-exporter:
-  arguments:
-    - "--disable-startup-validate"
-    - "--debug"
-    - "--enable-dcgm-log"
-    - "--dcgm-log-level"
-    - "DEBUG"
-  kubernetesDRA:
-    enabled: true
-  serviceMonitor:
-    enabled: true
-    interval: 30s
-    scrapeTimeout: 25s
-  extraHostVolumes:
-  - name: nvidia-install-dir-host
-    hostPath: /usr/local
-  extraVolumeMounts:
-  - name: nvidia-install-dir-host
-    mountPath: /usr/local/nvidia
-    readOnly: true
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-          - matchExpressions:
-              - key: feature.node.kubernetes.io/pci-10de.present
-                operator: In
-                values:
-                  - "true"
-          - matchExpressions:
-              - key: feature.node.kubernetes.io/pci-0302_10de.present
-                operator: In
-                values:
-                  - "true"
-          - matchExpressions:
-              - key: feature.node.kubernetes.io/pci-0300_10de.present
-                operator: In
-                values:
-                  - "true"
-          - matchExpressions:
-              - key: feature.node.kubernetes.io/cpu-model.vendor_id
-                operator: In
-                values:
-                  - NVIDIA
-          - matchExpressions:
-              - key: nvidia.com/gpu.present
-                operator: In
-                values:
-                  - "true"
-  tolerations: []
-
+gpu-operator:
+  operator:
+    runtimeClass: ""
   nfd:
-    nodefeaturerules: true
+    enabled: false
+  cdi:
+    enabled: false
+  hostPaths:
+    driverInstallDir: /usr/local
+  driver:
+    enabled: false
+  toolkit:
+    enabled: false
+  devicePlugin:
+    enabled: false
+  dcgm:
+    enabled: false
+  dcgmExporter:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      interval: 30s
+  gfd:
+    enabled: false
+  migManager:
+    enabled: false
+  vgpuDeviceManager:
+    enabled: false
+  vfioManager:
+    enabled: false
+  sandboxDevicePlugin:
+    enabled: false
+  kataSandboxDevicePlugin:
+    enabled: false
+  ccManager:
+    enabled: false
+
+# Legacy standalone DCGM exporter configuration. Uncomment this block together
+# with its dependency above when reverting from the GPU Operator exporter.
+# dcgm-exporter:
+#   arguments:
+#     - "--disable-startup-validate"
+#     - "--debug"
+#     - "--enable-dcgm-log"
+#     - "--dcgm-log-level"
+#     - "DEBUG"
+#   kubernetesDRA:
+#     enabled: true
+#   serviceMonitor:
+#     enabled: true
+#     interval: 30s
+#     scrapeTimeout: 25s
+#   extraHostVolumes:
+#   - name: nvidia-install-dir-host
+#     hostPath: /usr/local
+#   extraVolumeMounts:
+#   - name: nvidia-install-dir-host
+#     mountPath: /usr/local/nvidia
+#     readOnly: true
+#  affinity:
+#     nodeAffinity:
+#       requiredDuringSchedulingIgnoredDuringExecution:
+#         nodeSelectorTerms:
+#           - matchExpressions:
+#               - key: feature.node.kubernetes.io/pci-10de.present
+#                 operator: In
+#                 values:
+#                   - "true"
+#           - matchExpressions:
+#               - key: feature.node.kubernetes.io/pci-0302_10de.present
+#                 operator: In
+#                 values:
+#                   - "true"
+#           - matchExpressions:
+#               - key: feature.node.kubernetes.io/pci-0300_10de.present
+#                 operator: In
+#                 values:
+#                   - "true"
+#           - matchExpressions:
+#               - key: feature.node.kubernetes.io/cpu-model.vendor_id
+#                 operator: In
+#                 values:
+#                   - NVIDIA
+#           - matchExpressions:
+#               - key: nvidia.com/gpu.present
+#                 operator: In
+#                 values:
+#                   - "true"
+#   tolerations: []
+#   nfd:
+#     nodefeaturerules: true
