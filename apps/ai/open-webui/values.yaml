@@ -17,7 +17,7 @@ open-webui:
     enabled: true
 
   openaiBaseApiUrls:
-    - http://model-router.llmkube.svc.cluster.local:8080/v1
+    - http://model-router-proxy.llmkube.svc.cluster.local:8080/v1
   openaiApiKeys:
     - ""
   searxngQueryUrl: http://searxng.searxng.svc.cluster.local:8080/search?q=<query>

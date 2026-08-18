@@ -41,7 +41,7 @@ data:
   ENABLE_RAG_LOCAL_WEB_FETCH: "true"
   RAG_SYSTEM_CONTEXT: "true"
   RAG_EMBEDDING_ENGINE: "openai"
-  RAG_OPENAI_API_BASE_URL: "http://model-router.llmkube.svc.cluster.local:8080/v1"
+  RAG_OPENAI_API_BASE_URL: "http://model-router-proxy.llmkube.svc.cluster.local:8080/v1"
   RAG_OPENAI_API_KEY: ""
   RAG_EMBEDDING_MODEL: "bge-m3"
   RAG_QUERY_PREFIX: ""
