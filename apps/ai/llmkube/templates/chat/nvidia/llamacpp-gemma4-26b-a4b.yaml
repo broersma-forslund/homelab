@@ -13,7 +13,9 @@ spec:
   cacheTypeK: q8_0
   cacheTypeV: q8_0
   flashAttention: true
-  moeCPUOffload: true
+  moeCPULayers: 6
+  speculativeDecoding:
+    type: disabled # mtp
   resources:
     hostMemory: 48Gi
   tolerations:
