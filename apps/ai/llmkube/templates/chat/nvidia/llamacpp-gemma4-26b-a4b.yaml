@@ -7,13 +7,13 @@ spec:
   modelRef: gemma4-26b-a4b
   runtime: llamacpp
   mode: chat
-  contextSize: 8192
+  contextSize: 32768
   jinja: true
   parallelSlots: 1
   cacheTypeK: q8_0
   cacheTypeV: q8_0
   flashAttention: true
-  moeCPULayers: 20
+  moeCPULayers: 15
   speculativeDecoding:
     type: disabled # mtp
   resources:
