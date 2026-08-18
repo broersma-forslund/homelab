@@ -7,6 +7,9 @@ llmkube:
     replicaCount: 1
     leaderElection:
       enabled: false
+    tolerations:
+      - key: node-role.kubernetes.io/gpu
+        operator: Exists
 
   modelCache:
     enabled: true
