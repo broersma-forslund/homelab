@@ -15,8 +15,7 @@ dra-driver-nvidia-gpu:
     TimeSlicingSettings: true
 
 gpu-operator:
-  operator:
-    runtimeClass: ""
+
   nfd:
     enabled: false
   cdi:
