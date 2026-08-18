@@ -15,40 +15,20 @@ dra-driver-nvidia-gpu:
     TimeSlicingSettings: true
 
 gpu-operator:
-
   nfd:
     enabled: false
-  cdi:
-    enabled: false
-  hostPaths:
-    driverInstallDir: /usr/local
   driver:
     enabled: false
   toolkit:
     enabled: false
   devicePlugin:
     enabled: false
-  dcgm:
-    enabled: false
-  dcgmExporter:
+  dcgmExporter: 
     enabled: true
     serviceMonitor:
       enabled: true
       interval: 30s
-  gfd:
-    enabled: false
-  migManager:
-    enabled: false
-  vgpuDeviceManager:
-    enabled: false
-  vfioManager:
-    enabled: false
-  sandboxDevicePlugin:
-    enabled: false
-  kataSandboxDevicePlugin:
-    enabled: false
-  ccManager:
-    enabled: false
+
 
 # Legacy standalone DCGM exporter configuration. Uncomment this block together
 # with its dependency above when reverting from the GPU Operator exporter.
