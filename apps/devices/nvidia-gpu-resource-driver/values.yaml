@@ -27,6 +27,13 @@ dcgm-exporter:
     enabled: true
     interval: 30s
     scrapeTimeout: 25s
+  extraHostVolumes:
+  - name: nvidia-install-dir-host
+    hostPath: /usr/local
+  extraVolumeMounts:
+  - name: nvidia-install-dir-host
+    mountPath: /usr/local/nvidia
+    readOnly: true
   affinity:
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
