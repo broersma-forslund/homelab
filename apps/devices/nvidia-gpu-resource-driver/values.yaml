@@ -14,20 +14,20 @@ dra-driver-nvidia-gpu:
   featureGates:
     TimeSlicingSettings: true
 
-# gpu-operator:
-#   nfd:
-#     enabled: false
-#   driver:
-#     enabled: false
-#   toolkit:
-#     enabled: false
-#   devicePlugin:
-#     enabled: false
-#   dcgmExporter: 
-#     enabled: true
-#     serviceMonitor:
-#       enabled: true
-#       interval: 30s
+gpu-operator:
+  nfd:
+    enabled: false
+  driver:
+    enabled: false
+  toolkit:
+    enabled: false
+  devicePlugin:
+    enabled: false
+  dcgmExporter: 
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      interval: 30s
 
 
 dcgm-exporter:
