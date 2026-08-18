@@ -13,8 +13,7 @@ spec:
     - name: gemma4
       inferenceServiceRef:
         name: gemma4-26b-a4b
-    - name: embeddings
-      displayName: bge-m3
+    - name: bge-m3
       inferenceServiceRef:
         name: bge-m3
   proxy:
