@@ -13,7 +13,7 @@ spec:
   cacheTypeK: q8_0
   cacheTypeV: q8_0
   flashAttention: true
-  moeCPULayers: 6
+  moeCPULayers: 12
   speculativeDecoding:
     type: disabled # mtp
   resources:
