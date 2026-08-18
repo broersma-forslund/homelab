@@ -16,6 +16,7 @@ dra-driver-nvidia-gpu:
 
 dcgm-exporter:
   arguments:
+    - "--disable-startup-validate"
     - "--debug"
     - "--enable-dcgm-log"
     - "--dcgm-log-level"
