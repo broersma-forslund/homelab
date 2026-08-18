@@ -22,7 +22,7 @@ data:
 
   # --- Tasks ---
   ENABLE_CONTEXT_COMPACTION: "true"
-  TASK_MODEL_EXTERNAL: "qwen3-0.6b"
+  TASK_MODEL_EXTERNAL: "openwebui-tasks"
 
   # --- Memories ---
   ENABLE_MEMORY_BACKGROUND_REVIEW: "true"
@@ -43,7 +43,7 @@ data:
   RAG_EMBEDDING_ENGINE: "openai"
   RAG_OPENAI_API_BASE_URL: "http://model-router-proxy.llmkube.svc.cluster.local:8080/v1"
   RAG_OPENAI_API_KEY: ""
-  RAG_EMBEDDING_MODEL: "bge-m3"
+  RAG_EMBEDDING_MODEL: "openwebui-embedding"
   RAG_QUERY_PREFIX: ""
   RAG_CONTENT_PREFIX: ""
   RAG_EMBEDDING_BATCH_SIZE: "20"

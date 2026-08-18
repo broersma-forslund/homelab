@@ -1,13 +1,13 @@
 apiVersion: inference.llmkube.dev/v1alpha1
 kind: Model
 metadata:
-  name: qwen2-1-5b
+  name: qwen3-0.6b
 spec:
   format: gguf
-  source: hf://Qwen/Qwen2.5-1.5B-Instruct-GGUF
+  source: hf://Qwen/Qwen3-0.6B-GGUF
   files:
-    - qwen2.5-1.5b-instruct-q4_k_m.gguf
-  quantization: Q4_K_M
+    - Qwen3-0.6B-Q8_0.gguf
+  quantization: Q8_0
   hardware:
     accelerator: intel
     gpu:
