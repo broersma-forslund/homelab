@@ -8,7 +8,7 @@ spec:
   files:
     - gemma-4-26B-A4B-it-Q8_0.gguf
   mmproj: mmproj-BF16.gguf
-  prefetch: true
+  prefetch: false
   quantization: Q8_0
   hardware:
     accelerator: cuda
