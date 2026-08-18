@@ -4,7 +4,7 @@ metadata:
   name: model-router
 spec:
   dataPlane: Proxy
-  defaultRoute: gemma
+  defaultRoute: gemma4
   defaultRouteStrategy: BackendNameMatch
   backends:
     - name: qwen3
