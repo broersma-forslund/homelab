@@ -9,6 +9,6 @@ dependencies:
   - name: gpu-operator
     version: v26.3.3
     repository: https://helm.ngc.nvidia.com/nvidia
-  # - name: dcgm-exporter
-  #   version: 4.8.3
-  #   repository: https://nvidia.github.io/dcgm-exporter/helm-charts
+  - name: dcgm-exporter
+    version: 4.8.3
+    repository: https://nvidia.github.io/dcgm-exporter/helm-charts
