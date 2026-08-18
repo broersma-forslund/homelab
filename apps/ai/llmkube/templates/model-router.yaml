@@ -1,0 +1,21 @@
+apiVersion: inference.llmkube.dev/v1alpha1
+kind: ModelRouter
+metadata:
+  name: model-router
+spec:
+  dataPlane: Proxy
+  defaultRoute: gemma
+  defaultRouteStrategy: BackendNameMatch
+  backends:
+    - name: qwen3.5-9b
+      inferenceServiceRef:
+        name: qwen3.5-9b
+    - name: gemma4
+      inferenceServiceRef:
+        name: gemma4-26b-a4b
+    - name: embeddings
+      displayName: bge-m3
+      inferenceServiceRef:
+        name: bge-m3
+  proxy:
+    replicas: 1

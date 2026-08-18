@@ -1,24 +1,25 @@
 apiVersion: inference.llmkube.dev/v1alpha1
 kind: InferenceService
 metadata:
-  name: nvidia-chat
+  name: gemma4-26b-a4b
 spec:
   image: ghcr.io/ggml-org/llama.cpp:server-cuda13-b10450
-  modelRef: qwen3.5-9b
+  modelRef: gemma4-26b-a4b
   runtime: llamacpp
   mode: chat
-  contextSize: 16384
+  contextSize: 8192
   jinja: true
-  parallelSlots: 2
+  parallelSlots: 1
   cacheTypeK: q8_0
   cacheTypeV: q8_0
   flashAttention: true
-  speculativeDecoding:
-    type: disabled # mtp
+  moeCPUOffload: true
+  resources:
+    hostMemory: 48Gi
   tolerations:
     - key: node-role.kubernetes.io/gpu
       operator: Exists
   extraArgs:
-    - "--alias"
-    - "qwen3.5-9b"
     - "--kv-unified"
+    - "--chat-template-kwargs"
+    - '{"enable_thinking":true}'

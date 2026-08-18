@@ -1,0 +1,20 @@
+apiVersion: inference.llmkube.dev/v1alpha1
+kind: Model
+metadata:
+  name: gemma4-26b-a4b
+spec:
+  format: gguf
+  source: hf://unsloth/gemma-4-26B-A4B-it-GGUF
+  files:
+    - gemma-4-26B-A4B-it-Q8_0.gguf
+  mmproj: mmproj-BF16.gguf
+  prefetch: true
+  quantization: Q8_0
+  hardware:
+    accelerator: cuda
+    gpu:
+      enabled: true
+      vendor: nvidia
+      resourceClaims:
+        - name: nvidia
+          resourceClaimTemplateName: nvidia

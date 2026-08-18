@@ -37,11 +37,11 @@ data:
   ENABLE_CODE_EXECUTION: "false"
   ENABLE_CODE_INTERPRETER: "false"
 
-  # --- RAG embeddings: use the CPU LLMKube OpenAI-compatible endpoint ---
+  # --- RAG embeddings: use the LLMKube ModelRouter OpenAI-compatible endpoint ---
   ENABLE_RAG_LOCAL_WEB_FETCH: "true"
   RAG_SYSTEM_CONTEXT: "true"
   RAG_EMBEDDING_ENGINE: "openai"
-  RAG_OPENAI_API_BASE_URL: "http://cpu-embedding.llmkube.svc.cluster.local:8080/v1"
+  RAG_OPENAI_API_BASE_URL: "http://model-router.llmkube.svc.cluster.local:8080/v1"
   RAG_OPENAI_API_KEY: ""
   RAG_EMBEDDING_MODEL: "bge-m3"
   RAG_QUERY_PREFIX: ""

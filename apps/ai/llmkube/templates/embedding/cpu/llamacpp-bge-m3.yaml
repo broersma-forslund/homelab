@@ -1,10 +1,8 @@
 apiVersion: inference.llmkube.dev/v1alpha1
 kind: InferenceService
 metadata:
-  name: cpu-embedding
+  name: llamacpp-bge-m3
 spec:
-  nodeSelector:
-    kubernetes.io/hostname: njord-gpu1
   tolerations:
     - key: node-role.kubernetes.io/gpu
       operator: Exists

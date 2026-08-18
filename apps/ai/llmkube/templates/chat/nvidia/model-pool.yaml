@@ -1,0 +1,13 @@
+apiVersion: inference.llmkube.dev/v1alpha1
+kind: ModelPool
+metadata:
+  name: nvidia-chat-pool
+spec:
+  default: gemma4-26b-a4b
+  members:
+    - inferenceServiceRef:
+        name: qwen3.5-9b
+    - inferenceServiceRef:
+        name: gemma4-26b-a4b
+  swapBudget: 300s
+  swapPolicy: sticky
