@@ -18,6 +18,6 @@ spec:
         name: llamacpp-bge-m3
     - name: openwebui-tasks
       inferenceServiceRef:
-          name: llamacpp-qwen3.0-6b
+          name: llamacpp-qwen3-0.6b
   proxy:
     replicas: 1
