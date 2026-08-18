@@ -151,3 +151,53 @@ data:
       - ComplianceReport
       - InfraAssessmentReport
       - ClusterInfraAssessmentReport
+
+resource.customizations.health.tuppr.home-operations.com_TalosUpgrade: |
+    hs = {}
+    status = obj.status or {}
+    phase = status.phase or ""
+    message = status.message or ""
+
+    if status.observedGeneration ~= nil and obj.metadata.generation ~= nil and status.observedGeneration < obj.metadata.generation then
+      hs.status = "Progressing"
+      hs.message = "Waiting for Tuppr to observe the latest upgrade specification."
+    elseif phase == "Completed" then
+      hs.status = "Healthy"
+      hs.message = message
+    elseif phase == "Failed" then
+      hs.status = "Degraded"
+      hs.message = message
+    elseif phase == "Pending" or phase == "HealthChecking" or phase == "PreHook" or phase == "Draining" or phase == "Upgrading" or phase == "Rebooting" or phase == "PostHook" or phase == "MaintenanceWindow" or phase == "" then
+      hs.status = "Progressing"
+      hs.message = message
+    else
+      hs.status = "Unknown"
+      hs.message = "Unknown Tuppr TalosUpgrade phase: " .. phase
+    end
+
+    return hs
+
+  resource.customizations.health.tuppr.home-operations.com_KubernetesUpgrade: |
+    hs = {}
+    status = obj.status or {}
+    phase = status.phase or ""
+    message = status.message or ""
+
+    if status.observedGeneration ~= nil and obj.metadata.generation ~= nil and status.observedGeneration < obj.metadata.generation then
+      hs.status = "Progressing"
+      hs.message = "Waiting for Tuppr to observe the latest upgrade specification."
+    elseif phase == "Completed" then
+      hs.status = "Healthy"
+      hs.message = message
+    elseif phase == "Failed" then
+      hs.status = "Degraded"
+      hs.message = message
+    elseif phase == "Pending" or phase == "HealthChecking" or phase == "PreHook" or phase == "Draining" or phase == "Upgrading" or phase == "Rebooting" or phase == "PostHook" or phase == "MaintenanceWindow" or phase == "" then
+      hs.status = "Progressing"
+      hs.message = message
+    else
+      hs.status = "Unknown"
+      hs.message = "Unknown Tuppr KubernetesUpgrade phase: " .. phase
+    end
+
+    return hs
