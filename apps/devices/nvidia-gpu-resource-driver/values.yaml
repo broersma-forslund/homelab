@@ -15,6 +15,10 @@ dra-driver-nvidia-gpu:
     TimeSlicingSettings: true
 
 gpu-operator:
+  daemonsets:
+    tolerations:
+      - key: node-role.kubernetes.io/gpu
+        operator: Exists
   nfd:
     enabled: false
   driver:
@@ -28,7 +32,6 @@ gpu-operator:
     serviceMonitor:
       enabled: true
       interval: 30s
-
 
 dcgm-exporter:
   runtimeClassName: nvidia
