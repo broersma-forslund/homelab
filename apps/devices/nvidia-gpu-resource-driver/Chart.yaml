@@ -6,9 +6,9 @@ dependencies:
   - name: dra-driver-nvidia-gpu
     version: 0.4.1
     repository: oci://registry.k8s.io/dra-driver-nvidia/charts
-  - name: gpu-operator
-    version: v26.3.3
-    repository: https://helm.ngc.nvidia.com/nvidia
-  - name: dcgm-exporter
-    version: 4.8.3
-    repository: https://nvidia.github.io/dcgm-exporter/helm-charts
+  # - name: gpu-operator
+  #   version: v26.3.3
+  #   repository: https://helm.ngc.nvidia.com/nvidia
+  # - name: dcgm-exporter
+  #   version: 4.8.3
+  #   repository: https://nvidia.github.io/dcgm-exporter/helm-charts
