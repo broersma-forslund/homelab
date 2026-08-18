@@ -7,7 +7,7 @@ spec:
   defaultRoute: gemma
   defaultRouteStrategy: BackendNameMatch
   backends:
-    - name: qwen3.5-9b
+    - name: qwen3.5
       inferenceServiceRef:
         name: qwen3.5-9b
     - name: gemma4
