@@ -74,6 +74,8 @@ dcgm-exporter:
                 operator: In
                 values:
                   - "true"
-  tolerations: []
+  tolerations:
+    - key: node-role.kubernetes.io/gpu
+      operator: Exists
   nfd:
     nodefeaturerules: true
