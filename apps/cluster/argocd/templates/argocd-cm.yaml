@@ -152,7 +152,7 @@ data:
       - InfraAssessmentReport
       - ClusterInfraAssessmentReport
 
-resource.customizations.health.tuppr.home-operations.com_TalosUpgrade: |
+  resource.customizations.health.tuppr.home-operations.com_TalosUpgrade: |
     hs = {}
     status = obj.status or {}
     phase = status.phase or ""
