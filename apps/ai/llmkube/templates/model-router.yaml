@@ -9,12 +9,12 @@ spec:
   backends:
     - name: qwen3
       inferenceServiceRef:
-        name: qwen3.5-9b
+        name: llamacpp-qwen3.5-9b
     - name: gemma4
       inferenceServiceRef:
-        name: gemma4-26b-a4b
+        name: llamacpp-gemma4-26b-a4b
     - name: bge-m3
       inferenceServiceRef:
-        name: bge-m3
+        name: llamacpp-bge-m3
   proxy:
     replicas: 1

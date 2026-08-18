@@ -1,7 +1,7 @@
 apiVersion: inference.llmkube.dev/v1alpha1
 kind: InferenceService
 metadata:
-  name: qwen3.5-9b
+  name: llamacpp-qwen3.5-9b
 spec:
   image: ghcr.io/ggml-org/llama.cpp:server-cuda13-b10450
   modelRef: qwen3.5-9b

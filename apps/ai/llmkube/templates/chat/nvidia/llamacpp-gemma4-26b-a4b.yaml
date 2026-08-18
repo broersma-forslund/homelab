@@ -1,7 +1,7 @@
 apiVersion: inference.llmkube.dev/v1alpha1
 kind: InferenceService
 metadata:
-  name: gemma4-26b-a4b
+  name: llamacpp-gemma4-26b-a4b
 spec:
   image: ghcr.io/ggml-org/llama.cpp:server-cuda13-b10450
   modelRef: gemma4-26b-a4b
