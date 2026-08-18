@@ -1,14 +1,12 @@
 intel-gpu-resource-driver-chart:
-
-  tolerations:
-    - key: node-role.kubernetes.io/gpu
-      operator: Exists
-
   cdi:
     staticPath: /run/cdi
 
   nodeFeatureRules:
     enabled: true
   kubeletPlugin:
+    tolerations:
+      - key: node-role.kubernetes.io/gpu
+        operator: Exists
     healthMonitoring:
       enabled: false
