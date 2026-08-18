@@ -3,5 +3,11 @@ apps:
     llmkube:
       deploy: true
       skipSchemaValidation: true
+      ignoreDifferences:
+        - group: ""
+          kind: Secret
+          name: llmkube-webhook-cert
+          jsonPointers:
+            - /data
     open-webui:
       deploy: true
