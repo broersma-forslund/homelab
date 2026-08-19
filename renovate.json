@@ -36,6 +36,14 @@
       "matchDatasources": ["docker"],
       "matchPackageNames": ["quay.io/ceph/ceph"],
       "allowedVersions": "/^v\\d+\\.2\\.\\d+$/"
+    },
+    {
+      "description": "Disable Talos Automerge",
+      "matchPackageNames": [
+        "ghcr.io/siderolabs/installer",
+        "ghcr.io/siderolabs/kubelet"
+      ],
+      "automerge": false
     }
   ]
 }
