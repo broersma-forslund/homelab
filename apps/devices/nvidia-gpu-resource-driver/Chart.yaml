@@ -4,7 +4,7 @@ version: 0.0.0
 
 dependencies:
   - name: dra-driver-nvidia-gpu
-    version: 0.4.1
+    version: 0.5.0
     repository: oci://registry.k8s.io/dra-driver-nvidia/charts
   # - name: gpu-operator
   #   version: v26.3.3
