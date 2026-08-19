@@ -7,7 +7,7 @@ spec:
   modelRef: gemma4-26b-a4b
   runtime: llamacpp
   mode: chat
-  contextSize: 32768
+  contextSize: 65536
   jinja: true
   parallelSlots: 1
   cacheTypeK: q8_0
