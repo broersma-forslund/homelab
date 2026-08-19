@@ -35,12 +35,6 @@ gpu-operator:
 
 dcgm-exporter:
   runtimeClassName: nvidia
-  arguments:
-    - "--disable-startup-validate"
-    - "--debug"
-    - "--enable-dcgm-log"
-    - "--dcgm-log-level"
-    - "DEBUG"
   kubernetesDRA:
     enabled: true
   serviceMonitor:
