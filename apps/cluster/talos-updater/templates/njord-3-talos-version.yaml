@@ -5,8 +5,7 @@ metadata:
 spec:
   parallelism: 1
   talos:
-    # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
-    version: v1.13.8
+    version: {{ .Values.talos.image.tag }}
   nodeSelector:
     matchLabels:
       topology.kubernetes.io/zone: 'njord-3'

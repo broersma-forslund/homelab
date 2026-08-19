@@ -1,4 +1,12 @@
 tuppr:
+  talos:
+    image:
+      repository: ghcr.io/siderolabs/installer
+      tag: v1.13.8
+  kubernetes:
+    image:
+      repository: ghcr.io/siderolabs/kubelet
+      tag: v1.36.3
   monitoring:
     serviceMonitor:
       enabled: true
