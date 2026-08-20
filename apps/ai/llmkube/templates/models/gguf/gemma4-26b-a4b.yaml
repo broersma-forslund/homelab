@@ -3,7 +3,7 @@ kind: Model
 metadata:
   name: gemma4-26b-a4b
 spec:
-  prefetch: true
+  prefetch: {{ .Values.models.prefetch }}
   refreshPolicy: OnChange
   format: gguf
   source: hf://unsloth/gemma-4-26B-A4B-it-GGUF

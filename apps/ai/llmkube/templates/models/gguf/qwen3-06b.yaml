@@ -3,7 +3,7 @@ kind: Model
 metadata:
   name: qwen3-0.6b
 spec:
-  prefetch: true
+  prefetch: {{ .Values.models.prefetch }}
   refreshPolicy: OnChange
   format: gguf
   source: hf://Qwen/Qwen3-0.6B-GGUF

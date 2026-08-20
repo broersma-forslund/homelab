@@ -38,6 +38,8 @@ llmkube:
         - llamacpp-dashboard
         - llmkube-inference
 
+models:
+  prefetch: false
 llamacpp:
   cuda:
     image:
