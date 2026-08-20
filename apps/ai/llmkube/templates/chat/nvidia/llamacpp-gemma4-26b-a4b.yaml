@@ -9,11 +9,11 @@ spec:
   mode: chat
   contextSize: 65536
   jinja: true
-  parallelSlots: 2
+  parallelSlots: 1
   cacheTypeK: q8_0
   cacheTypeV: q8_0
   flashAttention: false
-  moeCPULayers: 18
+  moeCPULayers: 19
   speculativeDecoding:
     type: draft-mtp
     draftModel: mtp-gemma-4-26B-A4B-it.gguf
