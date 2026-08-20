@@ -13,7 +13,7 @@ spec:
   cacheTypeK: q8_0
   cacheTypeV: q8_0
   flashAttention: false
-  moeCPULayers: 20
+  moeCPULayers: 17
   speculativeDecoding:
     type: draft-mtp
     draftModel: mtp-gemma-4-26B-A4B-it.gguf
