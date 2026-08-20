@@ -15,7 +15,7 @@ spec:
   flashAttention: false
   moeCPULayers: 20
   speculativeDecoding:
-    type: mtp
+    type: draft-mtp
     draftModel: mtp-gemma-4-26B-A4B-it.gguf
     nDraftMax: 4
   resources:
