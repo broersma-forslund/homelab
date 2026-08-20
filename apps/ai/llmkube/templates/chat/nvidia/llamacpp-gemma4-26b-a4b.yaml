@@ -9,7 +9,7 @@ spec:
   mode: chat
   contextSize: 65536
   jinja: true
-  parallelSlots: 1
+  parallelSlots: 2
   cacheTypeK: q8_0
   cacheTypeV: q8_0
   flashAttention: false
