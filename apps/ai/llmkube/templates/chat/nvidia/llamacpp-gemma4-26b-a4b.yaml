@@ -24,7 +24,7 @@ spec:
       operator: Exists
   extraArgs:
     - --fit
-    - off
+    - "off"
     - --kv-unified
     - --chat-template-kwargs
     - '{"enable_thinking":true}'
