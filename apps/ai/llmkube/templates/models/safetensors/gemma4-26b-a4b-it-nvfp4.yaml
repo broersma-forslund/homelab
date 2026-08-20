@@ -7,6 +7,8 @@ spec:
   refreshPolicy: OnChange
   format: safetensors
   source: hf://unsloth/gemma-4-26B-A4B-it-NVFP4
+  files:
+    - models.safetensors
   quantization: NVFP4
   hardware:
     accelerator: cuda
