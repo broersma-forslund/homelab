@@ -12,7 +12,7 @@ spec:
   parallelSlots: 1
   cacheTypeK: q8_0
   cacheTypeV: q8_0
-  flashAttention: true
+  flashAttention: false
   moeCPULayers: 20
   speculativeDecoding:
     type: mtp
