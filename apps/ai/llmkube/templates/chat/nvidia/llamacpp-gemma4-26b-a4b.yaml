@@ -25,5 +25,5 @@ spec:
       operator: Exists
   extraArgs:
     - --kv-unified
-    - --chat-template-kwargs
-    - '{"enable_thinking":true}'
+    - --reasoning
+    - "on"
