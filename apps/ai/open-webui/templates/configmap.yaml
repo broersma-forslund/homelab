@@ -77,8 +77,8 @@ data:
   WHISPER_MODEL_AUTO_UPDATE: "true"
 
   # --- Hardening: auth/session (Authentik SSO is the only login path) ---
-  ENABLE_LOGIN_FORM: "false"
-  ENABLE_PASSWORD_AUTH: "false"
+  ENABLE_LOGIN_FORM: "true"
+  ENABLE_PASSWORD_AUTH: "true"
   ENABLE_PASSWORD_CHANGE_FORM: "false"
   WEBUI_SESSION_COOKIE_SECURE: "true"
   WEBUI_SESSION_COOKIE_SAME_SITE: strict
