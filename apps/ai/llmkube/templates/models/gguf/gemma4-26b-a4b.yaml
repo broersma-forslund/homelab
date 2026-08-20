@@ -9,6 +9,7 @@ spec:
   source: hf://unsloth/gemma-4-26B-A4B-it-GGUF
   files:
     - gemma-4-26B-A4B-it-Q8_0.gguf
+    - mtp-gemma-4-26B-A4B-it.gguf
   mmproj: mmproj-BF16.gguf
   quantization: Q8_0
   hardware:

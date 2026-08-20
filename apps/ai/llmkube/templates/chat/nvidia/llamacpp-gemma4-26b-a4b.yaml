@@ -16,6 +16,7 @@ spec:
   moeCPULayers: 20
   speculativeDecoding:
     type: mtp
+    draftModel: mtp-gemma-4-26B-A4B-it.gguf
     nDraftMax: 4
   resources:
     hostMemory: 48Gi
