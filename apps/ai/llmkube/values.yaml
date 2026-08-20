@@ -39,6 +39,10 @@ llmkube:
         - llmkube-inference
 
 llamacpp:
+  cuda:
+    image:
+      repository: ghcr.io/ggml-org/llama.cpp
+      tag: server-cuda13-b10450
   intel:
     image:
       repository: ghcr.io/ggml-org/llama.cpp

@@ -1,0 +1,16 @@
+apiVersion: inference.llmkube.dev/v1alpha1
+kind: Model
+metadata:
+  name: gemma4-26b-a4b-it-nvfp4
+spec:
+  format: safetensors
+  source: hf://unsloth/gemma-4-26B-A4B-it-NVFP4
+  quantization: NVFP4
+  hardware:
+    accelerator: cuda
+    gpu:
+      enabled: true
+      vendor: nvidia
+      resourceClaims:
+        - name: nvidia
+          resourceClaimTemplateName: nvidia

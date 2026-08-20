@@ -3,7 +3,7 @@ kind: InferenceService
 metadata:
   name: llamacpp-gemma4-26b-a4b
 spec:
-  image: ghcr.io/ggml-org/llama.cpp:server-cuda13-b10450
+  image: {{ .Values.llamacpp.cuda.image.repository }}:{{ .Values.llamacpp.cuda.image.tag }}
   modelRef: gemma4-26b-a4b
   runtime: llamacpp
   mode: chat
@@ -15,7 +15,8 @@ spec:
   flashAttention: true
   moeCPULayers: 18
   speculativeDecoding:
-    type: disabled # mtp
+    type: mtp
+    nDraftMax: 4
   resources:
     hostMemory: 48Gi
   tolerations:
