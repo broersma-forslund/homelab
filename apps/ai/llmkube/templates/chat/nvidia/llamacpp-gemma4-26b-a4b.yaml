@@ -13,7 +13,7 @@ spec:
   cacheTypeK: q8_0
   cacheTypeV: q8_0
   flashAttention: true
-  moeCPULayers: 18
+  moeCPULayers: 20
   speculativeDecoding:
     type: mtp
     nDraftMax: 4
@@ -23,6 +23,7 @@ spec:
     - key: node-role.kubernetes.io/gpu
       operator: Exists
   extraArgs:
-    - "--kv-unified"
-    - "--chat-template-kwargs"
+    - --fit off
+    - --kv-unified
+    - --chat-template-kwargs
     - '{"enable_thinking":true}'
