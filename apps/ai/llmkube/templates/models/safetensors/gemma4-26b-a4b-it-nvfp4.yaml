@@ -3,6 +3,8 @@ kind: Model
 metadata:
   name: gemma4-26b-a4b-it-nvfp4
 spec:
+  prefetch: true
+  refreshPolicy: OnChange
   format: safetensors
   source: hf://unsloth/gemma-4-26B-A4B-it-NVFP4
   quantization: NVFP4

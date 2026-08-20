@@ -3,6 +3,8 @@ kind: Model
 metadata:
   name: qwen3.5-9b
 spec:
+  prefetch: true
+  refreshPolicy: OnChange
   format: gguf
   source: hf://unsloth/Qwen3.5-9B-GGUF
   files:
