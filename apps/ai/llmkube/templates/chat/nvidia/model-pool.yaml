@@ -5,8 +5,8 @@ metadata:
 spec:
   default: llamacpp-gemma4-26b-a4b
   members:
-    - inferenceServiceRef:
-        name: llamacpp-qwen3.5-9b
+    # - inferenceServiceRef:
+    #     name: 
     - inferenceServiceRef:
         name: llamacpp-gemma4-26b-a4b
   swapBudget: 300s
