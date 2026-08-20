@@ -23,7 +23,8 @@ spec:
     - key: node-role.kubernetes.io/gpu
       operator: Exists
   extraArgs:
-    - --fit off
+    - --fit
+    - off
     - --kv-unified
     - --chat-template-kwargs
     - '{"enable_thinking":true}'
