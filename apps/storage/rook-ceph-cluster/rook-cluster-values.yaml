@@ -34,7 +34,16 @@ rook-ceph-cluster:
       cephx:
         daemon:
           keyRotationPolicy: KeyGeneration
-          keyGeneration: 2 # Increment on ceph upgrade
+          keyGeneration: 2
+        csi:
+          keyRotationPolicy: KeyGeneration
+          keyGeneration: 2
+          keepPriorKeyCountMax: 1  # keep one prior key also
+          keyType: aes # aes256k from linux kernel 7
+        rbdMirrorPeer:
+          keyRotationPolicy: KeyGeneration
+          keyGeneration: 2
+          keyType: aes # aes256k from linux kernel 7
     network:
       provider: host
       addressRanges:
