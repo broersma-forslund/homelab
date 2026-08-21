@@ -127,7 +127,14 @@ rook-ceph-cluster:
       daemonHealth:
         mon:
           timeout: 2m
-
+      muteHealthWarning:
+        AUTH_INSECURE_CLIENT_KEY_TYPE:
+          policy: mute
+        AUTH_INSECURE_KEYS_ALLOWED:
+          policy: mute
+        AUTH_INSECURE_KEYS_CREATABLE:
+          policy: mute
+  
     mon:
       count: 3
 
