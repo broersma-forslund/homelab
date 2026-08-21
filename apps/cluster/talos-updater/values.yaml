@@ -14,4 +14,4 @@ talos:
 kubernetes:
   image:
     repository: ghcr.io/siderolabs/kubelet
-    tag: v1.36.3
+    tag: v1.36.4
