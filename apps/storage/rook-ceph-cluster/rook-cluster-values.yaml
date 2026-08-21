@@ -31,7 +31,11 @@ rook-ceph-cluster:
 
   cephClusterSpec:
     security:
+      # https://rook.io/docs/rook/latest-release/Storage-Configuration/Advanced/cephx-key-rotation/
       cephx:
+        allowedCiphers:
+        - aes
+        - aes256k
         daemon:
           keyRotationPolicy: KeyGeneration
           keyGeneration: 2
