@@ -30,6 +30,11 @@ rook-ceph-cluster:
     tag: v20.2.4
 
   cephClusterSpec:
+    security:
+      cephx:
+        daemon:
+          keyRotationPolicy: KeyGeneration
+          keyGeneration: 2 # Increment on ceph upgrade
     network:
       provider: host
       addressRanges:
