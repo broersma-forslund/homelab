@@ -17,7 +17,7 @@ spec:
   speculativeDecoding:
     type: draft-mtp
     draftModel: mtp-gemma-4-26B-A4B-it.gguf
-    nDraftMax: 4
+    nDraftMax: 2
   resources:
     hostMemory: 48Gi
   tolerations:
