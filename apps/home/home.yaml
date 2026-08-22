@@ -7,7 +7,7 @@ apps:
     immich:
       deploy: true
     nextcloud:
-      deploy: true
+      deploy: false
     dawarich:
       deploy: true
     wyoming-whisper:
