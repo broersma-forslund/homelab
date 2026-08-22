@@ -1,0 +1,22 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Backup
+metadata:
+  labels:
+    app.kubernetes.io/component: database
+    app.kubernetes.io/instance: dawarich
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/part-of: dawarich
+    app.kubernetes.io/version: 17-3.5-103
+    helm.sh/chart: dawarich-13.2.0-support-cluster-plugins
+  name: dawarich-secondary
+  namespace: dawarich
+spec:
+  backupOwnerReference: self
+  cluster:
+    name: dawarich
+  method: plugin
+  pluginConfiguration:
+    name: barman-cloud.cloudnative-pg.io
+    parameters:
+      barmanObjectName: dawarich-secondary-backup-store
