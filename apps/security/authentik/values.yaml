@@ -61,7 +61,7 @@ authentik:
 database:
   backups:
     enabled: true
-    destination: https://meijhorstbackups.blob.core.windows.net/cnpg/authentik-db
+    destination: https://meijhorstbackups.blob.core.windows.net/cnpg
     retention: 8d
     schedule: '0 0 0 * * *'
     secretName: azure-blob-credentials

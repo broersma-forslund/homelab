@@ -3,5 +3,5 @@ kind: ObjectBucketClaim
 metadata:
   name: dawarich-db-backup-bucket
 spec:
-  bucketName : dawarich-db-backups
+  bucketName: dawarich-db-backups
   storageClassName: ceph-bucket
