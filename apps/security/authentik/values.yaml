@@ -57,3 +57,13 @@ authentik:
   prometheus:
     rules: 
       enabled: true
+
+database:
+  backups:
+    enabled: true
+    destination: https://meijhorstbackups.blob.core.windows.net/cnpg/authentik-db
+    retention: 8d
+    schedule: '0 0 0 * * *'
+    secretName: azure-blob-credentials
+    azure:
+      connectionStringKeyName: CONNECTION_STRING

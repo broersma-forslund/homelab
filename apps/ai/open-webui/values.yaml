@@ -83,6 +83,14 @@ database:
     registry: ghcr.io
     repository: tensorchord/cloudnative-vectorchord
     tag: "18.4-1.1.1"
+  backups:
+    enabled: true
+    destination: https://meijhorstbackups.blob.core.windows.net/cnpg/open-webui-db
+    retention: 8d
+    schedule: '0 0 0 * * *'
+    secretName: azure-blob-credentials
+    azure:
+      connectionStringKeyName: CONNECTION_STRING
 
 # Init Secret Job Configuration
 # Generates WEBUI_SECRET_KEY on cluster startup if not present

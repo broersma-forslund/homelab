@@ -5,7 +5,7 @@ metadata:
 spec:
   cluster:
     name: authentik-db
-  schedule: '0 0 0 * * *' #daily
+  schedule: {{ .Values.database.backups.schedule | quote }}
   backupOwnerReference: self
   method: plugin
   pluginConfiguration:

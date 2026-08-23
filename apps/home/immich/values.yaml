@@ -12,15 +12,13 @@ immich:
     size: 32Gi
     backups:
       enabled: true
-      destination: s3://immich-db-backups/
+      destination: https://meijhorstbackups.blob.core.windows.net/cnpg/immich-data
       retention: 8d
       schedule: '0 0 0 * * *'
-      secretName: immich-db-backup-bucket
-      provider: s3
-      s3:
-        endpoint: http://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc:80
-        accessKeyName: AWS_ACCESS_KEY_ID
-        secretKeyName: AWS_SECRET_ACCESS_KEY
+      secretName: azure-blob-credentials
+      provider: azure
+      azure:
+        connectionStringKeyName: CONNECTION_STRING
 
   route:
     enabled: true

@@ -10,7 +10,7 @@ spec:
     - name: barman-cloud.cloudnative-pg.io
       isWALArchiver: true
       parameters:
-        barmanObjectName:  authentik-backup-provider
+        barmanObjectName: authentik-backup-provider
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
