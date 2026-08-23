@@ -18,11 +18,6 @@ dawarich:
         endpoint: http://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc:80
         accessKeyName: AWS_ACCESS_KEY_ID
         secretKeyName: AWS_SECRET_ACCESS_KEY
-      secondary:
-        enabled: true
-        destination: https://meijhorstbackups.blob.core.windows.net/cnpg
-        secretName: 'azure-blob-credentials'
-        provider: azure
   ingress:
     enabled: false
   route:
