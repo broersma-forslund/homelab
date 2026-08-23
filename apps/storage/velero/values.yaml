@@ -78,24 +78,24 @@ velero:
     # NONCRITICAL - data we can re-create, but for which initial setup is tedious
     # ----------------------------
 
-    # Weekly restore points on Saturday morning (keep 720h = 30 days)
-    noncritical-weekly-saturday:
-      schedule: "23 3 * * 6"         # Saturday 03:23
+    # Hourly restore points (keep 24h = 1 day)
+    noncritical-hourly:
+      schedule: "31 * * * *"          # every hour at :31
       useOwnerReferencesInBackup: true
       template:
-        ttl: "720h"
+        ttl: "24h"
         includedResources:
           - persistentvolumeclaims
         labelSelector:
           matchLabels:
             velero.io/backup-class: noncritical
 
-    # Monthly restore points on the 1st of the month (keep 2190h = 3 months)
-    noncritical-monthly:
-      schedule: "41 0 1 * *"          # 1st of month 00:41
+    # Daily restore points (keep 192h = 8 days)
+    noncritical-daily:
+      schedule: "53 1 * * *"          # daily 01:53
       useOwnerReferencesInBackup: true
       template:
-        ttl: "2190h"
+        ttl: "192h"
         includedResources:
           - persistentvolumeclaims
         labelSelector:
