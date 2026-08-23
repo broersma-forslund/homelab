@@ -1,5 +1,5 @@
 open-webui:
-  replicaCount: 2
+  replicaCount: 0
 
   persistence:
     enabled: true

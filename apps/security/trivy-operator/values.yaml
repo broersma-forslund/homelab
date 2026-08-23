@@ -1,5 +1,6 @@
 trivy-operator:
   operator:
+    replicas: 0
     builtInTrivyServer: true
     clusterSbomCacheEnabled: true
 

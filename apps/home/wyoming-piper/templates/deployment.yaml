@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: wyoming-piper
 spec:
-  replicas: 1
+  replicas: 0
   strategy:
     type: Recreate
   selector:

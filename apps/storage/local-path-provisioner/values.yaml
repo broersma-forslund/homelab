@@ -1,4 +1,5 @@
 local-path-provisioner:
+  replicaCount: 0
   nodeSelector:
     node-role.kubernetes.io/gpu: ""
   tolerations:

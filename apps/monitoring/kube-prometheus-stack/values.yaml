@@ -23,7 +23,7 @@ kube-prometheus-stack:
       ruleSelectorNilUsesHelmValues: false
       podMonitorSelectorNilUsesHelmValues: false
       serviceMonitorSelectorNilUsesHelmValues: false
-      replicas: 2
+      replicas: 0
       retention: 365d
       resources:
         requests:
@@ -684,7 +684,7 @@ kube-prometheus-stack:
 
   grafana:
     revisionHistoryLimit: 0
-    replicas: 1
+    replicas: 0
     initChownData: false
     defaultDashboardsTimezone: Europe/Amsterdam
     route:

@@ -3,7 +3,7 @@ kind: StatefulSet
 metadata:
   name: matter-hub
 spec:
-  replicas: 1
+  replicas: 0
   serviceName: matter-hub
   selector:
     matchLabels:
