@@ -32,6 +32,8 @@ kyverno:
     enabled: true
 
   features:
+    forceFailurePolicyIgnore:
+      enabled: true
     mutatingAdmissionPolicyReports: 
       enabled: false # Can enable from 1.34?
     generateMutatingAdmissionPolicy:
