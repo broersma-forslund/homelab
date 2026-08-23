@@ -9,6 +9,8 @@ home-assistant:
 
   persistence:
     size: 10Gi
+    labels:
+      velero.io/backup-class: critical
 
   route:
     enabled: true
