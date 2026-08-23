@@ -20,4 +20,4 @@ spec:
       inferenceServiceRef:
           name: llamacpp-qwen3-0.6b
   proxy:
-    replicas: 0
+    replicas: 1

@@ -11,7 +11,12 @@ trivy-operator:
     
     configAuditScannerEnabled: false # We use Kyverno for this purpose
 
+  trivy:
+    server:
+      replicas: 0
+
 trivy-operator-polr-adapter:
+  replicaCount: 0
   openreports:
     enabled: true
   adapters:
