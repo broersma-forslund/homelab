@@ -1,100 +1,100 @@
-apiVersion: apps.emqx.io/v2beta1
-kind: EMQX
-metadata:
-  name: emqx
-spec:
-  image: '{{ .Values.cluster.image.repository }}:{{ .Values.cluster.image.tag }}'
-  revisionHistoryLimit: 0 
-  replicantTemplate:
-    spec:
-      replicas: 0
+# apiVersion: apps.emqx.io/v2beta1
+# kind: EMQX
+# metadata:
+#   name: emqx
+# spec:
+#   image: '{{ .Values.cluster.image.repository }}:{{ .Values.cluster.image.tag }}'
+#   revisionHistoryLimit: 0 
+#   replicantTemplate:
+#     spec:
+#       replicas: 0
 
-  config:
-    data: |
-      listeners.tcp.default {
-        enable = false
-      }
-      listeners.ws.default {
-        enable = false
-      }
-      listeners.wss.default {
-        enable = false
-      }
-      listeners.ssl.default {
-        enable = false
-      }
+#   config:
+#     data: |
+#       listeners.tcp.default {
+#         enable = false
+#       }
+#       listeners.ws.default {
+#         enable = false
+#       }
+#       listeners.wss.default {
+#         enable = false
+#       }
+#       listeners.ssl.default {
+#         enable = false
+#       }
 
-      listeners.ssl.internal {
-        bind = "0.0.0.0:8884"
-        ssl_options {
-          cacertfile = "/mounted/cert/mqtt-emqx-svc/ca.crt"
-          certfile = "/mounted/cert/mqtt-emqx-svc/tls.crt"
-          keyfile = "/mounted/cert/mqtt-emqx-svc/tls.key" 
-        }
-      }
+#       listeners.ssl.internal {
+#         bind = "0.0.0.0:8884"
+#         ssl_options {
+#           cacertfile = "/mounted/cert/mqtt-emqx-svc/ca.crt"
+#           certfile = "/mounted/cert/mqtt-emqx-svc/tls.crt"
+#           keyfile = "/mounted/cert/mqtt-emqx-svc/tls.key" 
+#         }
+#       }
 
-      listeners.ssl.external {
-        bind = "0.0.0.0:8883"
-        ssl_options {
-          certfile = "/mounted/cert/mqtt-mobrockers-com/tls.crt"
-          keyfile = "/mounted/cert/mqtt-mobrockers-com/tls.key" 
-        }
-      }
+#       listeners.ssl.external {
+#         bind = "0.0.0.0:8883"
+#         ssl_options {
+#           certfile = "/mounted/cert/mqtt-mobrockers-com/tls.crt"
+#           keyfile = "/mounted/cert/mqtt-mobrockers-com/tls.key" 
+#         }
+#       }
 
-      authentication = [{
-        mechanism = "password_based"
-        backend = "built_in_database"
-      }]
-      authorization {
-        no_match = "deny"
-        deny_action = "disconnect"
+#       authentication = [{
+#         mechanism = "password_based"
+#         backend = "built_in_database"
+#       }]
+#       authorization {
+#         no_match = "deny"
+#         deny_action = "disconnect"
 
-        sources = [{
-          type = "built_in_database"
-        }]
-      }
+#         sources = [{
+#           type = "built_in_database"
+#         }]
+#       }
 
-      mqtt {
-        ignore_loop_deliver = false
-        retain_available = true
-        wildcard_subscription = true
-        use_username_as_clientid = true
-      }
-      retainer {
-        enable = true
-        backend {
-          type = "built_in_database"
-          storage_type = "disc"
-        }
-      }
+#       mqtt {
+#         ignore_loop_deliver = false
+#         retain_available = true
+#         wildcard_subscription = true
+#         use_username_as_clientid = true
+#       }
+#       retainer {
+#         enable = true
+#         backend {
+#           type = "built_in_database"
+#           storage_type = "disc"
+#         }
+#       }
 
-  coreTemplate:
-    spec:
-      replicas: 3
-      volumeClaimTemplates:
-        accessModes:
-        - ReadWriteOnce
-        resources:
-          requests:
-            storage: 50Mi
-      extraVolumes:
-      - name: mqtt-mobrockers-com-tls
-        secret:
-          secretName: mqtt-mobrockers-com-tls
-      - name: mqtt-emqx-svc-tls
-        secret:
-          secretName: mqtt-emqx-svc-tls
-      extraVolumeMounts:
-      - name: mqtt-mobrockers-com-tls
-        mountPath: /mounted/cert/mqtt-mobrockers-com
-      - name: mqtt-emqx-svc-tls
-        mountPath: /mounted/cert/mqtt-emqx-svc
+#   coreTemplate:
+#     spec:
+#       replicas: 3
+#       volumeClaimTemplates:
+#         accessModes:
+#         - ReadWriteOnce
+#         resources:
+#           requests:
+#             storage: 50Mi
+#       extraVolumes:
+#       - name: mqtt-mobrockers-com-tls
+#         secret:
+#           secretName: mqtt-mobrockers-com-tls
+#       - name: mqtt-emqx-svc-tls
+#         secret:
+#           secretName: mqtt-emqx-svc-tls
+#       extraVolumeMounts:
+#       - name: mqtt-mobrockers-com-tls
+#         mountPath: /mounted/cert/mqtt-mobrockers-com
+#       - name: mqtt-emqx-svc-tls
+#         mountPath: /mounted/cert/mqtt-emqx-svc
 
-  listenersServiceTemplate:
-    metadata:
-      annotations:
-        'external-dns.alpha.kubernetes.io/hostname': mqtt.mobrockers.com
-        'io.cilium/lb-ipam-ips': 10.0.103.30
-    spec:
-      type: LoadBalancer
-      externalTrafficPolicy: Local
+#   listenersServiceTemplate:
+#     metadata:
+#       annotations:
+#         'external-dns.alpha.kubernetes.io/hostname': mqtt.mobrockers.com
+#         'io.cilium/lb-ipam-ips': 10.0.103.30
+#     spec:
+#       type: LoadBalancer
+#       externalTrafficPolicy: Local
