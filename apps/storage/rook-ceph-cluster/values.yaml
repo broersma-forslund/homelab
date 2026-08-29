@@ -4,7 +4,7 @@ cephDashboardSSO:
   kubectl:
     image:
       repository: alpine/kubectl
-      tag: 1.36.4
+      tag: 1.37.0
 
 extended-ceph-exporter:
   replicaCount: 0
