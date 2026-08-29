@@ -10,5 +10,5 @@ dependencies:
     version: 3.9.1
     repository: oci://ghcr.io/kyverno/charts
   - name: kyverno-policies
-    version: 3.8.2
+    version: 3.9.0
     repository: oci://ghcr.io/kyverno/charts
