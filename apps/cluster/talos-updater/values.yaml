@@ -9,7 +9,7 @@ tuppr:
 
 talos:
     image:
-      repository: ghcr.io/siderolabs/installer
+      repository: ghcr.io/siderolabs/talos
       tag: v1.13.9
 kubernetes:
   image:
