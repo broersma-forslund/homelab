@@ -1,6 +1,6 @@
 records:
 - name: vpn
-  ip: 87.212.115.7
+  ip: 78.82.226.117
 - name: k8s
   ip: 10.0.102.10
 
