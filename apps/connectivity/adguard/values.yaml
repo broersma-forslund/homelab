@@ -31,4 +31,4 @@ adguard:
 
     service:
       annotations:
-        'io.cilium/lb-ipam-ips': 10.0.103.10,10.0.103.11
+        'io.cilium/lb-ipam-ips': 10.0.102.210,10.0.102.211

@@ -10,9 +10,9 @@ certificates:
 
 privateGateway:
   enabled: true
-  loadBalancerIP: 10.0.103.21
+  loadBalancerIP: 10.0.102.220
 
 publicGateway:
   enabled: true
-  loadBalancerIP: 10.0.103.22
+  loadBalancerIP: 10.0.102.221
   publicIP: 78.82.226.117
