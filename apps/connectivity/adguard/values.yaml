@@ -27,7 +27,7 @@ adguard:
           kind: HTTPRouteFilter
           name: basic-auth-credential-injection
   secondary:
-    replicas: 1
+    replicas: 3
 
     service:
       annotations:

@@ -7,7 +7,7 @@ cephDashboardSSO:
       tag: 1.37.0
 
 extended-ceph-exporter:
-  replicaCount: 0
+  replicaCount: 2
 
   rgw:
     adminEndpoint: http://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc:80

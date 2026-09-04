@@ -1,6 +1,6 @@
 descheduler:
   kind: Deployment
-  replicas: 0
+  replicas: 1
   deschedulingInterval: 5m
   resources:
     requests:

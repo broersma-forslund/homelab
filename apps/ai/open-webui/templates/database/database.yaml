@@ -2,8 +2,6 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: open-webui-db
-  annotations:
-    cnpg.io/hibernation: "on"
 spec:
   instances: 2
   # VectorChord: a drop-in superset of pgvector

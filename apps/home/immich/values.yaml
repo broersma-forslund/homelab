@@ -8,8 +8,6 @@ immich:
 
   database:
     clusterName: immich-data
-    annotations:
-      cnpg.io/hibernation: "on"
     replicas: 2
     size: 32Gi
     backups:
