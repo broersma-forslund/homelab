@@ -56,19 +56,16 @@ open-webui:
       clientExistingSecretKey: clientSecret
 
   route:
-    enabled: false
+    enabled: true
     hostnames:
       - chat.mobrockers.com
     parentRefs:
       - name: private
         namespace: envoy-gateway
         sectionName: web-https
-    matches:
-    - path:
-        type: PathPrefix
-        value: /
-      timeouts:
-        request: 600s
+    timeouts:
+      request: 600s
+        
 
   # Disable built-in Ollama, Open WebUI pipelines, and terminals.
   ollama:

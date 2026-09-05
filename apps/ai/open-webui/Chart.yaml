@@ -4,5 +4,5 @@ version: 0.0.0
 
 dependencies:
 - name: open-webui
-  version: 16.0.0
+  version: 16.5.0
   repository: https://helm.openwebui.com
