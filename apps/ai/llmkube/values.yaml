@@ -4,7 +4,7 @@ llmkube:
     keep: false
 
   controllerManager:
-    replicaCount: 0
+    replicaCount: 1
     leaderElection:
       enabled: false
     tolerations:

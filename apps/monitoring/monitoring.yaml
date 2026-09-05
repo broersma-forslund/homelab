@@ -1,7 +1,7 @@
 apps:
   monitoring:
     gatus:
-      deploy: false
+      deploy: true
     kube-prometheus-stack:
       deploy: true
       namespace: prometheus

@@ -43,14 +43,13 @@ spec:
     {{- end }}
       - ServerSideApply=true
     automated:
-      enabled: false
-      # {{- if hasKey $app "autoSync" }}
-      # enabled: {{ $app.autoSync }}
-      # {{- else }}
-      # enabled: true
-      # {{- end }}
-      # prune: true
-      # selfHeal: true
+      {{- if hasKey $app "autoSync" }}
+      enabled: {{ $app.autoSync }}
+      {{- else }}
+      enabled: true
+      {{- end }}
+      prune: true
+      selfHeal: true
 ---
 {{- end }}
 {{- end }}

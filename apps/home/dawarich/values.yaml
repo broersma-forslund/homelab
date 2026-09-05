@@ -9,8 +9,6 @@ dawarich:
       clientId: ffCBiMvhKwUp7UlOagvZYZTuo7abXZArfNRp5FDe
       secretName: oidc-credentials
   database:
-    annotations:
-      cnpg.io/hibernation: "on"
     backups:
       enabled: true
       destination: https://meijhorstbackups.blob.core.windows.net/cnpg
