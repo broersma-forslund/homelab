@@ -3,6 +3,10 @@ llmkube:
     install: true
     keep: false
 
+  webhook:
+    certManager:
+      enabled: true
+
   controllerManager:
     replicaCount: 1
     leaderElection:
