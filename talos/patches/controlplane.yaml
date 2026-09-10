@@ -29,7 +29,9 @@ allowedKubernetesNamespaces:
 apiVersion: v1alpha1
 kind: KubeNodeConfig
 # Allow workloads on control-plane nodes.
-taints: {}
+taints:
+  node-role.kubernetes.io/control-plane:
+    $patch: delete
 ---
 # Cilium manages the cluster CNI.
 apiVersion: v1alpha1
