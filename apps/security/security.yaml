@@ -2,9 +2,6 @@ apps:
   security:
     kyverno:
       deploy: true
-    trivy-operator:
-      deploy: true
-      autoSync: false
     authentik:
       deploy: true
       autoSync: false
