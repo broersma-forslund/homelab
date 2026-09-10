@@ -60,9 +60,9 @@ spec:
             - -ec
             - |
               chmod 0555 /work/talosctl
-              /work/talosctl get EtcdRootSecrets etcd -o jsonpath='{.spec.etcdCA.crt}' > /work/etcd-ca.crt
-              /work/talosctl get EtcdSecrets etcd -o jsonpath='{.spec.etcdAPIServer.crt}' > /work/etcd-client.crt
-              /work/talosctl get EtcdSecrets etcd -o jsonpath='{.spec.etcdAPIServer.key}' > /work/etcd-client.key
+              /work/talosctl get EtcdRootSecrets etcd -o jsonpath='{.spec.etcdCA.crt}' | base64 -d > /work/etcd-ca.crt
+              /work/talosctl get EtcdSecrets etcd -o jsonpath='{.spec.etcdAPIServer.crt}' | base64 -d > /work/etcd-client.crt
+              /work/talosctl get EtcdSecrets etcd -o jsonpath='{.spec.etcdAPIServer.key}' | base64 -d > /work/etcd-client.key
               kubectl create secret generic etcd-client-cert --namespace prometheus \
                 --from-file=etcd-ca.crt=/work/etcd-ca.crt \
                 --from-file=etcd-client.crt=/work/etcd-client.crt \
