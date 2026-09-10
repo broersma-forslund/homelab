@@ -30,3 +30,8 @@ apiVersion: v1alpha1
 kind: KubeNodeConfig
 # Allow workloads on control-plane nodes.
 taints: {}
+---
+# Cilium manages the cluster CNI.
+apiVersion: v1alpha1
+kind: KubeFlannelCNIConfig
+$patch: delete

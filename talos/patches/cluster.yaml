@@ -5,6 +5,11 @@ clusterName: njord
 endpoint: https://k8s.mobrockers.com:6443
 ---
 apiVersion: v1alpha1
+kind: DiscoveryServiceConfig
+name: default
+endpoint: https://discovery.talos.dev/
+---
+apiVersion: v1alpha1
 kind: KubeNetworkConfig
 podSubnets:
   - 10.244.0.0/16
