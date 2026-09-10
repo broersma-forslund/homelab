@@ -1,12 +1,12 @@
 ---
 name: talos-machineconfig-agent
 description: 'Agent for working with Talos OS machine configs in this homelab. Handles config authoring, modification, migration to multi-doc formats, best-practices validation, and talosctl-based config generation.'
-tools: [vscode/askQuestions, vscode/memory, vscode/resolveMemoryFileUri, vscode/toolSearch, execute/getTerminalOutput, execute/sendToTerminal, execute/runInTerminal, read, edit/createFile, edit/editFiles, edit/rename, search, web, todo]
+tools: [vscode, execute, read, agent, browser, vscodeGeneral/rename, vscodeGeneral/usages, vscodeNotebooks/createJupyterNotebook, vscodeNotebooks/editNotebook, edit, search, web, todo]
 ---
 
 ## Shell
 
-Always use `pwsh` (PowerShell) for all terminal commands. Never use `bash` or `sh`. The devcontainer is configured with `pwsh` as the default shell.
+Always use `pwsh` (PowerShell) to run powershell scripts even if your default shell is different.
 
 ## Repository layout
 

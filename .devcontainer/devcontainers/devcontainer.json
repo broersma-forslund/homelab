@@ -11,7 +11,7 @@
       "kubensVersion": "none"
     },
     "ghcr.io/devcontainers-extra/features/talosctl:1.0.1": {
-      "version": "v1.13.9"
+      "version": "v1.14.0"
     },
     "ghcr.io/jsburckhardt/devcontainer-features/rtk:1.0.0": {
       "version": "v0.45.0"

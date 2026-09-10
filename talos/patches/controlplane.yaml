@@ -1,0 +1,45 @@
+---
+# Cilium manages the cluster CNI.
+apiVersion: v1alpha1
+kind: KubeFlannelCNIConfig
+$patch: delete
+---
+cluster:
+  etcd:
+    extraArgs:
+      listen-metrics-urls: https://0.0.0.0:2381
+---
+apiVersion: v1alpha1
+kind: KubeControllerManagerConfig
+extraArgs:
+  bind-address: 0.0.0.0
+---
+apiVersion: v1alpha1
+kind: KubeSchedulerConfig
+extraArgs:
+  bind-address: 0.0.0.0
+---
+apiVersion: v1alpha1
+kind: KubeProxyConfig
+enabled: false
+---
+apiVersion: v1alpha1
+kind: KubeCoreDNSConfig
+enabled: false
+---
+apiVersion: v1alpha1
+kind: KubeTalosAPIAccessConfig
+allowedRoles:
+  - os:reader
+  - os:admin
+allowedKubernetesNamespaces:
+  - kube-system
+  - talos-updater
+  - prometheus-etcd-exporter
+---
+apiVersion: v1alpha1
+kind: KubeNodeConfig
+# Allow workloads on control-plane nodes.
+taints:
+  node-role.kubernetes.io/control-plane:
+    $patch: delete
