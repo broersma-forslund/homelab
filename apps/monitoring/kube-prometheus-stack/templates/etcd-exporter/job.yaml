@@ -1,0 +1,84 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: etcd-certificate-bootstrap
+  namespace: prometheus-etcd-exporter
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation,HookSucceeded
+spec:
+  backoffLimit: 3
+  ttlSecondsAfterFinished: 300
+  template:
+    spec:
+      serviceAccountName: etcd-certificate-bootstrap
+      restartPolicy: OnFailure
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      initContainers:
+        - name: copy-talosctl
+          image: {{ .Values.etcdExporter.kubectl.image.repository }}:{{ .Values.etcdExporter.kubectl.image.tag }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          command:
+            - cp
+            - /talosctl/talosctl
+            - /work/talosctl
+          volumeMounts:
+            - name: talosctl-image
+              mountPath: /talosctl
+              readOnly: true
+            - name: work
+              mountPath: /work
+      containers:
+        - name: bootstrap
+          image: {{ .Values.etcdExporter.kubectl.image.repository }}:{{ .Values.etcdExporter.kubectl.image.tag }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              memory: 64Mi
+          command:
+            - sh
+            - -ec
+            - |
+              chmod 0555 /work/talosctl
+              /work/talosctl get EtcdRootSecrets etcd -o jsonpath='{.spec.etcdCA.crt}' > /work/etcd-ca.crt
+              /work/talosctl get EtcdSecrets etcd -o jsonpath='{.spec.etcdAPIServer.crt}' > /work/etcd-client.crt
+              /work/talosctl get EtcdSecrets etcd -o jsonpath='{.spec.etcdAPIServer.key}' > /work/etcd-client.key
+              kubectl create secret generic etcd-client-cert --namespace prometheus \
+                --from-file=etcd-ca.crt=/work/etcd-ca.crt \
+                --from-file=etcd-client.crt=/work/etcd-client.crt \
+                --from-file=etcd-client.key=/work/etcd-client.key \
+                --dry-run=client -o yaml | kubectl apply -f -
+          volumeMounts:
+            - name: talos-secrets
+              mountPath: /var/run/secrets/talos.dev
+              readOnly: true
+            - name: work
+              mountPath: /work
+      volumes:
+        - name: talos-secrets
+          secret:
+            secretName: etcd-certificate-bootstrap-talos-secrets
+        - name: talosctl-image
+          image:
+            reference: {{ .Values.etcdExporter.talosctl.image.repository }}:{{ .Values.etcdExporter.talosctl.image.tag }}
+        - name: work
+          emptyDir: {}

@@ -1,0 +1,23 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: etcd-certificate-bootstrap
+  namespace: prometheus
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/sync-wave: "-1"
+rules:
+  - apiGroups: [""]
+    resources:
+      - secrets
+    resourceNames:
+      - etcd-client-cert
+    verbs:
+      - get
+      - update
+      - patch
+  - apiGroups: [""]
+    resources:
+      - secrets
+    verbs:
+      - create

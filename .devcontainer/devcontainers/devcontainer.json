@@ -2,28 +2,22 @@
   "name": "copilot",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
   "remoteUser": "vscode",
-  "containerEnv": {
-    "GITHUB_TOKEN": "${localEnv:DEV_FEATURE_TOKEN_GITHUB_API}",
-    "DEV_FEATURE_TOKEN_GITHUB_API": "${localEnv:DEV_FEATURE_TOKEN_GITHUB_API}"
-  },
   "features": {
+    "ghcr.io/devcontainers/features/powershell:2": {},
     "ghcr.io/postfinance/devcontainer-features/kubectl:1.1.0": {
       "version": "1.36.3",
       "helmVersion": "3.21.4",
       "kubectxVersion": "none",
       "kubensVersion": "none"
     },
-    // "ghcr.io/devcontainers-extra/features/talosctl:1.0.1": {
-    //   "version": "v1.13.9"
-    // },
+    "ghcr.io/devcontainers-extra/features/talosctl:1.0.1": {
+      "version": "v1.13.9"
+    },
     "ghcr.io/jsburckhardt/devcontainer-features/rtk:1.0.0": {
       "version": "v0.45.0"
     },
-    // "ghcr.io/devcontainer-community/devcontainer-features/ripgrep:1.0.3": {
-    //   "version": "15.2.0"
-    // },
-    "ghcr.io/postfinance/devcontainer-features/opencode:1.1.0": {
-      "version": "1.18.21"
+    "ghcr.io/devcontainer-community/devcontainer-features/ripgrep:1.0.3": {
+      "version": "15.2.0"
     }
   },
   "postStartCommand": "rm -rf /workspaces/homelab/talos/rendered"
