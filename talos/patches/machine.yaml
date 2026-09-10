@@ -8,6 +8,13 @@ extraArgs:
   rotate-server-certificates: true
 ---
 apiVersion: v1alpha1
+kind: KubeNodeConfig
+nodeIP:
+  # Make sure the node subnet IP is picked.
+  validSubnets:
+    - 10.0.102.0/24
+---
+apiVersion: v1alpha1
 kind: ResolverConfig
 hostDNS:
   enabled: false
@@ -16,12 +23,14 @@ hostDNS:
 apiVersion: v1alpha1
 kind: SysctlConfig
 params:
+  # Matter mDNS: https://github.com/project-chip/matter.js/blob/main/docs/TROUBLESHOOTING.md
   net.ipv6.conf.default.forwarding: 1
   net.ipv6.conf.default.accept_ra: 2
   net.ipv6.conf.default.accept_ra_rt_info_max_plen: 64
   net.ipv6.conf.all.forwarding: 1
   net.ipv6.conf.all.accept_ra: 2
   net.ipv6.conf.all.accept_ra_rt_info_max_plen: 64
+  # QUIC UDP: https://github.com/quic-go/quic-go/wiki/UDP-Buffer-Sizes
   net.core.rmem_max: 7500000
   net.core.wmem_max: 7500000
 ---

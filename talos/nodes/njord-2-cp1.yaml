@@ -7,9 +7,6 @@ provisioning:
 ---
 apiVersion: v1alpha1
 kind: KubeNodeConfig
-nodeIP:
-  validSubnets:
-    - 10.0.102.0/24
 labels:
   topology.kubernetes.io/zone: njord-2
 ---

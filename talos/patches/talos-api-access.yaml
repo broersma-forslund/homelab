@@ -1,8 +1,0 @@
-apiVersion: v1alpha1
-kind: KubeTalosAPIAccessConfig
-allowedRoles:
-  - os:reader
-  - os:admin
-allowedKubernetesNamespaces:
-  - kube-system
-  - talos-updater
