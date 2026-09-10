@@ -2,6 +2,17 @@ prometheus-operator-crds:
   crds:
     annotations:
       argocd.argoproj.io/sync-options: ServerSideApply=true
+
+etcdExporter:
+  kubectl:
+    image:
+      repository: alpine/kubectl
+      tag: 1.37.0
+  talosctl:
+    image:
+      repository: ghcr.io/siderolabs/talosctl
+      tag: v1.14.0
+
 kube-prometheus-stack:
   crds:
     enabled: false
@@ -654,33 +665,35 @@ kube-prometheus-stack:
     revisionHistoryLimit: 0
     namespaceOverride: 'prometheus-node-exporter'
 
-  kubeScheduler:
-    service:
-      selector:
-        k8s-app: kube-scheduler
-        tier: control-plane
-    spec:
-      endpoints:
-        - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
-          port: http-metrics
-          scheme: https
-          tlsConfig:
-            caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-            insecureSkipVerify: true
-
-  kubeControllerManager:
+  kubeEtcd:
     service:
       selector:
         k8s-app: kube-controller-manager
-        tier: control-plane
-    spec:
-      endpoints:
-        - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
-          port: http-metrics
-          scheme: https
-          tlsConfig:
-            caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-            insecureSkipVerify: true
+    serviceMonitor:
+      scheme: https
+      tlsConfig:
+        serverName: localhost
+        insecureSkipVerify: false
+        ca:
+          secret:
+            name: etcd-client-cert
+            key: etcd-ca.crt
+        cert:
+          secret:
+            name: etcd-client-cert
+            key: etcd-client.crt
+        keySecret:
+          name: etcd-client-cert
+          key: etcd-client.key
+      relabelings:
+        - sourceLabels: [__meta_kubernetes_endpoint_address_target_name]
+          regex: ^(.*)$
+          targetLabel: nodename
+          replacement: $1
+          action: replace
+      metricRelabelings:
+        - action: labeldrop
+          regex: pod
 
   grafana:
     revisionHistoryLimit: 0

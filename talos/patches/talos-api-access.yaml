@@ -7,4 +7,5 @@ machine:
         - os:admin
       allowedKubernetesNamespaces:
         - kube-system
-        - talos-updater 
+        - talos-updater
+        - prometheus-etcd-exporter
