@@ -1,4 +1,14 @@
 ---
+# Cilium manages the cluster CNI.
+apiVersion: v1alpha1
+kind: KubeFlannelCNIConfig
+$patch: delete
+---
+cluster:
+  etcd:
+    extraArgs:
+      listen-metrics-urls: https://0.0.0.0:2381
+---
 apiVersion: v1alpha1
 kind: KubeControllerManagerConfig
 extraArgs:
@@ -33,8 +43,3 @@ kind: KubeNodeConfig
 taints:
   node-role.kubernetes.io/control-plane:
     $patch: delete
----
-# Cilium manages the cluster CNI.
-apiVersion: v1alpha1
-kind: KubeFlannelCNIConfig
-$patch: delete
