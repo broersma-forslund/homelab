@@ -1,5 +1,8 @@
 apps:
   security:
+    dependency-track:
+      deploy: true
+      autoSync: false
     kyverno:
       deploy: true
     trivy-operator:
