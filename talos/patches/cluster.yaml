@@ -17,3 +17,8 @@ podSubnets:
 serviceSubnets:
   - 10.96.0.0/12
 # - fd58:c686:6b39::/112
+---
+cluster:
+  etcd:
+    extraArgs:
+      listen-metrics-urls: https://0.0.0.0:2381

@@ -25,6 +25,7 @@ allowedRoles:
 allowedKubernetesNamespaces:
   - kube-system
   - talos-updater
+  - prometheus-etcd-exporter
 ---
 apiVersion: v1alpha1
 kind: KubeNodeConfig
