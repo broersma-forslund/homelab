@@ -1,33 +1,34 @@
-machine:
-
-  kubelet:
-    clusterDNS: [10.96.0.10]
-    nodeIP:
-      validSubnets: ['10.0.102.0/24'] # Make sure nodes subnet IP is picked
-    extraArgs:
-      cloud-provider: external
-      rotate-server-certificates: true
-  features:
-    hostDNS:
-      enabled: false
-      forwardKubeDNSToHost: false
-
-  sysctls:
-    # Matter mdns https://github.com/project-chip/matter.js/blob/main/docs/TROUBLESHOOTING.md
-    net.ipv6.conf.default.forwarding: 1
-    net.ipv6.conf.default.accept_ra: 2
-    net.ipv6.conf.default.accept_ra_rt_info_max_plen: 64
-    net.ipv6.conf.all.forwarding: 1
-    net.ipv6.conf.all.accept_ra: 2
-    net.ipv6.conf.all.accept_ra_rt_info_max_plen: 64
-    # Quic UDP https://github.com/quic-go/quic-go/wiki/UDP-Buffer-Sizes
-    net.core.rmem_max: 7500000
-    net.core.wmem_max: 7500000
-
-  files:
-  - path: /etc/cri/conf.d/20-customization.part
-    op: create
-    content: |
-      # Spegel needs unpacked layers
-      [plugins."io.containerd.cri.v1.images"]
-        discard_unpacked_layers = false
+---
+apiVersion: v1alpha1
+kind: KubeletConfig
+clusterDNS:
+  - 10.96.0.10
+extraArgs:
+  cloud-provider: external
+  rotate-server-certificates: true
+---
+apiVersion: v1alpha1
+kind: ResolverConfig
+hostDNS:
+  enabled: false
+  forwardKubeDNSToHost: false
+---
+apiVersion: v1alpha1
+kind: SysctlConfig
+params:
+  net.ipv6.conf.default.forwarding: 1
+  net.ipv6.conf.default.accept_ra: 2
+  net.ipv6.conf.default.accept_ra_rt_info_max_plen: 64
+  net.ipv6.conf.all.forwarding: 1
+  net.ipv6.conf.all.accept_ra: 2
+  net.ipv6.conf.all.accept_ra_rt_info_max_plen: 64
+  net.core.rmem_max: 7500000
+  net.core.wmem_max: 7500000
+---
+apiVersion: v1alpha1
+kind: CRICustomizationConfig
+name: spegel
+content: |
+  # Spegel needs unpacked layers
+  [plugins."io.containerd.cri.v1.images"]
+    discard_unpacked_layers = false

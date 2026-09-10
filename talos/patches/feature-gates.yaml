@@ -1,11 +1,15 @@
-cluster:
-  apiServer:
-    extraArgs:
-      feature-gates: DRAExtendedResource=true,DRAPartitionableDevices=true,ResourceHealthStatus=true
-  scheduler:
-    extraArgs:
-      feature-gates: DRAExtendedResource=true,DRAPartitionableDevices=true
-machine:
-  kubelet:
-    extraArgs:
-      feature-gates: DRAExtendedResource=true,ResourceHealthStatus=true
+---
+apiVersion: v1alpha1
+kind: KubeAPIServerConfig
+extraArgs:
+  feature-gates: DRAExtendedResource=true,DRAPartitionableDevices=true,ResourceHealthStatus=true
+---
+apiVersion: v1alpha1
+kind: KubeSchedulerConfig
+extraArgs:
+  feature-gates: DRAExtendedResource=true,DRAPartitionableDevices=true
+---
+apiVersion: v1alpha1
+kind: KubeletConfig
+extraArgs:
+  feature-gates: DRAExtendedResource=true,ResourceHealthStatus=true
