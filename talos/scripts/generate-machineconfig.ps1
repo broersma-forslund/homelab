@@ -44,7 +44,7 @@ function New-NodeConfig ($NodeName, $NodeType) {
     Write-Host "⚙️ Generating $NodeName machineconfig for $nodeIp"
 
     $endpoint = "https://$($nodeIp):6443"
-    $outputPath = $Dev ? "-" : "$RepoPath/talos/rendered/$NodeName.yaml"
+    $outputPath = $Dev ? "$RepoPath/talos/rendered/dev/$NodeName.yaml" : "$RepoPath/talos/rendered/$NodeName.yaml"
     $secretsPath = $Dev ? "$RepoPath/talos/devsecrets.yaml" : "$HOME/.talos/secrets.yaml"
 
     $genArgList = @(
@@ -85,7 +85,7 @@ function Write-NodeConfig ($NodeName, $NodeIp) {
     &talosctl $applyArgList
 }
 
-$kubernetesVersion = $Dev ? "1.35.3" : (kubectl version -o yaml | ConvertFrom-Yaml).serverVersion.gitVersion.Replace("v", "")
+$kubernetesVersion = $Dev ? "1.37.0" : (kubectl version -o yaml | ConvertFrom-Yaml).serverVersion.gitVersion.Replace("v", "")
 
 if($NodeName -eq "ALL") {
     $nodeNames = (kubectl get nodes -o yaml | ConvertFrom-Yaml).items.metadata.name
