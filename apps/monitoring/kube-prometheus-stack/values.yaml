@@ -665,10 +665,11 @@ kube-prometheus-stack:
     revisionHistoryLimit: 0
     namespaceOverride: 'prometheus-node-exporter'
 
-  kubeEtcd:
     service:
       selector:
-        k8s-app: kube-controller-manager
+        component: kube-controller-manager
+      port: 2383
+      targetPort: 2383
     serviceMonitor:
       scheme: https
       tlsConfig:
