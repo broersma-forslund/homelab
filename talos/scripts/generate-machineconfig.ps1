@@ -33,7 +33,7 @@ function New-NodeConfig ($NodeName, $NodeType) {
     Write-Host "⚙️ Node $NodeName is a $NodeType"
 
     if($Dev) {
-        $nodeIp = "127.0.0.1"
+        $nodeIp = "2.2.2.2"
     }
     elseif($Init) {
         $nodeIp = $InitialNodeIp
@@ -43,7 +43,10 @@ function New-NodeConfig ($NodeName, $NodeType) {
 
     Write-Host "⚙️ Generating $NodeName machineconfig for $nodeIp"
 
-    $endpoint = "https://$($nodeIp):6443"
+    $kubernetesVersion = $Dev ? "1.37.0" : (kubectl version -o yaml | ConvertFrom-Yaml).serverVersion.gitVersion.Replace("v", "")
+    $talosVersion = $Dev ? "v1.14.0" : (talosctl version -n $nodeIp | ConvertFrom-Yaml).Server.Tag
+
+    $endpoint = "https://k8s.mobrockers.com:6443"
     $outputPath = $Dev ? "$RepoPath/talos/rendered/dev/$NodeName.yaml" : "$RepoPath/talos/rendered/$NodeName.yaml"
     $secretsPath = $Dev ? "$RepoPath/talos/devsecrets.yaml" : "$HOME/.talos/secrets.yaml"
 
@@ -59,6 +62,7 @@ function New-NodeConfig ($NodeName, $NodeType) {
         "--config-patch=@$RepoPath/talos/patches/machine.yaml",
         "--config-patch=@$RepoPath/talos/nodes/$NodeName.yaml",
         "--kubernetes-version=$kubernetesVersion",
+        "--talos-version=$talosVersion",
         "--force"
     )
 
@@ -84,8 +88,6 @@ function Write-NodeConfig ($NodeName, $NodeIp) {
 
     &talosctl $applyArgList
 }
-
-$kubernetesVersion = $Dev ? "1.37.0" : (kubectl version -o yaml | ConvertFrom-Yaml).serverVersion.gitVersion.Replace("v", "")
 
 if($NodeName -eq "ALL") {
     $nodeNames = (kubectl get nodes -o yaml | ConvertFrom-Yaml).items.metadata.name
