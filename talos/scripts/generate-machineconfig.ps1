@@ -43,7 +43,7 @@ function New-NodeConfig ($NodeName, $NodeType) {
 
     Write-Host "⚙️ Generating $NodeName machineconfig for $nodeIp"
 
-    $endpoint = "https://$($nodeIp):6443"
+    $endpoint = "https://k8s.mobrockers.com:6443"
     $outputPath = $Dev ? "$RepoPath/talos/rendered/dev/$NodeName.yaml" : "$RepoPath/talos/rendered/$NodeName.yaml"
     $secretsPath = $Dev ? "$RepoPath/talos/devsecrets.yaml" : "$HOME/.talos/secrets.yaml"
 
