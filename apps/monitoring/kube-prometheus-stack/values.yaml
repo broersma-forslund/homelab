@@ -665,6 +665,7 @@ kube-prometheus-stack:
     revisionHistoryLimit: 0
     namespaceOverride: 'prometheus-node-exporter'
 
+  kubeEtcd:
     service:
       selector:
         component: kube-controller-manager
