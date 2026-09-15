@@ -38,6 +38,8 @@ kind: KubeNodeConfig
 taints:
   node-role.kubernetes.io/control-plane:
     $patch: delete
+  node.kubernetes.io/exclude-from-external-load-balancers:
+    $patch: delete
 ---
 apiVersion: v1alpha1
 kind: KubeServiceAccountConfig
