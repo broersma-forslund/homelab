@@ -26,21 +26,17 @@ spec:
     storage: 2Ti
   csi:
     driver: rook-ceph.cephfs.csi.ceph.com
+    volumeHandle: 0001-0009-rook-ceph-0000000000000001-734b5df5-5692-45b5-bdb3-07963cdf7d88-sonarr
     volumeAttributes:
       staticVolume: "true"
       clusterID: rook-ceph
       fsName: ceph-filesystem
-      pool: ceph-filesystem-data0
       storage.kubernetes.io/csiProvisionerIdentity: 1744229175725-2701-rook-ceph.cephfs.csi.ceph.com
       subvolumeName: csi-vol-734b5df5-5692-45b5-bdb3-07963cdf7d88
-      rootPath: /volumes/csi/csi-vol-734b5df5-5692-45b5-bdb3-07963cdf7d88/cf58ab99-94c4-47fe-bdca-58959952b69d
       subvolumePath: /volumes/csi/csi-vol-734b5df5-5692-45b5-bdb3-07963cdf7d88/cf58ab99-94c4-47fe-bdca-58959952b69d
-    volumeHandle: 0001-0009-rook-ceph-0000000000000001-734b5df5-5692-45b5-bdb3-07963cdf7d88-sonarr
-    controllerExpandSecretRef:
-      name: rook-csi-cephfs-provisioner
-      namespace: rook-ceph
+      rootPath: /volumes/csi/csi-vol-734b5df5-5692-45b5-bdb3-07963cdf7d88/cf58ab99-94c4-47fe-bdca-58959952b69d
     nodeStageSecretRef:
-      name: rook-csi-cephfs-node-user
+      name: rook-csi-cephfs-node
       namespace: rook-ceph
   persistentVolumeReclaimPolicy: Retain
   storageClassName: ceph-filesystem
