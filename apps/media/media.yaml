@@ -12,7 +12,6 @@ apps:
       deploy: true
     seerr:
       deploy: true
-      autoSync: false
     maintainerr:
       deploy: true
     bazarr:
