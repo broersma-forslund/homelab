@@ -1,4 +1,14 @@
 ---
+apiVersion: v1alpha1
+kind: KubeTalosAPIAccessConfig
+allowedRoles:
+  - os:reader
+  - os:admin
+allowedKubernetesNamespaces:
+  - kube-system
+  - talos-updater
+  - prometheus-etcd-exporter
+---
 # Cilium manages the cluster CNI.
 apiVersion: v1alpha1
 kind: KubeFlannelCNIConfig
@@ -23,18 +33,15 @@ kind: KubeCoreDNSConfig
 enabled: false
 ---
 apiVersion: v1alpha1
-kind: KubeTalosAPIAccessConfig
-allowedRoles:
-  - os:reader
-  - os:admin
-allowedKubernetesNamespaces:
-  - kube-system
-  - talos-updater
-  - prometheus-etcd-exporter
----
-apiVersion: v1alpha1
 kind: KubeNodeConfig
 # Allow workloads on control-plane nodes.
 taints:
   node-role.kubernetes.io/control-plane:
     $patch: delete
+  node.kubernetes.io/exclude-from-external-load-balancers:
+    $patch: delete
+---
+apiVersion: v1alpha1
+kind: KubeServiceAccountConfig
+issuer:
+    issuerURL: https://k8s.mobrockers.com:6443

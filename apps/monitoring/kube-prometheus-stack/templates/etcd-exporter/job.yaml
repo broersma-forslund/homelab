@@ -5,12 +5,14 @@ metadata:
   namespace: prometheus-etcd-exporter
   annotations:
     helm.sh/hook: post-install,post-upgrade
-    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+    helm.sh/hook-delete-policy: before-hook-creation
 spec:
   backoffLimit: 3
   ttlSecondsAfterFinished: 300
   template:
     spec:
+      nodeSelector:
+        node-role.kubernetes.io/control-plane: ""
       serviceAccountName: etcd-certificate-bootstrap
       restartPolicy: OnFailure
       securityContext:
@@ -54,19 +56,42 @@ spec:
               memory: 32Mi
             limits:
               memory: 64Mi
+          env:
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
           command:
             - sh
             - -ec
             - |
+              set -euo pipefail
+              export TALOSCONFIG=/var/run/secrets/talos.dev/talosconfig
+              umask 077
+
+              test -n "$NODE_IP" || { echo "NODE_IP is empty" >&2; exit 1; }
+              echo "Fetching ETCD certificates from Talos node $NODE_IP"
+
               chmod 0555 /work/talosctl
-              /work/talosctl get EtcdRootSecrets etcd -o jsonpath='{.spec.etcdCA.crt}' | base64 -d > /work/etcd-ca.crt
-              /work/talosctl get EtcdSecrets etcd -o jsonpath='{.spec.etcdAPIServer.crt}' | base64 -d > /work/etcd-client.crt
-              /work/talosctl get EtcdSecrets etcd -o jsonpath='{.spec.etcdAPIServer.key}' | base64 -d > /work/etcd-client.key
+              /work/talosctl --nodes "$NODE_IP" --endpoints "$NODE_IP" get EtcdRootSecrets etcd -o jsonpath='{.spec.etcdCA.crt}' | base64 -d > /work/etcd-ca.crt
+              /work/talosctl --nodes "$NODE_IP" --endpoints "$NODE_IP" get EtcdSecrets etcd -o jsonpath='{.spec.etcdAPIServer.crt}' | base64 -d > /work/etcd-client.crt
+              /work/talosctl --nodes "$NODE_IP" --endpoints "$NODE_IP" get EtcdSecrets etcd -o jsonpath='{.spec.etcdAPIServer.key}' | base64 -d > /work/etcd-client.key
+
+              test -s /work/etcd-ca.crt || { echo "ETCD CA certificate is empty" >&2; exit 1; }
+              test -s /work/etcd-client.crt || { echo "ETCD client certificate is empty" >&2; exit 1; }
+              test -s /work/etcd-client.key || { echo "ETCD client key is empty" >&2; exit 1; }
+              grep -q -- '-----BEGIN CERTIFICATE-----' /work/etcd-ca.crt || { echo "ETCD CA certificate is malformed" >&2; exit 1; }
+              grep -q -- '-----BEGIN CERTIFICATE-----' /work/etcd-client.crt || { echo "ETCD client certificate is malformed" >&2; exit 1; }
+              grep -Eq -- '-----BEGIN ([A-Z0-9 ]+ )?PRIVATE KEY-----' /work/etcd-client.key || { echo "ETCD client key is malformed" >&2; exit 1; }
+              echo "ETCD certificates retrieved successfully"
+
+              echo "Updating Prometheus ETCD certificate Secret"
               kubectl create secret generic etcd-client-cert --namespace prometheus \
                 --from-file=etcd-ca.crt=/work/etcd-ca.crt \
                 --from-file=etcd-client.crt=/work/etcd-client.crt \
                 --from-file=etcd-client.key=/work/etcd-client.key \
                 --dry-run=client -o yaml | kubectl apply -f -
+              echo "Prometheus ETCD certificate Secret updated successfully"
           volumeMounts:
             - name: talos-secrets
               mountPath: /var/run/secrets/talos.dev

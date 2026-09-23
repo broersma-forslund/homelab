@@ -8,7 +8,7 @@ external-dns:
   image:
     registry: registry.k8s.io
     repository: external-dns/external-dns
-    tag: v0.22.0
+    tag: v0.23.0
 
   policy: sync
   sources:
@@ -28,7 +28,7 @@ external-dns:
 
   sidecars:
   - name: adguard-webhook
-    image: ghcr.io/muhlba91/external-dns-provider-adguard:v11.1.3
+    image: ghcr.io/muhlba91/external-dns-provider-adguard:v11.2.0
     ports:
     - containerPort: 8080
       name: metrics
