@@ -5,7 +5,7 @@ image:
 tautulli:
   image:
     repository: ghcr.io/home-operations/tautulli
-    tag: 2.18.1
+    tag: 2.18.2
 
 route:
   parentRefs:
