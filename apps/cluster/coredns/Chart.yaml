@@ -4,5 +4,5 @@ version: 0.0.0
 
 dependencies:
   - name: coredns
-    version: 1.47.1
+    version: 1.48.1
     repository: oci://ghcr.io/coredns/charts
