@@ -7,31 +7,21 @@ dra-driver-nvidia-gpu:
     computeDomains:
       enabled: false
 
-  # admission validation
-  webhook:
-    enabled: true
-
   featureGates:
     TimeSlicingSettings: true
 
-gpu-operator:
-  daemonsets:
-    tolerations:
-      - key: node-role.kubernetes.io/gpu
-        operator: Exists
-  nfd:
-    enabled: false
-  driver:
-    enabled: false
-  toolkit:
-    enabled: false
-  devicePlugin:
-    enabled: false
-  dcgmExporter: 
+  # admission validation
+  webhook:
     enabled: true
-    serviceMonitor:
-      enabled: true
-      interval: 30s
+    tolerations:
+    - key: node-role.kubernetes.io/gpu
+      operator: Exists
+  
+  kubeletPlugin:
+    tolerations:
+    - key: node-role.kubernetes.io/gpu
+      operator: Exists
+      
 
 dcgm-exporter:
   runtimeClassName: nvidia
