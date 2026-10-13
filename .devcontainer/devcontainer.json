@@ -4,7 +4,7 @@
   "remoteUser": "vscode",
   "features": {
     "ghcr.io/devcontainers/features/powershell:2": {},
-    "ghcr.io/postfinance/devcontainer-features/kubectl:1.1.0": {
+    "ghcr.io/postfinance/devcontainer-features/kubectl:1.1.1": {
       "version": "1.36.3",
       "helmVersion": "3.21.4",
       "kubectxVersion": "none",
