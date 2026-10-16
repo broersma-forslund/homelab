@@ -700,7 +700,6 @@ kube-prometheus-stack:
   grafana:
     revisionHistoryLimit: 0
     replicas: 1
-    initChownData: false
     defaultDashboardsTimezone: Europe/Amsterdam
     route:
       main:
