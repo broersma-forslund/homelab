@@ -10,7 +10,7 @@ tuppr:
 talos:
     image:
       repository: ghcr.io/siderolabs/talos
-      tag: v1.14.3
+      tag: v1.14.4
 kubernetes:
   image:
     repository: ghcr.io/siderolabs/kubelet
