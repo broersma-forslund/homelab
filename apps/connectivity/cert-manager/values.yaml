@@ -9,6 +9,8 @@ cert-manager:
 
   enableCertificateOwnerRef: true
   config:
+    featureGates:
+      ACMEUseARI: true
     leaderElectionConfig:
       namespace: cert-manager
     acmeDNS01Config:
