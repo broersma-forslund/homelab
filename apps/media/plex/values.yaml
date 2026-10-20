@@ -1,6 +1,6 @@
 image:
   repository: ghcr.io/home-operations/plex
-  tag: 1.43.4
+  tag: 1.43.5
 
 tautulli:
   image:
