@@ -12,7 +12,7 @@ nextcloud:
     enabled: true
 
   httpRoute:
-    enabled: true
+    enabled: false
     hostnames:
     - nextcloud.mobrockers.com
     parentRefs:
