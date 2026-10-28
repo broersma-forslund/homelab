@@ -38,7 +38,7 @@ trust-manager:
 
   defaultPackageImage:
     repository: quay.io/jetstack/trust-pkg-debian-trixie
-    tag: '20250419.2'
+    tag: 20250419-deb13u1.1
   app:
     metrics:
       service:
