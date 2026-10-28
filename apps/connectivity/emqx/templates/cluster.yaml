@@ -71,6 +71,8 @@ spec:
   coreTemplate:
     spec:
       replicas: 1
+      minAvailable: 0
+      maxUnavailable: 1
       volumeClaimTemplates:
         accessModes:
         - ReadWriteOnce
