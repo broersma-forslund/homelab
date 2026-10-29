@@ -1,77 +1,82 @@
-apiVersion: apps.emqx.io/v2beta1
+apiVersion: apps.emqx.io/v3beta1
 kind: EMQX
 metadata:
   name: emqx
 spec:
   image: '{{ .Values.cluster.image.repository }}:{{ .Values.cluster.image.tag }}'
-  revisionHistoryLimit: 0 
-  replicantTemplate:
-    spec:
-      replicas: 0
+  revisionHistoryLimit: 0
+
+  updateStrategy:
+    evacuationStrategy:
+      # Single core node: no evacuation target, it would only delay restarts.
+      type: Disabled
 
   config:
-    data: |
-      listeners.tcp.default {
-        enable = false
-      }
-      listeners.ws.default {
-        enable = false
-      }
-      listeners.wss.default {
-        enable = false
-      }
-      listeners.ssl.default {
-        enable = false
-      }
+    roots:
+      listeners:
+        tcp:
+          default:
+            enable: false
+        ws:
+          default:
+            enable: false
+        wss:
+          default:
+            enable: false
+        ssl:
+          default:
+            enable: false
+          internal:
+            bind: '0.0.0.0:8884'
+            ssl_options:
+              cacertfile: /mounted/cert/mqtt-emqx-svc/ca.crt
+              certfile: /mounted/cert/mqtt-emqx-svc/tls.crt
+              keyfile: /mounted/cert/mqtt-emqx-svc/tls.key
+          external:
+            bind: '0.0.0.0:8883'
+            ssl_options:
+              certfile: /mounted/cert/mqtt-mobrockers-com/tls.crt
+              keyfile: /mounted/cert/mqtt-mobrockers-com/tls.key
 
-      listeners.ssl.internal {
-        bind = "0.0.0.0:8884"
-        ssl_options {
-          cacertfile = "/mounted/cert/mqtt-emqx-svc/ca.crt"
-          certfile = "/mounted/cert/mqtt-emqx-svc/tls.crt"
-          keyfile = "/mounted/cert/mqtt-emqx-svc/tls.key" 
-        }
-      }
+      authentication:
+        - mechanism: password_based
+          backend: built_in_database
 
-      listeners.ssl.external {
-        bind = "0.0.0.0:8883"
-        ssl_options {
-          certfile = "/mounted/cert/mqtt-mobrockers-com/tls.crt"
-          keyfile = "/mounted/cert/mqtt-mobrockers-com/tls.key" 
-        }
-      }
+      authorization:
+        no_match: deny
+        deny_action: disconnect
+        sources:
+          - type: built_in_database
 
-      authentication = [{
-        mechanism = "password_based"
-        backend = "built_in_database"
-      }]
-      authorization {
-        no_match = "deny"
-        deny_action = "disconnect"
+      mqtt:
+        ignore_loop_deliver: false
+        retain_available: true
+        wildcard_subscription: true
+        use_username_as_clientid: true
 
-        sources = [{
-          type = "built_in_database"
-        }]
-      }
+      retainer:
+        enable: true
+        backend:
+          type: built_in_database
+          storage_type: disc
 
-      mqtt {
-        ignore_loop_deliver = false
-        retain_available = true
-        wildcard_subscription = true
-        use_username_as_clientid = true
-      }
-      retainer {
-        enable = true
-        backend {
-          type = "built_in_database"
-          storage_type = "disc"
-        }
-      }
+      dashboard:
+        sso:
+          oidc:
+            enable: true
+            backend: oidc
+            provider: generic
+            issuer: https://authentik.mobrockers.com/application/o/emqx/
+            clientid: FrQmQnbUFYlOX7ppghAODr2i0QWCGYZNlD5wSUFh
+            # Authentik client secret from the mounted emqx-dashboard-oidc-secret
+            secret: 'file:///mounted/oidc/client-secret'
+            dashboard_addr: https://emqx.mobrockers.com
+            ssl:
+              enable: true
 
   coreTemplate:
     spec:
-      replicas: 3
-      volumeClaimTemplates:
+      persistentVolumeClaimSpec:
         accessModes:
         - ReadWriteOnce
         resources:
@@ -84,11 +89,16 @@ spec:
       - name: mqtt-emqx-svc-tls
         secret:
           secretName: mqtt-emqx-svc-tls
+      - name: dashboard-oidc
+        secret:
+          secretName: emqx-dashboard-oidc-secret
       extraVolumeMounts:
       - name: mqtt-mobrockers-com-tls
         mountPath: /mounted/cert/mqtt-mobrockers-com
       - name: mqtt-emqx-svc-tls
         mountPath: /mounted/cert/mqtt-emqx-svc
+      - name: dashboard-oidc
+        mountPath: /mounted/oidc
 
   listenersServiceTemplate:
     metadata:
