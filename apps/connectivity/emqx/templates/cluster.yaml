@@ -70,9 +70,9 @@ spec:
             # Authentik client secret from the mounted emqx-dashboard-oidc-secret
             secret: 'file:///mounted/oidc/client-secret'
             dashboard_addr: https://emqx.mobrockers.com
-            ssl:
-              enable: true
-              verify: verify_peer
+#            ssl:
+#              enable: true
+#              verify: verify_peer
 
   coreTemplate:
     spec:
