@@ -20,10 +20,10 @@
       "resolved": "ghcr.io/jsburckhardt/devcontainer-features/rtk@sha256:f393df8514c943c260e22e0e89fc224e3ba0ca6eeccbd6c562741cf8d7acfde4",
       "integrity": "sha256:f393df8514c943c260e22e0e89fc224e3ba0ca6eeccbd6c562741cf8d7acfde4"
     },
-    "ghcr.io/postfinance/devcontainer-features/kubectl:1.1.0": {
-      "version": "1.1.0",
-      "resolved": "ghcr.io/postfinance/devcontainer-features/kubectl@sha256:e1cf91bc870eb4ba675ad69f443462a69f2aae43836782a52f923a2bf6f2aeea",
-      "integrity": "sha256:e1cf91bc870eb4ba675ad69f443462a69f2aae43836782a52f923a2bf6f2aeea"
+    "ghcr.io/postfinance/devcontainer-features/kubectl:1.1.1": {
+      "version": "1.1.1",
+      "resolved": "ghcr.io/postfinance/devcontainer-features/kubectl@sha256:b1f982f6141f180e73db31a46ee6f50a3fb07c3720527e143536a6a31e84f27a",
+      "integrity": "sha256:b1f982f6141f180e73db31a46ee6f50a3fb07c3720527e143536a6a31e84f27a"
     }
   }
 }
