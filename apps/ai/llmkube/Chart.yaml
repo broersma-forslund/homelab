@@ -4,5 +4,5 @@ version: 0.0.0
 
 dependencies:
   - name: llmkube
-    version: 0.10.14
+    version: 0.10.15
     repository: oci://ghcr.io/defilantech/charts
