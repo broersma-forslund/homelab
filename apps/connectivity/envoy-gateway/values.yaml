@@ -15,4 +15,4 @@ privateGateway:
 publicGateway:
   enabled: true
   loadBalancerIP: 10.0.102.221
-  publicIP: 78.82.226.117
+  publicIP: 213.112.135.146
