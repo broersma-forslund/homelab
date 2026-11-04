@@ -79,7 +79,7 @@ database:
   image:
     registry: ghcr.io
     repository: tensorchord/cloudnative-vectorchord
-    tag: "18.4-1.1.1"
+    tag: "18.6-1.1.1"
   backups:
     enabled: true
     destination: https://meijhorstbackups.blob.core.windows.net/cnpg
