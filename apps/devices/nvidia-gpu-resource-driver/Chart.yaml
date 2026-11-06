@@ -7,5 +7,5 @@ dependencies:
     version: 0.5.1
     repository: oci://registry.k8s.io/dra-driver-nvidia/charts
   - name: dcgm-exporter
-    version: 4.8.4
+    version: 4.9.0
     repository: https://nvidia.github.io/dcgm-exporter/helm-charts
