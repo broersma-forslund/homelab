@@ -4,5 +4,5 @@ version: 0.0.0
 
 dependencies:
 - name: tuppr 
-  version: 0.5.12
+  version: 0.5.13
   repository: oci://ghcr.io/home-operations/charts
