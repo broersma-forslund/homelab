@@ -751,6 +751,11 @@ kube-prometheus-stack:
       dashboards:
         enabled: true
         searchNamespace: ALL
+        annotations:
+          com.grafana/dashboard-folder: "Kubernetes"
+        folderAnnotation: com.grafana/dashboard-folder
+        provider:
+          foldersFromFilesStructure: true
       datasources:
         enabled: true
         searchNamespace: ALL
