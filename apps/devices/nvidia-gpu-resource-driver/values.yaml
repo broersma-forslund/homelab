@@ -29,6 +29,13 @@ dcgm-exporter:
     enabled: true
   serviceMonitor:
     enabled: true
+  networkPolicy:
+    enabled: true
+    allowedPeers:
+      - namespaceSelector:
+          matchLabels: {kubernetes.io/metadata.name: prometheus}
+        podSelector:
+          matchLabels: {app.kubernetes.io/name: prometheus}
   affinity:
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
