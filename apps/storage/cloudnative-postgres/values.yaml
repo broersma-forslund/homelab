@@ -1,12 +1,17 @@
 cloudnative-pg:
   fullnameOverride: cloudnative-pg
+  replicaCount: 2
+
   monitoring:
     podMonitorEnabled: true
     grafanaDashboard:
       create: true
+      annotations:
+        com.grafana/dashboard-folder: CNPG
 
 plugin-barman-cloud:
   fullnameOverride: cloudnative-pg-plugin-barman-cloud
+  replicaCount: 2
 #   resources:
 #     requests:
 #       cpu: 100m
