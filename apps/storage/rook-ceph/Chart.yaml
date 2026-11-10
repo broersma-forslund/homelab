@@ -4,8 +4,8 @@ version: 0.0.0
 
 dependencies:
   - name: rook-ceph
-    version: v1.21.2
-    repository: https://charts.rook.io/release
+    version: 1.21.2
+    repository: oci://ghcr.io/rook
   - name: ceph-csi-drivers
     version: 1.1.0
-    repository: https://ceph.github.io/ceph-csi-operator
+    repository: oci://ghcr.io/rook
