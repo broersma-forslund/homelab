@@ -26,10 +26,16 @@
       "automerge": true
     },
     {
-      "description": "Group rook-ceph operator and cluster chart updates",
-      "matchDatasources": ["helm"],
-      "matchPackageNames": ["rook-ceph", "rook-ceph-cluster"],
-      "groupName": "rook-ceph"
+      "description": "Group Rook OCI chart updates across application directories",
+      "matchManagers": ["helmv3"],
+      "matchDatasources": ["docker"],
+      "matchPackageNames": [
+        "ghcr.io/rook/rook-ceph",
+        "ghcr.io/rook/rook-ceph-cluster"
+      ],
+      "groupName": "rook-ceph",
+      "additionalBranchPrefix": "rook-ceph-",
+      "commitMessagePrefix": "[rook-ceph]"
     },
     {
       "description": "Only allow stable Ceph versions (x.2.y) - ignore development (x.0.y) and release candidate (x.1.y) versions",
