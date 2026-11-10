@@ -3,9 +3,9 @@ name: rook-ceph-cluster
 version: 0.0.0
 
 dependencies:
-  - name: rook-ceph-cluster
-    version: v1.20.10
-    repository: https://charts.rook.io/release
+  - name: rook-ceph
+    version: 1.21.2
+    repository: oci://ghcr.io/rook
   - name: extended-ceph-exporter
     version: 1.0.1
     repository: oci://ghcr.io/florisfeddema/charts
