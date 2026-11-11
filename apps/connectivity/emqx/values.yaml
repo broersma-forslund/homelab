@@ -21,4 +21,4 @@ emqx-operator:
 cluster:
   image:
     repository: emqx/emqx
-    tag: 6.3.2
+    tag: 6.3.3
