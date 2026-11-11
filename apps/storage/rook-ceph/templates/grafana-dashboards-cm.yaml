@@ -8,6 +8,8 @@ metadata:
   name: {{ $dashboardName | trunc 63 | trimSuffix "-" }}
   labels:
     grafana_dashboard: "1"
+  annotations:
+    com.grafana/dashboard-folder: Rook
 data:
   {{ $dashboardName }}.json: {{ $.Files.Get $path | toJson }}
 {{- end }}
