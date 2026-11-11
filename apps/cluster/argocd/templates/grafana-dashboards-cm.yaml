@@ -6,6 +6,8 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ $dashboardName | trunc 63 | trimSuffix "-" }}
+  annotations:
+    com.grafana/dashboard-folder: Argocd
   labels:
     grafana_dashboard: "1"
 data:
