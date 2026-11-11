@@ -703,41 +703,52 @@ kube-prometheus-stack:
       # default. Keep that metric because the CPU throttled time panel needs it,
       # while retaining the chart's other default volume-reduction filters.
       cAdvisorMetricRelabelings:
-        - action: drop
-          regex: container_cpu_(load_average_10s|system_seconds_total|user_seconds_total)
-          sourceLabels:
-            - __name__
-        - action: drop
-          regex: container_fs_(io_current|io_time_seconds_total|io_time_weighted_seconds_total|reads_merged_total|sector_reads_total|sector_writes_total|writes_merged_total)
-          sourceLabels:
-            - __name__
-        - action: drop
-          regex: container_memory_(mapped_file|swap)
-          sourceLabels:
-            - __name__
-        - action: drop
-          regex: container_(file_descriptors|tasks_state|threads_max)
-          sourceLabels:
-            - __name__
-        - action: drop
-          regex: container_memory_failures_total;hierarchy
-          sourceLabels:
-            - __name__
-            - scope
-        - action: drop
-          regex: container_network_.*;(cali|cilium|cni|lxc|nodelocaldns|tunl).*
-          sourceLabels:
-            - __name__
-            - interface
-        - action: drop
-          regex: container_spec.*
-          sourceLabels:
-            - __name__
-        - action: drop
-          regex: .+;
-          sourceLabels:
-            - id
-            - pod
+      - sourceLabels: [__name__]
+        action: drop
+        regex: 'container_cpu_(load_average_10s|system_seconds_total|user_seconds_total)'
+      # Drop less useful container / always zero filesystem metrics.
+      - sourceLabels: [__name__]
+        action: drop
+        regex: 'container_fs_(io_current|io_time_seconds_total|io_time_weighted_seconds_total|reads_merged_total|sector_reads_total|sector_writes_total|writes_merged_total)'
+      # Drop less useful container memory metrics. container_memory_swap is kept because the
+      # k8s.rules.container_memory_swap recording rule and the "Memory Usage (Swap)" columns
+      # of the Compute Resources dashboards are built on it.
+      - sourceLabels: [__name__]
+        action: drop
+        regex: 'container_memory_mapped_file'
+      # Drop less useful container process metrics.
+      - sourceLabels: [__name__]
+        action: drop
+        regex: 'container_(file_descriptors|tasks_state|threads_max)'
+      # Drop container_memory_failures_total{scope="hierarchy"} metrics,
+      # we only need the container scope.
+      - sourceLabels: [__name__, scope]
+        action: drop
+        regex: 'container_memory_failures_total;hierarchy'
+      # Drop container_network_... metrics that match various interfaces that
+      # correspond to CNI and similar interfaces. This avoids capturing network
+      # metrics for host network containers.
+      - sourceLabels: [__name__, interface]
+        action: drop
+        regex: 'container_network_.*;(cali|cilium|cni|lxc|nodelocaldns|tunl).*'
+      # Drop container spec metrics that overlap with kube-state-metrics.
+      - sourceLabels: [__name__]
+        action: drop
+        regex: 'container_spec.*'
+      # Drop cgroup metrics with no pod.
+      - sourceLabels: [id, pod]
+        action: drop
+        regex: '.+;'
+    # - sourceLabels: [__name__, image]
+    #   separator: ;
+    #   regex: container_([a-z_]+);
+    #   replacement: $1
+    #   action: drop
+    # - sourceLabels: [__name__]
+    #   separator: ;
+    #   regex: container_(network_tcp_usage_total|network_udp_usage_total|tasks_state|cpu_load_average_10s)
+    #   replacement: $1
+    #   action: drop
 
   grafana:
     revisionHistoryLimit: 0
