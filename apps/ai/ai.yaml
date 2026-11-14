@@ -3,6 +3,5 @@ apps:
     llmkube:
       deploy: true
       skipSchemaValidation: true
-      autoSync: false
     open-webui:
       deploy: true
