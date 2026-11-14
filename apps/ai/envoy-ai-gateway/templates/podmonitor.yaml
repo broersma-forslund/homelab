@@ -1,0 +1,22 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: ai-gateway-podmonitor
+spec:
+  podMetricsEndpoints:
+    - port: metrics
+      scheme: http
+      path: /stats/prometheus
+    - port: aigw-admin
+      scheme: http
+      path: /metrics
+  podTargetLabels:
+    - gateway.envoyproxy.io/owning-gateway-name
+    - gateway.envoyproxy.io/owning-gateway-namespace
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: proxy
+      app.kubernetes.io/managed-by: envoy-gateway
+      app.kubernetes.io/name: envoy
+      gateway.envoyproxy.io/owning-gateway-name: ai-gateway
+      gateway.envoyproxy.io/owning-gateway-namespace: {{ .Release.Namespace }}

@@ -1,0 +1,14 @@
+apiVersion: v2
+name: envoy-ai-gateway-system
+version: 0.0.0
+
+dependencies:
+  - name: gateway-helm
+    version: 1.10.0
+    repository: oci://docker.io/envoyproxy
+  - name: ai-gateway-crds-helm
+    version: v1.2.1
+    repository: oci://docker.io/envoyproxy
+  - name: ai-gateway-helm
+    version: v1.2.1
+    repository: oci://docker.io/envoyproxy

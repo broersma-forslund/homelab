@@ -8,9 +8,7 @@ llmkube:
       enabled: true
 
   controllerManager:
-    replicaCount: 1
-    leaderElection:
-      enabled: false
+    replicaCount: 2
     tolerations:
       - key: node-role.kubernetes.io/gpu
         operator: Exists

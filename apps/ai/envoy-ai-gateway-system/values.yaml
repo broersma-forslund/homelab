@@ -1,0 +1,81 @@
+gateway-helm:
+  crds:
+    enabled: false
+  deployment:
+    replicas: 2
+    envoyGateway:
+      resources:
+        requests:
+          cpu: 50m
+          memory: 128Mi
+        limits:
+          memory: 512Mi
+  config:
+    envoyGateway:
+      gateway:
+        controllerName: gateway.envoyproxy.io/ai-gateway-controller
+      provider:
+        type: Kubernetes
+        kubernetes:
+          deploy:
+            type: GatewayNamespace
+          watch:
+            type: Namespaces
+            namespaces:
+              - envoy-ai-gateway-system
+      extensionApis:
+        enableBackend: true
+        enableEnvoyPatchPolicy: true
+      extensionManager:
+        hooks:
+          xdsTranslator:
+            translation:
+              listener:
+                includeAll: true
+              route:
+                includeAll: true
+              cluster:
+                includeAll: true
+              secret:
+                includeAll: true
+            post:
+              - Translation
+              - Cluster
+              - Route
+        service:
+          fqdn:
+            hostname: ai-gateway-controller.envoy-ai-gateway-system.svc.cluster.local
+            port: 1063
+
+ai-gateway-helm:
+  envoyGateway:
+    namespace: envoy-ai-gateway-system
+  controller:
+    quotaRateLimitServiceAddr: envoy-ai-gateway-ratelimit.envoy-ai-gateway-system
+    watch:
+      namespaces:
+        - envoy-ai-gateway-system
+    mutatingWebhook:
+      certManager:
+        enable: true
+      namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: envoy-ai-gateway-system
+    mcp:
+      sessionEncryption:
+        existingSecret: ai-gateway-mcp-session-encryption
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        memory: 512Mi
+
+initSecretJob:
+  enabled: true
+  image:
+    registry: docker.io
+    repository: alpine/kubectl
+    tag: 1.37.2
+    pullPolicy: IfNotPresent
+  resources: {}
