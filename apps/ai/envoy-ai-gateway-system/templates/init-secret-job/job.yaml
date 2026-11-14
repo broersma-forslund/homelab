@@ -1,0 +1,61 @@
+{{- if .Values.initSecretJob.enabled }}
+{{- $aiGateway := index .Values "ai-gateway-helm" }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-init-secret-job
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  backoffLimit: 3
+  template:
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: init-secret
+          image: "{{ .Values.initSecretJob.image.registry }}/{{ .Values.initSecretJob.image.repository }}:{{ .Values.initSecretJob.image.tag }}"
+          imagePullPolicy: {{ .Values.initSecretJob.image.pullPolicy }}
+          resources: {{ .Values.initSecretJob.resources | toYaml | nindent 12 }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          env:
+            - name: HOME
+              value: /tmp
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          command:
+            - sh
+            - "-c"
+            - |
+              set -eu
+              secret_name={{ $aiGateway.controller.mcp.sessionEncryption.existingSecret | quote }}
+              existing="$(kubectl get secret "$secret_name" -n "$POD_NAMESPACE" --ignore-not-found -o name)"
+              if [ -n "$existing" ]; then
+                echo "MCP seed Secret already exists; leaving it unchanged."
+                exit 0
+              fi
+              trap 'rm -f /tmp/mcp-seed' EXIT
+              head -c 32 /dev/urandom > /tmp/mcp-seed
+              seed="$(base64 /tmp/mcp-seed)"
+              kubectl create secret generic "$secret_name" -n "$POD_NAMESPACE" --from-literal=seed="$seed"
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir: {}
+      restartPolicy: OnFailure
+      serviceAccountName: {{ .Release.Name }}-init-secret-job
+{{- end }}

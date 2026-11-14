@@ -1,5 +1,10 @@
 apps:
   ai:
+    envoy-ai-gateway-system:
+      deploy: true
+    envoy-ai-gateway:
+      deploy: true
+      namespace: envoy-ai-gateway-system
     llmkube:
       deploy: true
       skipSchemaValidation: true
