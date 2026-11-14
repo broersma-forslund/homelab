@@ -44,8 +44,8 @@ data:
   RAG_OPENAI_API_BASE_URL: "http://model-router-proxy.llmkube.svc.cluster.local:8080/v1"
   RAG_OPENAI_API_KEY: ""
   RAG_EMBEDDING_MODEL: "openwebui-embedding"
-  RAG_QUERY_PREFIX: ""
-  RAG_CONTENT_PREFIX: ""
+  RAG_EMBEDDING_QUERY_PREFIX: ""
+  RAG_EMBEDDING_CONTENT_PREFIX: ""
   RAG_EMBEDDING_BATCH_SIZE: "20"
   RAG_FILE_MAX_SIZE: "100"
   RAG_FILE_MAX_COUNT: "10"
@@ -57,13 +57,14 @@ data:
   RAG_RERANKING_ENGINE: "sentence_transformers"
   RAG_RERANKING_MODEL: "BAAI/bge-reranker-v2-m3"
   RAG_TOP_K: "25"
-  RAG_RERANKING_MODEL_TOP_K: "5"
+  RAG_TOP_K_RERANKER: "5"
   ENABLE_WEB_SEARCH: "true"
   WEB_SEARCH_ENGINE: "searxng"
   SEARXNG_QUERY_URL: {{ $webui.searxngQueryUrl }}
   WEB_LOADER_ENGINE: "playwright"
   WEB_SEARCH_RESULT_COUNT: "5"
   WEB_LOADER_CONCURRENT_REQUESTS: "5"
+  WEB_FETCH_MAX_CONTENT_LENGTH: "20000"
 
   # --- Offline mode / model-download lockdown ---
   # Safe alongside the above: OFFLINE_MODE only blocks HuggingFace Hub downloads

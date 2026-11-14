@@ -7,9 +7,6 @@ spec:
   defaultRoute: gemma4
   defaultRouteStrategy: BackendNameMatch
   backends:
-    - name: qwen3
-      inferenceServiceRef:
-        name: llamacpp-qwen3.5-9b
     - name: gemma4
       inferenceServiceRef:
         name: llamacpp-gemma4-26b-a4b
