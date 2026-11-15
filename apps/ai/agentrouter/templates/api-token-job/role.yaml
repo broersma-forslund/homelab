@@ -1,0 +1,16 @@
+{{- if .Values.apiTokens }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: agentrouter-api-tokens
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    resourceNames:
+      {{- range .Values.apiTokens }}
+      - agentrouter-token-{{ .name }}
+      {{- end }}
+    verbs: ["get", "patch"]
+{{- end }}

@@ -1,0 +1,43 @@
+tls:
+  issuer: svc-cluster-local-issuer
+  secretName: agentrouter-tls
+
+oidc:
+  # Must match the Open WebUI provider's access-token claims, not its ID token.
+  issuer: https://authentik.mobrockers.com/application/o/open-webui/
+  jwksUri: https://authentik.mobrockers.com/application/o/open-webui/jwks/
+  # Expected aud claim: the Open WebUI provider's client ID.
+  audience: 2aL6rLRDHx1pN8epxCSVbG2CPvCunBRRxSSpetvz
+
+apiTokens:
+  - name: homeassistant
+  - name: rouke-copilot
+    ownerEmail: "mobrockers@live.nl"
+  - name: openwebui-rag
+    gateways:
+      - embeddings
+
+tokenJob:
+  image: docker.io/alpine/kubectl:1.37.2
+  resources:
+    requests:
+      cpu: 10m
+      memory: 32Mi
+    limits:
+      memory: 128Mi
+
+route:
+  enabled: true
+  hostnames:
+    - inference.mobrockers.com
+  parentRefs:
+    - name: private
+      namespace: envoy-gateway
+      sectionName: web-https
+  timeouts:
+    request: 600s
+    backendRequest: 600s
+
+grafana:
+  dashboards:
+    enabled: true

@@ -17,17 +17,12 @@ open-webui:
     enabled: true
 
   openaiBaseApiUrls:
-    - http://model-router-proxy.llmkube.svc.cluster.local:8080/v1
-    - http://agentrouter.agentrouter.svc.cluster.local/v1
+    - https://agentrouter.agentrouter.svc.cluster.local/v1
   openaiApiKeys:
-    - ""
     - ""
   openaiApiConfigs:
     "0":
-      model_ids:
-        - gemma4
-        - openwebui-tasks
-    "1":
+      auth_type: system_oauth
       prefix_id: agentrouter
       model_ids:
         - gemma4
@@ -35,6 +30,12 @@ open-webui:
   searxngQueryUrl: http://searxng.searxng.svc.cluster.local:8080/search?q=<query>
 
   extraEnvVars:
+    - name: AIOHTTP_CLIENT_SESSION_SSL
+      value: /etc/ssl/agentrouter/ca.crt
+    - name: SSL_CERT_FILE
+      value: /etc/ssl/agentrouter/ca.crt
+    - name: REQUESTS_CA_BUNDLE
+      value: /etc/ssl/agentrouter/ca.crt
     - name: DATABASE_URL
       valueFrom:
         secretKeyRef:
@@ -45,6 +46,21 @@ open-webui:
         secretKeyRef:
           name: open-webui-secret
           key: WEBUI_SECRET_KEY
+    - name: RAG_OPENAI_API_KEY
+      valueFrom:
+        secretKeyRef:
+          name: open-webui-agentrouter-rag
+          key: apiKey
+
+  volumes:
+    - name: internal-ca
+      configMap:
+        name: svc-cluster-local-bundle
+  volumeMounts:
+    container:
+      - name: internal-ca
+        mountPath: /etc/ssl/agentrouter
+        readOnly: true
 
   extraEnvFrom:
     - configMapRef:
@@ -62,7 +78,7 @@ open-webui:
       enabled: true
       providerName: Authentik
       providerUrl: https://authentik.mobrockers.com/application/o/open-webui/.well-known/openid-configuration
-      scopes: "openid profile email groups"
+      scopes: "openid profile email groups offline_access"
       clientId: 2aL6rLRDHx1pN8epxCSVbG2CPvCunBRRxSSpetvz
       clientExistingSecret: open-webui-oidc-credentials
       clientExistingSecretKey: clientSecret
@@ -86,6 +102,11 @@ open-webui:
     enabled: false
   terminals:
     enabled: false
+
+rag:
+  baseUrl: https://agentrouter-embeddings.agentrouter.svc.cluster.local/v1
+  # Operator seals the generated openwebui-rag token for this Secret's apiKey.
+  encryptedApiKey: ""
 
 database:
   image:

@@ -1,0 +1,15 @@
+{{- if .Values.route.enabled }}
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: agentrouter-inference
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: agentrouter-inference
+  timeout:
+    http:
+      requestTimeout: 600s
+      streamIdleTimeout: 600s
+{{- end }}

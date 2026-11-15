@@ -1,0 +1,25 @@
+{{- if .Values.grafana.dashboards.enabled }}
+{{- range $path, $_ := .Files.Glob "dashboards/*.json" }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: agentrouter-{{ base $path | trimSuffix ".json" | trunc 45 | trimSuffix "-" }}
+  labels:
+    grafana_dashboard: "1"
+  annotations:
+    grafana_folder: Agent Router
+    {{- if eq (base $path) "genai-overview.json" }}
+    source: https://github.com/theagentrouter/agent-router/blob/v1.2.1/examples/monitoring/grafana-dashboard.json
+    {{- end }}
+data:
+  {{- if eq (base $path) "genai-overview.json" }}
+  {{- $dashboard := $.Files.Get $path | fromJson }}
+  {{- $_ := unset $dashboard "__inputs" }}
+  {{- $_ := set $dashboard "templating" (dict "list" (list (dict "name" "DS_PROMETHEUS" "type" "datasource" "query" "prometheus" "current" (dict)))) }}
+  {{ base $path }}: {{ $dashboard | toJson | toJson }}
+  {{- else }}
+  {{ base $path }}: {{ $.Files.Get $path | toJson }}
+  {{- end }}
+{{- end }}
+{{- end }}

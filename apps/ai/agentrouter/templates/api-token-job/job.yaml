@@ -1,0 +1,84 @@
+{{- if .Values.apiTokens }}
+{{- $names := list }}
+{{- range .Values.apiTokens }}
+{{- if or (not (regexMatch "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$" .name)) (gt (len .name) 40) }}
+{{- fail "apiTokens names must be DNS labels of at most 40 characters" }}
+{{- end }}
+{{- if has .name $names }}
+{{- fail (printf "duplicate apiTokens name: %s" .name) }}
+{{- end }}
+{{- $names = append $names .name }}
+{{- range default (list "agents") .gateways }}
+{{- if not (has . (list "agents" "embeddings")) }}
+{{- fail "apiTokens gateways must contain only agents or embeddings" }}
+{{- end }}
+{{- end }}
+{{- end }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: agentrouter-api-tokens
+  annotations:
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation,HookSucceeded
+spec:
+  backoffLimit: 3
+  activeDeadlineSeconds: 300
+  template:
+    spec:
+      serviceAccountName: agentrouter-api-tokens
+      restartPolicy: OnFailure
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: provision
+          image: {{ .Values.tokenJob.image | quote }}
+          resources: {{ .Values.tokenJob.resources | toYaml | nindent 12 }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          env:
+            - name: HOME
+              value: /tmp
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          command:
+            - sh
+            - -c
+            - |
+              set -eu
+              umask 077
+              trap 'rm -f /tmp/random' EXIT
+              ensure_token() {
+                name="$1"
+                secret="agentrouter-token-$name"
+                existing="$(kubectl get secret "$secret" -n "$POD_NAMESPACE" -o "jsonpath={.data.$name}")"
+                if [ -n "$existing" ]; then
+                  echo "Preserving API token $name"
+                  return
+                fi
+                head -c 48 /dev/urandom > /tmp/random
+                token="$(base64 /tmp/random)"
+                kubectl patch secret "$secret" -n "$POD_NAMESPACE" --type merge \
+                  -p "{\"stringData\":{\"$name\":\"$token\"}}"
+              }
+              {{- range .Values.apiTokens }}
+              ensure_token {{ .name | quote }}
+              {{- end }}
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir: {}
+{{- end }}

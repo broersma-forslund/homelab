@@ -1,0 +1,117 @@
+{
+  "uid": "agentrouter-identity-usage",
+  "title": "Agent Router - User and Credential Usage",
+  "tags": ["agentrouter", "ai"],
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "30s",
+  "time": {"from": "now-24h", "to": "now"},
+  "templating": {
+    "list": [
+      {
+        "name": "datasource",
+        "type": "datasource",
+        "query": "prometheus",
+        "current": {}
+      },
+      {
+        "name": "user",
+        "label": "User email",
+        "type": "query",
+        "datasource": {"type": "prometheus", "uid": "${datasource}"},
+        "query": "label_values(gen_ai_client_token_usage_sum{namespace=\"agentrouter\"}, user_email)",
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": true,
+        "refresh": 1
+      },
+      {
+        "name": "credential",
+        "label": "Credential",
+        "type": "query",
+        "datasource": {"type": "prometheus", "uid": "${datasource}"},
+        "query": "label_values(gen_ai_client_token_usage_sum{namespace=\"agentrouter\",user_email=~\"$user\"}, credential_id)",
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": true,
+        "refresh": 1
+      },
+      {
+        "name": "model",
+        "label": "Model",
+        "type": "query",
+        "datasource": {"type": "prometheus", "uid": "${datasource}"},
+        "query": "label_values(gen_ai_client_token_usage_sum{namespace=\"agentrouter\"}, gen_ai_request_model)",
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": true,
+        "refresh": 1
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "title": "Tokens by User and Model (selected range)",
+      "type": "table",
+      "gridPos": {"x": 0, "y": 0, "w": 12, "h": 9},
+      "datasource": {"type": "prometheus", "uid": "${datasource}"},
+      "targets": [
+        {
+          "refId": "A",
+          "format": "table",
+          "instant": true,
+          "expr": "sum by (user_email, gen_ai_request_model, gen_ai_token_type) (increase(gen_ai_client_token_usage_sum{namespace=\"agentrouter\",user_email=~\"$user\",credential_id=~\"$credential\",gen_ai_request_model=~\"$model\",gen_ai_token_type=~\"input|output\"}[$__range]))"
+        }
+      ],
+      "fieldConfig": {"defaults": {"unit": "short", "decimals": 0}, "overrides": []}
+    },
+    {
+      "id": 2,
+      "title": "Tokens by Credential (selected range)",
+      "type": "table",
+      "gridPos": {"x": 12, "y": 0, "w": 12, "h": 9},
+      "datasource": {"type": "prometheus", "uid": "${datasource}"},
+      "targets": [
+        {
+          "refId": "A",
+          "format": "table",
+          "instant": true,
+          "expr": "sum by (user_email, credential_id, auth_method, gen_ai_token_type) (increase(gen_ai_client_token_usage_sum{namespace=\"agentrouter\",user_email=~\"$user\",credential_id=~\"$credential\",gen_ai_request_model=~\"$model\",gen_ai_token_type=~\"input|output\"}[$__range]))"
+        }
+      ],
+      "fieldConfig": {"defaults": {"unit": "short", "decimals": 0}, "overrides": []}
+    },
+    {
+      "id": 3,
+      "title": "Token Throughput by User",
+      "type": "timeseries",
+      "gridPos": {"x": 0, "y": 9, "w": 12, "h": 8},
+      "datasource": {"type": "prometheus", "uid": "${datasource}"},
+      "targets": [
+        {
+          "refId": "A",
+          "legendFormat": "{{user_email}} / {{gen_ai_token_type}}",
+          "expr": "sum by (user_email, gen_ai_token_type) (rate(gen_ai_client_token_usage_sum{namespace=\"agentrouter\",user_email=~\"$user\",credential_id=~\"$credential\",gen_ai_request_model=~\"$model\",gen_ai_token_type=~\"input|output\"}[$__rate_interval]))"
+        }
+      ],
+      "fieldConfig": {"defaults": {"unit": "short"}, "overrides": []}
+    },
+    {
+      "id": 4,
+      "title": "Requests by Credential and Model (selected range)",
+      "type": "table",
+      "gridPos": {"x": 12, "y": 9, "w": 12, "h": 8},
+      "datasource": {"type": "prometheus", "uid": "${datasource}"},
+      "targets": [
+        {
+          "refId": "A",
+          "format": "table",
+          "instant": true,
+          "expr": "sum by (user_email, credential_id, gen_ai_request_model) (increase(gen_ai_server_request_duration_seconds_count{namespace=\"agentrouter\",user_email=~\"$user\",credential_id=~\"$credential\",gen_ai_request_model=~\"$model\"}[$__range]))"
+        }
+      ],
+      "fieldConfig": {"defaults": {"unit": "short", "decimals": 0}, "overrides": []}
+    }
+  ]
+}
