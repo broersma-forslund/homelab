@@ -53,6 +53,7 @@
     {
       "id": 1,
       "title": "Tokens by User and Model (selected range)",
+      "description": "Observed counter increases during the selected range. A newly discovered series has no earlier zero baseline, so its first request may not appear in increase(); subsequent requests are counted between scrapes.",
       "type": "table",
       "gridPos": {"x": 0, "y": 0, "w": 12, "h": 9},
       "datasource": {"type": "prometheus", "uid": "${datasource}"},
@@ -69,6 +70,7 @@
     {
       "id": 2,
       "title": "Tokens by Credential (selected range)",
+      "description": "Observed input/output token counter increases, not lifetime totals. Streaming usage requires the upstream response to include token usage. API credentials without an owner email appear as api-key:<credential>.",
       "type": "table",
       "gridPos": {"x": 12, "y": 0, "w": 12, "h": 9},
       "datasource": {"type": "prometheus", "uid": "${datasource}"},
@@ -85,6 +87,7 @@
     {
       "id": 3,
       "title": "Token Throughput by User",
+      "description": "Tokens per second over the scrape-rate window. OAuth users are labeled by email; API tokens use their owner email or api-key:<credential>. Completed requests and at least two scrape samples are needed to observe an increase.",
       "type": "timeseries",
       "gridPos": {"x": 0, "y": 9, "w": 12, "h": 8},
       "datasource": {"type": "prometheus", "uid": "${datasource}"},
@@ -100,6 +103,7 @@
     {
       "id": 4,
       "title": "Requests by Credential and Model (selected range)",
+      "description": "Requests observed as counter increases between scrapes. The first request of a newly created series may not be counted because no zero baseline was scraped.",
       "type": "table",
       "gridPos": {"x": 12, "y": 9, "w": 12, "h": 8},
       "datasource": {"type": "prometheus", "uid": "${datasource}"},

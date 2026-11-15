@@ -9,8 +9,9 @@ spec:
     earlyRequestHeaders:
       remove:
         - x-agentrouter-user-email
+        {{- if ne $listener.method "oidc" }}
         - x-agentrouter-credential-id
-        - x-agentrouter-auth-method
+        {{- end }}
       set:
         - name: x-agentrouter-auth-method
           value: {{ $listener.method }}
