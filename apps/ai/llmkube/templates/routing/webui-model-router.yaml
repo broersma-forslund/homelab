@@ -6,7 +6,14 @@ spec:
   dataPlane: Gateway
   gatewayRef:
     name: agentrouter
-    namespace: agentrouter
+  policy:
+    auth:
+      jwt:
+        provider: authentik
+        issuer: {{ .Values.agentrouter.oidc.issuer | quote }}
+        jwksURI: {{ .Values.agentrouter.oidc.jwksUri | quote }}
+        teamClaim: email
+        headerKey: x-agentrouter-user-email
   backends: {{ .Values.modelRouter.backends | toYaml | nindent 4 }}
   rules:
     {{- range .Values.modelRouter.backends }}

@@ -16,10 +16,7 @@ spec:
       tls:
         mode: Terminate
         certificateRefs:
-          - name: {{ .Values.tls.secretName }}
+          - name: {{ .Values.agentrouter.tls.secretName }}
       allowedRoutes:
         namespaces:
-          from: Selector
-          selector:
-            matchLabels:
-              kubernetes.io/metadata.name: llmkube
+          from: Same

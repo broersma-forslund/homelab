@@ -1,0 +1,43 @@
+{{- range $gateway := list (dict "name" "agentrouter" "port" 10443 "sourceNamespace" "open-webui" "sourceName" "open-webui") (dict "name" "agentrouter-embeddings" "port" 10443 "sourceNamespace" "open-webui" "sourceName" "open-webui") (dict "name" "agentrouter-agents" "port" 8443 "sourceNamespace" "envoy-gateway" "sourceName" "envoy") }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ $gateway.name }}-ingress
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/component: proxy
+      app.kubernetes.io/managed-by: envoy-gateway
+      gateway.envoyproxy.io/owning-gateway-name: {{ $gateway.name }}
+      gateway.envoyproxy.io/owning-gateway-namespace: {{ $.Release.Namespace }}
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: {{ $gateway.sourceNamespace }}
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: {{ $gateway.sourceName }}
+              {{- if eq $gateway.name "agentrouter-agents" }}
+              app.kubernetes.io/managed-by: envoy-gateway
+              gateway.envoyproxy.io/owning-gateway-name: private
+              gateway.envoyproxy.io/owning-gateway-namespace: envoy-gateway
+              {{- else }}
+              app.kubernetes.io/instance: open-webui
+              {{- end }}
+      ports:
+        - protocol: TCP
+          port: {{ $gateway.port }}
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: prometheus
+      ports:
+        - protocol: TCP
+          port: 19001
+        - protocol: TCP
+          port: 1064
+{{- end }}

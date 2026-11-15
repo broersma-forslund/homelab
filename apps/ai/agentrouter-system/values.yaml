@@ -23,7 +23,6 @@ gateway-helm:
             type: Namespaces
             namespaces:
               - agentrouter-system
-              - agentrouter
               - llmkube
       extensionApis:
         enableBackend: true
@@ -59,14 +58,13 @@ ai-gateway-helm:
     watch:
       namespaces:
         - agentrouter-system
-        - agentrouter
         - llmkube
     mutatingWebhook:
       certManager:
         enable: true
       namespaceSelector:
         matchLabels:
-          kubernetes.io/metadata.name: agentrouter
+          kubernetes.io/metadata.name: llmkube
     mcp:
       sessionEncryption:
         existingSecret: agentrouter-mcp-session-encryption

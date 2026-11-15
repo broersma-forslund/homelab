@@ -1,0 +1,36 @@
+{{- range $listener := list (dict "gateway" "agentrouter-agents" "name" "agents") (dict "gateway" "agentrouter-embeddings" "name" "embeddings") }}
+{{- $tokens := list }}
+{{- range $.Values.agentrouter.apiTokens }}
+{{- if has $listener.name (default (list "agents") .gateways) }}
+{{- $tokens = append $tokens . }}
+{{- end }}
+{{- end }}
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: agentrouter-{{ $listener.name }}
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: {{ $listener.gateway }}
+      sectionName: {{ $listener.name }}
+  {{- if $tokens }}
+  apiKeyAuth:
+    credentialRefs:
+      {{- range $tokens }}
+      - name: agentrouter-token-{{ .name }}
+        group: ""
+        kind: Secret
+      {{- end }}
+    extractFrom:
+      - headers:
+          - Authorization
+    forwardClientIDHeader: x-agentrouter-credential-id
+    sanitize: true
+  {{- else }}
+  authorization:
+    defaultAction: Deny
+  {{- end }}
+{{- end }}

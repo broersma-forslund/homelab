@@ -1,0 +1,42 @@
+{{- $chatServices := list }}
+{{- range .Values.modelRouter.backends }}
+{{- $chatServices = append $chatServices .inferenceServiceRef.name }}
+{{- end }}
+{{- range $group := list (dict "name" "chat" "services" $chatServices "gateways" (list "agentrouter" "agentrouter-agents")) (dict "name" "embeddings" "services" (list $.Values.embeddingRouter.backend.inferenceServiceRef.name) "gateways" (list "agentrouter-embeddings")) }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: inference-{{ $group.name }}-ingress
+spec:
+  podSelector:
+    matchExpressions:
+      - key: inference.llmkube.dev/service
+        operator: In
+        values: {{ $group.services | toYaml | nindent 10 }}
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/component: proxy
+              app.kubernetes.io/managed-by: envoy-gateway
+              gateway.envoyproxy.io/owning-gateway-namespace: {{ $.Release.Namespace }}
+            matchExpressions:
+              - key: gateway.envoyproxy.io/owning-gateway-name
+                operator: In
+                values: {{ $group.gateways | toYaml | nindent 18 }}
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: llmkube
+              app.kubernetes.io/instance: {{ $.Release.Name }}
+              control-plane: controller-manager
+        # Runtime metrics share the inference HTTP port.
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: prometheus
+      ports:
+        - protocol: TCP
+          port: 8080
+{{- end }}

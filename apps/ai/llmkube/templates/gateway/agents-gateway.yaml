@@ -1,0 +1,22 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: agentrouter-agents
+spec:
+  gatewayClassName: agentrouter
+  infrastructure:
+    parametersRef:
+      group: gateway.envoyproxy.io
+      kind: EnvoyProxy
+      name: agentrouter
+  listeners:
+    - name: agents
+      protocol: HTTPS
+      port: 8443
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: {{ .Values.agentrouter.tls.secretName }}
+      allowedRoutes:
+        namespaces:
+          from: Same

@@ -3,10 +3,11 @@ kind: Certificate
 metadata:
   name: agentrouter-tls
 spec:
-  secretName: {{ .Values.tls.secretName }}
+  secretName: {{ .Values.agentrouter.tls.secretName }}
   dnsNames:
     - agentrouter.{{ .Release.Namespace }}.svc.cluster.local
+    - agentrouter-agents.{{ .Release.Namespace }}.svc.cluster.local
     - agentrouter-embeddings.{{ .Release.Namespace }}.svc.cluster.local
   issuerRef:
-    name: {{ .Values.tls.issuer }}
+    name: {{ .Values.agentrouter.tls.issuer }}
     kind: ClusterIssuer

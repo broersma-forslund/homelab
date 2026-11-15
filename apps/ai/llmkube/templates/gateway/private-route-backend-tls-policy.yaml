@@ -1,4 +1,4 @@
-{{- if .Values.route.enabled }}
+{{- if .Values.agentrouter.route.enabled }}
 apiVersion: gateway.networking.k8s.io/v1
 kind: BackendTLSPolicy
 metadata:
@@ -7,9 +7,9 @@ spec:
   targetRefs:
     - group: ""
       kind: Service
-      name: agentrouter
+      name: agentrouter-agents
   validation:
-    hostname: agentrouter.{{ .Release.Namespace }}.svc.cluster.local
+    hostname: agentrouter-agents.{{ .Release.Namespace }}.svc.cluster.local
     caCertificateRefs:
       - group: ""
         kind: ConfigMap

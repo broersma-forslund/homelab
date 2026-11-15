@@ -17,7 +17,7 @@ open-webui:
     enabled: true
 
   openaiBaseApiUrls:
-    - https://agentrouter.agentrouter.svc.cluster.local/v1
+    - https://agentrouter.llmkube.svc.cluster.local/v1
   openaiApiKeys:
     - ""
   openaiApiConfigs:
@@ -104,7 +104,7 @@ open-webui:
     enabled: false
 
 rag:
-  baseUrl: https://agentrouter-embeddings.agentrouter.svc.cluster.local/v1
+  baseUrl: https://agentrouter-embeddings.llmkube.svc.cluster.local/v1
   # Operator seals the generated openwebui-rag token for this Secret's apiKey.
   encryptedApiKey: ""
 

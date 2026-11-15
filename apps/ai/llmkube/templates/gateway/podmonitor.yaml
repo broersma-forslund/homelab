@@ -1,4 +1,4 @@
-{{- $tokens := .Values.apiTokens }}
+{{- $tokens := .Values.agentrouter.apiTokens }}
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
@@ -35,4 +35,5 @@ spec:
         operator: In
         values:
           - agentrouter
+          - agentrouter-agents
           - agentrouter-embeddings

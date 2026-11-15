@@ -2,8 +2,6 @@ apps:
   ai:
     agentrouter-system:
       deploy: true
-    agentrouter:
-      deploy: true
     llmkube:
       deploy: true
       skipSchemaValidation: true

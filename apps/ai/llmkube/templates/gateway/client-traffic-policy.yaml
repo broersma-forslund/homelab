@@ -1,4 +1,4 @@
-{{- range $listener := list (dict "gateway" "agentrouter" "name" "webui" "method" "oidc") (dict "gateway" "agentrouter" "name" "agents" "method" "api_key") (dict "gateway" "agentrouter-embeddings" "name" "embeddings" "method" "api_key") }}
+{{- range $listener := list (dict "gateway" "agentrouter" "name" "webui" "method" "oidc") (dict "gateway" "agentrouter-agents" "name" "agents" "method" "api_key") (dict "gateway" "agentrouter-embeddings" "name" "embeddings" "method" "api_key") }}
 ---
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: ClientTrafficPolicy
@@ -29,6 +29,12 @@ spec:
       sectionName: {{ $listener.name }}
   connection:
     bufferLimit: 50Mi
+  {{- if eq $listener.name "agents" }}
+  # NetworkPolicy restricts this listener to the private ingress proxy.
+  clientIPDetection:
+    xForwardedFor:
+      numTrustedHops: 1
+  {{- end }}
   http2:
     initialStreamWindowSize: 16Mi
     initialConnectionWindowSize: 24Mi

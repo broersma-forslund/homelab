@@ -1,6 +1,6 @@
-{{- if .Values.apiTokens }}
+{{- if .Values.agentrouter.apiTokens }}
 {{- $names := list }}
-{{- range .Values.apiTokens }}
+{{- range .Values.agentrouter.apiTokens }}
 {{- if or (not (regexMatch "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$" .name)) (gt (len .name) 40) }}
 {{- fail "apiTokens names must be DNS labels of at most 40 characters" }}
 {{- end }}
@@ -35,8 +35,8 @@ spec:
           type: RuntimeDefault
       containers:
         - name: provision
-          image: {{ .Values.tokenJob.image | quote }}
-          resources: {{ .Values.tokenJob.resources | toYaml | nindent 12 }}
+          image: {{ .Values.agentrouter.tokenJob.image | quote }}
+          resources: {{ .Values.agentrouter.tokenJob.resources | toYaml | nindent 12 }}
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -70,7 +70,7 @@ spec:
                 kubectl patch secret "$secret" -n "$POD_NAMESPACE" --type merge \
                   -p "{\"stringData\":{\"$name\":\"$token\"}}"
               }
-              {{- range .Values.apiTokens }}
+              {{- range .Values.agentrouter.apiTokens }}
               ensure_token {{ .name | quote }}
               {{- end }}
           volumeMounts:

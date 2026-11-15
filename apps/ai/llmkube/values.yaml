@@ -20,6 +20,8 @@ llmkube:
     accessMode: ReadWriteOnce
 
   networkPolicies:
+    # Gateway-mode ingress is restricted by this wrapper's templates/network policies.
+    # Leave the upstream Proxy-mode policies disabled.
     enabled: false
 
   metrics:
@@ -42,6 +44,7 @@ llmkube:
 
 models:
   prefetch: false
+
 modelRouter:
   defaultRoute: gemma4
   backends:
@@ -56,6 +59,7 @@ embeddingRouter:
     name: openwebui-embedding
     inferenceServiceRef:
       name: llamacpp-bge-m3
+
 llamacpp:
   cuda:
     image:
@@ -65,3 +69,41 @@ llamacpp:
     image:
       repository: ghcr.io/ggml-org/llama.cpp
       tag: server-intel@sha256:a3a13d0956ba215b34e153919a3dfad4f9efc34ff20ec7535b0c436e1f88fb73
+
+agentrouter:
+  tls:
+    issuer: svc-cluster-local-issuer
+    secretName: agentrouter-tls
+  oidc:
+    # LLMKube's native JWT configuration validates issuer/signature/expiry, not audience.
+    issuer: https://authentik.mobrockers.com/application/o/open-webui/
+    jwksUri: https://authentik.mobrockers.com/application/o/open-webui/jwks/
+  apiTokens:
+    - name: homeassistant
+    - name: rouke-copilot
+      ownerEmail: "mobrockers@live.nl"
+    - name: openwebui-rag
+      gateways:
+        - embeddings
+  tokenJob:
+    image: docker.io/alpine/kubectl:1.37.2
+    resources:
+      requests:
+        cpu: 10m
+        memory: 32Mi
+      limits:
+        memory: 128Mi
+  route:
+    enabled: true
+    hostnames:
+      - inference.mobrockers.com
+    parentRefs:
+      - name: private
+        namespace: envoy-gateway
+        sectionName: web-https
+    timeouts:
+      request: 600s
+      backendRequest: 600s
+  grafana:
+    dashboards:
+      enabled: true

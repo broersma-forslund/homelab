@@ -6,7 +6,6 @@ spec:
   dataPlane: Gateway
   gatewayRef:
     name: agentrouter-embeddings
-    namespace: agentrouter
   backends:
     - {{ .Values.embeddingRouter.backend | toYaml | nindent 6 | trim }}
   rules:
