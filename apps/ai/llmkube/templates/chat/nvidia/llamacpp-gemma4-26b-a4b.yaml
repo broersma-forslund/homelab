@@ -17,7 +17,7 @@ spec:
   speculativeDecoding:
     type: draft-mtp
     draftModel: mtp-gemma-4-26B-A4B-it.gguf
-    nDraftMax: 2
+    nDraftMax: 4
   resources:
     hostMemory: 48Gi
   tolerations:
@@ -27,5 +27,11 @@ spec:
     - --kv-unified
     - --reasoning
     - "on"
+  {{- /* Dynamically cache hot MoE layers on GPU */ }}
     - --moe-cache-mib
-    - "800"
+    - "2000"
+  {{- /* Run most uncached layers directly from CPU/System Memory */ }}
+    - --moe-cache-cpu-share
+    - "0.85"
+  {{- /* Run vision on CPU to free VRAM for the main model */ }}
+    - --no-mmproj-offload
