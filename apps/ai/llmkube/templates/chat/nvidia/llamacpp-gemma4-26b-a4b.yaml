@@ -27,11 +27,11 @@ spec:
     - --kv-unified
     - --reasoning
     - "on"
-  {{- /* Dynamically cache hot MoE layers on GPU */ }}
+{{/* Dynamically cache hot MoE layers on GPU */}}
     - --moe-cache-mib
     - "2000"
-  {{- /* Run most uncached layers directly from CPU/System Memory */ }}
+{{/* Run most uncached layers directly from CPU/System Memory */}}
     - --moe-cache-cpu-share
     - "0.85"
-  {{- /* Run vision on CPU to free VRAM for the main model */ }}
+{{/* Run vision on CPU to free VRAM for the main model */}}
     - --no-mmproj-offload
