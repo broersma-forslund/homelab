@@ -4,7 +4,8 @@ kind: Role
 metadata:
   name: agentrouter-api-tokens
   annotations:
-    argocd.argoproj.io/sync-wave: "-1"
+    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
 rules:
   - apiGroups: [""]
     resources: ["secrets"]

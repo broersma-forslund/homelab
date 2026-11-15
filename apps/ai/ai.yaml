@@ -4,11 +4,6 @@ apps:
       deploy: true
     agentrouter:
       deploy: true
-      ignoreDifferences:
-        - group: ""
-          kind: Secret
-          jsonPointers:
-            - /data
     llmkube:
       deploy: true
       skipSchemaValidation: true

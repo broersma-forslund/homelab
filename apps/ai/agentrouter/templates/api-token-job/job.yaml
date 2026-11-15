@@ -19,11 +19,9 @@ kind: Job
 metadata:
   name: agentrouter-api-tokens
   annotations:
-    argocd.argoproj.io/hook: Sync
-    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation,HookSucceeded
+    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook-delete-policy: before-hook-creation
 spec:
-  backoffLimit: 3
-  activeDeadlineSeconds: 300
   template:
     spec:
       serviceAccountName: agentrouter-api-tokens
