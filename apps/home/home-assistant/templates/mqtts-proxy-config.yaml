@@ -12,7 +12,7 @@ data:
     client = yes
     accept = 127.0.0.1:1883
     connect = emqx-listeners.emqx.svc.cluster.local:8884
-    CAfile = /ca/trust-bundle.pem
+    CAfile = /ca/ca.crt
     verify = 2
     socket = l:TCP_NODELAY=1
     socket = r:TCP_NODELAY=1

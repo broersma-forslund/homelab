@@ -1,9 +1,23 @@
+{{- range $listener := list (dict "gateway" "agentrouter" "name" "webui" "method" "oidc") (dict "gateway" "agentrouter" "name" "agents" "method" "api_key") (dict "gateway" "agentrouter-embeddings" "name" "embeddings" "method" "api_key") }}
+---
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: ClientTrafficPolicy
 metadata:
-  name: agentrouter
+  name: agentrouter-{{ $listener.name }}
 spec:
   headers:
+    earlyRequestHeaders:
+      remove:
+        - x-agentrouter-user-email
+        - x-agentrouter-credential-id
+        - x-agentrouter-auth-method
+      set:
+        - name: x-agentrouter-auth-method
+          value: {{ $listener.method }}
+        {{- if eq $listener.method "oidc" }}
+        - name: x-agentrouter-credential-id
+          value: open-webui
+        {{- end }}
     lateResponseHeaders:
       set:
         - name: x-content-type-options
@@ -11,9 +25,13 @@ spec:
   targetRefs:
     - group: gateway.networking.k8s.io
       kind: Gateway
-      name: agentrouter
+      name: {{ $listener.gateway }}
+      sectionName: {{ $listener.name }}
   connection:
     bufferLimit: 50Mi
   http2:
     initialStreamWindowSize: 16Mi
     initialConnectionWindowSize: 24Mi
+  tls:
+    minVersion: "1.2"
+{{- end }}

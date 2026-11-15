@@ -1,3 +1,4 @@
+{{- $tokens := .Values.apiTokens }}
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
@@ -10,6 +11,16 @@ spec:
     - port: aigw-admin
       scheme: http
       path: /metrics
+      {{- if $tokens }}
+      metricRelabelings:
+        {{- range $tokens }}
+        - action: replace
+          sourceLabels: [auth_method, credential_id]
+          regex: {{ printf "api_key;%s" .name | quote }}
+          targetLabel: user_email
+          replacement: {{ default (printf "api-key:%s" .name) .ownerEmail | replace "$" "$$" | quote }}
+        {{- end }}
+      {{- end }}
   podTargetLabels:
     - gateway.envoyproxy.io/owning-gateway-name
     - gateway.envoyproxy.io/owning-gateway-namespace
@@ -18,5 +29,10 @@ spec:
       app.kubernetes.io/component: proxy
       app.kubernetes.io/managed-by: envoy-gateway
       app.kubernetes.io/name: envoy
-      gateway.envoyproxy.io/owning-gateway-name: agentrouter
       gateway.envoyproxy.io/owning-gateway-namespace: {{ .Release.Namespace }}
+    matchExpressions:
+      - key: gateway.envoyproxy.io/owning-gateway-name
+        operator: In
+        values:
+          - agentrouter
+          - agentrouter-embeddings

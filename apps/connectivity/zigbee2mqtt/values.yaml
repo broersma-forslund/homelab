@@ -18,7 +18,7 @@ mqtt:
   version: 5
   base_topic: zigbee2mqtt
   server: mqtts://emqx-listeners.emqx.svc.cluster.local:8884
-  ca: '/svc-cluster-local-bundle/trust-bundle.pem'
+  ca: '/svc-cluster-local-bundle/ca.crt'
   user: '!secret.yaml mqtt_user'
   password: '!secret.yaml mqtt_password'
 

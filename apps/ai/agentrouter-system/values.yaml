@@ -54,6 +54,7 @@ ai-gateway-helm:
     namespace: agentrouter-system
   controller:
     fullnameOverride: agentrouter-controller
+    requestHeaderAttributes: "x-agentrouter-user-email:user.email,x-agentrouter-credential-id:credential.id,x-agentrouter-auth-method:auth.method"
     quotaRateLimitServiceAddr: agentrouter-ratelimit.agentrouter-system
     watch:
       namespaces:
