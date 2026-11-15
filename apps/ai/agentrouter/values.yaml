@@ -9,13 +9,9 @@ oidc:
   # Expected aud claim: the Open WebUI provider's client ID.
   audience: 2aL6rLRDHx1pN8epxCSVbG2CPvCunBRRxSSpetvz
 
-# Helm owns the Secrets; the Job only fills missing keys. Remove a key to rotate it.
 apiTokens:
-  - name: coding-agents
-    # Omitted gateways defaults to [agents].
-    # Match the Authentik access-token email claim to combine this user's usage.
-    # Optional: without it, usage is attributed to api-key:<name>.
-    ownerEmail: ""
+  - name: rouke-copilot
+    ownerEmail: "mobrockers@live.nl"
   - name: openwebui-rag
     gateways:
       - embeddings
