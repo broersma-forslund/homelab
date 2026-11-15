@@ -10,6 +10,7 @@ oidc:
   audience: 2aL6rLRDHx1pN8epxCSVbG2CPvCunBRRxSSpetvz
 
 apiTokens:
+  - name: homeassistant
   - name: rouke-copilot
     ownerEmail: "mobrockers@live.nl"
   - name: openwebui-rag
