@@ -1,10 +1,9 @@
 apps:
   ai:
-    envoy-ai-gateway-system:
+    agentrouter-system:
       deploy: true
-    envoy-ai-gateway:
+    agentrouter:
       deploy: true
-      namespace: envoy-ai-gateway-system
     llmkube:
       deploy: true
       skipSchemaValidation: true

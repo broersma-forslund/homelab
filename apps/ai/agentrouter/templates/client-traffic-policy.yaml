@@ -1,7 +1,7 @@
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: ClientTrafficPolicy
 metadata:
-  name: ai-gateway
+  name: agentrouter
 spec:
   headers:
     lateResponseHeaders:
@@ -11,7 +11,7 @@ spec:
   targetRefs:
     - group: gateway.networking.k8s.io
       kind: Gateway
-      name: ai-gateway
+      name: agentrouter
   connection:
     bufferLimit: 50Mi
   http2:

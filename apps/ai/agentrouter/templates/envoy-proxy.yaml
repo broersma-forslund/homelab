@@ -1,7 +1,7 @@
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: EnvoyProxy
 metadata:
-  name: ai-gateway
+  name: agentrouter
 spec:
   telemetry:
     accessLog:

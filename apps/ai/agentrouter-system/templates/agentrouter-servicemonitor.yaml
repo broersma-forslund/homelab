@@ -1,7 +1,7 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: ai-gateway-servicemonitor
+  name: agentrouter-servicemonitor
 spec:
   endpoints:
     - port: http-metrics

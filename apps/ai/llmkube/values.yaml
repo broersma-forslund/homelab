@@ -42,6 +42,18 @@ llmkube:
 
 models:
   prefetch: false
+modelRouter:
+  defaultRoute: gemma4
+  backends:
+    - name: gemma4
+      inferenceServiceRef:
+        name: llamacpp-gemma4-26b-a4b
+    - name: openwebui-embedding
+      inferenceServiceRef:
+        name: llamacpp-bge-m3
+    - name: openwebui-tasks
+      inferenceServiceRef:
+        name: llamacpp-qwen3-0.6b
 llamacpp:
   cuda:
     image:

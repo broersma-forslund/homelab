@@ -12,6 +12,7 @@ metadata:
 data:
   ENABLE_PERSISTENT_CONFIG: "false"
   ENABLE_DIRECT_CONNECTIONS: "false"
+  OPENAI_API_CONFIGS: {{ $webui.openaiApiConfigs | toJson | quote }}
 
   # --- General ---
   # Derived from route.hostnames so it can't drift from the actual HTTPRoute address.

@@ -18,8 +18,20 @@ open-webui:
 
   openaiBaseApiUrls:
     - http://model-router-proxy.llmkube.svc.cluster.local:8080/v1
+    - http://agentrouter.agentrouter.svc.cluster.local/v1
   openaiApiKeys:
     - ""
+    - ""
+  openaiApiConfigs:
+    "0":
+      model_ids:
+        - gemma4
+        - openwebui-tasks
+    "1":
+      prefix_id: agentrouter
+      model_ids:
+        - gemma4
+        - openwebui-tasks
   searxngQueryUrl: http://searxng.searxng.svc.cluster.local:8080/search?q=<query>
 
   extraEnvVars:

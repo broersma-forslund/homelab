@@ -1,0 +1,26 @@
+apiVersion: inference.llmkube.dev/v1alpha1
+kind: ModelRouter
+metadata:
+  name: model-gateway
+spec:
+  dataPlane: Gateway
+  gatewayRef:
+    name: agentrouter
+    namespace: agentrouter
+  backends: {{ .Values.modelRouter.backends | toYaml | nindent 4 }}
+  rules:
+    {{- range .Values.modelRouter.backends }}
+    - name: {{ .name }}
+      match:
+        models:
+          - {{ .name | quote }}
+      route:
+        backends:
+          - {{ .name | quote }}
+      timeout: 600s
+    {{- end }}
+    - name: default
+      route:
+        backends:
+          - {{ .Values.modelRouter.defaultRoute | quote }}
+      timeout: 600s

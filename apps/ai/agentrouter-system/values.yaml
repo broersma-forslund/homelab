@@ -13,7 +13,7 @@ gateway-helm:
   config:
     envoyGateway:
       gateway:
-        controllerName: gateway.envoyproxy.io/ai-gateway-controller
+        controllerName: gateway.envoyproxy.io/agentrouter-controller
       provider:
         type: Kubernetes
         kubernetes:
@@ -22,7 +22,9 @@ gateway-helm:
           watch:
             type: Namespaces
             namespaces:
-              - envoy-ai-gateway-system
+              - agentrouter-system
+              - agentrouter
+              - llmkube
       extensionApis:
         enableBackend: true
         enableEnvoyPatchPolicy: true
@@ -44,26 +46,29 @@ gateway-helm:
               - Route
         service:
           fqdn:
-            hostname: ai-gateway-controller.envoy-ai-gateway-system.svc.cluster.local
+            hostname: agentrouter-controller.agentrouter-system.svc.cluster.local
             port: 1063
 
 ai-gateway-helm:
   envoyGateway:
-    namespace: envoy-ai-gateway-system
+    namespace: agentrouter-system
   controller:
-    quotaRateLimitServiceAddr: envoy-ai-gateway-ratelimit.envoy-ai-gateway-system
+    fullnameOverride: agentrouter-controller
+    quotaRateLimitServiceAddr: agentrouter-ratelimit.agentrouter-system
     watch:
       namespaces:
-        - envoy-ai-gateway-system
+        - agentrouter-system
+        - agentrouter
+        - llmkube
     mutatingWebhook:
       certManager:
         enable: true
       namespaceSelector:
         matchLabels:
-          kubernetes.io/metadata.name: envoy-ai-gateway-system
+          kubernetes.io/metadata.name: agentrouter
     mcp:
       sessionEncryption:
-        existingSecret: ai-gateway-mcp-session-encryption
+        existingSecret: agentrouter-mcp-session-encryption
     resources:
       requests:
         cpu: 50m
