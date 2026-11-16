@@ -5,7 +5,9 @@
     "preview:dockerVersions"
   ],
   "configMigration": true,
-  "dependencyDashboard": true,
+  "dependencyDashboard": {
+    "enabled": true
+  },
   "prHourlyLimit": 0,
   "prConcurrentLimit": 0,
   "separateMinorPatch": true,
