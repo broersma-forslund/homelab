@@ -7,7 +7,7 @@ dependencies:
     version: 1.10.0
     repository: oci://docker.io/envoyproxy
   - name: ai-gateway-crds-helm
-    version: v1.2.1
+    version: 1.3.0
     repository: oci://docker.io/envoyproxy
   - name: ai-gateway-helm
     version: v1.2.1
