@@ -9,7 +9,7 @@ metadata:
   labels:
     grafana_dashboard: "1"
   annotations:
-    com.grafana/dashboard-folder: Rook
+    com.grafana/dashboard-folder: Rook Ceph
 data:
   {{ $dashboardName }}.json: {{ $.Files.Get $path | toJson }}
 {{- end }}
