@@ -3,6 +3,9 @@ llmkube:
     install: true
     keep: false
 
+  priorityClasses:
+    enabled: false
+
   webhook:
     certManager:
       enabled: true
@@ -38,6 +41,8 @@ llmkube:
       enabled: true
       additionalLabels:
         grafana_dashboard: "1"
+      annotations:
+        com.grafana/dashboard-folder: LLM Kube
       only:
         - llamacpp-dashboard
         - llmkube-inference

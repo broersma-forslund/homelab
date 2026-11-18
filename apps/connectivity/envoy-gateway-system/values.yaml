@@ -38,3 +38,5 @@ gateway-addons-helm:
   dashboard:
     labels:
       grafana_dashboard: '1'
+    annotations:
+      com.grafana/dashboard-folder: Envoy Gateway

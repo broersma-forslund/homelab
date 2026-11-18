@@ -30,6 +30,8 @@ kyverno:
 
   grafana:
     enabled: true
+    annotations:
+      com.grafana/dashboard-folder: Kyverno
 
   features:
     forceFailurePolicyIgnore:
@@ -100,3 +102,6 @@ policy-reporter:
     enabled: true
     grafana:
       namespace: ~
+      folder:
+        annotation: com.grafana/dashboard-folder
+        name: Policy Reporter

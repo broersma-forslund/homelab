@@ -11,6 +11,8 @@ sealed-secrets:
       enabled: true
     dashboards:
       create: true
+      annotations:
+        com.grafana/dashboard-folder: Sealed Secrets
 
 route:
   enabled: true

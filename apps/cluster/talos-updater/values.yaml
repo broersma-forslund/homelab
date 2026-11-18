@@ -6,6 +6,8 @@ tuppr:
       enabled: true
     dashboards:
       enabled: true
+      annotations:
+        com.grafana/dashboard-folder: Talos Updater
 
 talos:
     image:

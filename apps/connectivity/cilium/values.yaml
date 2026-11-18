@@ -43,6 +43,8 @@ cilium:
         enabled: true
     dashboards:
       enabled: true
+      annotations:
+        com.grafana/dashboard-folder: Cilium
 
   ipam:
     mode: kubernetes
@@ -91,6 +93,8 @@ cilium:
       enabled: true
   dashboards:
     enabled: true
+    annotations:
+      com.grafana/dashboard-folder: Cilium
 
   tls:
     secretsNamespace:
