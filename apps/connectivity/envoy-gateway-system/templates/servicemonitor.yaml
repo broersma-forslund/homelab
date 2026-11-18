@@ -5,7 +5,7 @@ metadata:
 spec:
   endpoints:
     - port: metrics
-    - port: ratelimit
+    # - port: ratelimit
   selector:
     matchLabels:
       app.kubernetes.io/name: gateway-helm
