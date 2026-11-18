@@ -23,7 +23,7 @@ extended-ceph-exporter:
   grafanaDashboard:
     enabled: true
     annotations:
-      com.grafana/dashboard-folder: Extended Ceph Exporter
+      com.grafana/dashboard-folder: Rook Ceph
 
   rook:
     clusterNamespace: rook-ceph
