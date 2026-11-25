@@ -4,7 +4,7 @@ version: 0.0.0
 
 dependencies:
   - name: rook-ceph-cluster
-    version: 1.21.2
+    version: 1.21.3
     repository: oci://ghcr.io/rook
   - name: extended-ceph-exporter
     version: 1.0.1
