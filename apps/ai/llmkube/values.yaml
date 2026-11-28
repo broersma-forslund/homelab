@@ -91,7 +91,7 @@ agentrouter:
       gateways:
         - embeddings
   tokenJob:
-    image: docker.io/alpine/kubectl:1.37.2
+    image: docker.io/alpine/kubectl:1.37.3
     resources:
       requests:
         cpu: 10m
