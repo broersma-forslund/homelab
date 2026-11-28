@@ -73,7 +73,7 @@ llamacpp:
   intel:
     image:
       repository: ghcr.io/ggml-org/llama.cpp
-      tag: server-intel@sha256:a3a13d0956ba215b34e153919a3dfad4f9efc34ff20ec7535b0c436e1f88fb73
+      tag: server-intel@sha256:9b1d70ea538ffd5a27bf226a852c93a834e83f54036cbba2b74a6f1ad088b7e0
 
 agentrouter:
   tls:
