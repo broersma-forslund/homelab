@@ -69,7 +69,7 @@ llamacpp:
   cuda:
     image:
       repository: ghcr.io/ggml-org/llama.cpp
-      tag: server-cuda13@sha256:025d1b2744431ea5bedfc2c7c706af823136abf707fa0898f09b29cdc3baabf2
+      tag: server-cuda13@sha256:2047aa53a876065142e92e9f00365192e20ffab09c42932c932cabc9528ae603
   intel:
     image:
       repository: ghcr.io/ggml-org/llama.cpp
